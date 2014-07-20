@@ -55,13 +55,13 @@ An example of a simple controller is as follows:
 object ExampleController extends HttpServiceAware with LocationAware {
 
   override def initialize() {
-      val url = location.absUrl + "/example"
+    val url = location.absUrl + "/example"
     http.get(url).success(success).error(failure)
   }
 }
 ```
 
-As ```ExampleController``` object implements ```HttpServiceAware``` trait, it cat access 
+As ```ExampleController``` object implements ```HttpServiceAware``` trait, it can access 
 ```$http``` service provided by AngularJS with the ```http``` member variable defined in the 
 trait.
 
