@@ -11,6 +11,12 @@ trait FileUploadConfig extends js.Object {
   var data: Any = _
 
   var file: File = _
+
+  var method: String = _
+
+  var fileName: js.Any = _
+
+  var fileFormDataName: js.Any = _
 }
 
 object FileUploadConfig {
