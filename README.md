@@ -34,9 +34,6 @@ resolvers +=
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```
 
-_Important Note! : We don't have a public repository yet, so you'll have to clone it and 
-run ```sbt publishLocal``` first to build it yourself._ 
-
 ### Defining a Module
 
 You can define an AngularJS module in the following manner. Note that ```config``` and 
