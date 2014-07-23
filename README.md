@@ -26,10 +26,18 @@ Add the following line to your ```sbt``` build definition:
 libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.1-SNAPSHOT"
 ```
 
+You'll also need to add _Sonatype Snapshot Repository_ to the resolver as follows, 
+because at this moment, there's no release build available yet:
+
+```scala
+resolvers += 
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+```
+
 _Important Note! : We don't have a public repository yet, so you'll have to clone it and 
 run ```sbt publishLocal``` first to build it yourself._ 
 
-### Define a Module
+### Defining a Module
 
 You can define an AngularJS module in the following manner. Note that ```config``` and 
 ```controller``` methods can be chained and take variable arguments.
