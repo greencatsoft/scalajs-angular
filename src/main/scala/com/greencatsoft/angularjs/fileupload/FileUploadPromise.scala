@@ -2,7 +2,7 @@ package com.greencatsoft.angularjs.fileupload
 
 import scala.scalajs.js
 
-import com.greencatsoft.angularjs.HttpPromise
+import com.greencatsoft.angularjs.http.HttpPromise
 
 trait FileUploadPromise extends HttpPromise {
 

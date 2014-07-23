@@ -2,7 +2,7 @@ package com.greencatsoft.angularjs.fileupload
 
 import scala.scalajs.js
 
-import com.greencatsoft.angularjs.HttpConfig
+import com.greencatsoft.angularjs.http.HttpConfig
 
 /**
  * Wrapper for the angular-file-upload module.
