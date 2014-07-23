@@ -1,6 +1,8 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.scope
 
 import scala.scalajs.js
+
+import com.greencatsoft.angularjs.InjectionTarget
 
 trait RootScopeAware extends InjectionTarget {
 

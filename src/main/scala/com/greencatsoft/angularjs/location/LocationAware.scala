@@ -1,6 +1,8 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.location
 
 import scala.scalajs.js
+
+import com.greencatsoft.angularjs.InjectionTarget
 
 trait LocationAware extends InjectionTarget {
 

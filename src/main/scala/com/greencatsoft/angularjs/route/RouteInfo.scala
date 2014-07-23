@@ -1,6 +1,8 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.route
 
 import scala.scalajs.js
+
+import com.greencatsoft.angularjs.scope.Scope
 
 trait RouteInfo extends js.Object {
 

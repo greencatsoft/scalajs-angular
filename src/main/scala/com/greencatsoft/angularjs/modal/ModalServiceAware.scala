@@ -1,6 +1,8 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.modal
 
 import scala.scalajs.js
+
+import com.greencatsoft.angularjs.InjectionTarget
 
 trait ModalServiceAware extends InjectionTarget {
 

@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.http
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr

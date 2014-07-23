@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.location
 
 import scala.scalajs.js
 

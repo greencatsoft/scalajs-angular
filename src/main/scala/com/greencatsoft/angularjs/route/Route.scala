@@ -1,7 +1,10 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.route
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
+import scala.scalajs.js.UndefOr.any2undefOrA
+
+import com.greencatsoft.angularjs.NamedTarget
 
 trait Route extends js.Object {
 

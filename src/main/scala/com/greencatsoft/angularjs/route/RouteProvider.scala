@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.route
 
 import scala.scalajs.js
 
