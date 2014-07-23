@@ -26,7 +26,7 @@ publishMavenStyle := true
 pomIncludeRepository := { _ => false }
 
 pomExtra := (
-  <description>Scala.js bindings for AngularJS.</description>
+  <description>AngularJS bindings for Scala.js.</description>
   <url>http://github.com/greencatsoft/scalajs-angular</url>
   <licenses>
     <license>
