@@ -4,7 +4,7 @@ import scala.scalajs.js
 
 trait ModalService extends js.Object {
 
-  def open(options: ModalOptions): js.Any = ???
+  def open(options: ModalOptions): ModalInstance = ???
 }
 
 object ModalService {

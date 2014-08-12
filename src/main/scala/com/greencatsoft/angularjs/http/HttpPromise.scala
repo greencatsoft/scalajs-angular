@@ -1,9 +1,11 @@
 package com.greencatsoft.angularjs.http
 
+import com.greencatsoft.angularjs.q.Promise
+
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 
-trait HttpPromise extends js.Object {
+trait HttpPromise extends Promise {
 
   def success(callback: js.Function1[js.Any, Unit]): this.type
 
