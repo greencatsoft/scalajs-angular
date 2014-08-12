@@ -19,7 +19,7 @@ object Defer {
 
   implicit def defer2promise[T](defer: Defer): scala.concurrent.Promise[T] = new DeferredPromise[T](defer)
 
-  implicit class DeferredPromise[T](defer: Defer) extends scala.concurrent.Promise[T] {
+  class DeferredPromise[T](defer: Defer) extends scala.concurrent.Promise[T] {
 
     private var completed = false
 

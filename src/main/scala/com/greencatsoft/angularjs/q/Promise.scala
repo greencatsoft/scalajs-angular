@@ -25,7 +25,7 @@ object Promise {
 
   implicit def promise2future[T](promise: Promise): Future[T] = new DeferredFuture[T](promise)
 
-  implicit class DeferredFuture[T](promise: Promise) extends Future[T] {
+  class DeferredFuture[T](promise: Promise) extends Future[T] {
 
     type Listener[U] = Try[T] => U
 
