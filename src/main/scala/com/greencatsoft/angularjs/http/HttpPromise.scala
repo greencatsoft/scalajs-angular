@@ -1,9 +1,9 @@
 package com.greencatsoft.angularjs.http
 
-import com.greencatsoft.angularjs.q.Promise
-
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
+
+import com.greencatsoft.angularjs.q.Promise
 
 trait HttpPromise extends Promise {
 

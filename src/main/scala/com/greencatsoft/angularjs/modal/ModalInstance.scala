@@ -1,8 +1,8 @@
 package com.greencatsoft.angularjs.modal
 
-import com.greencatsoft.angularjs.q.Promise
-
 import scala.scalajs.js
+
+import com.greencatsoft.angularjs.q.Promise
 
 trait ModalInstance extends js.Object {
 
