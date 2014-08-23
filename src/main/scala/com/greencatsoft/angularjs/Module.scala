@@ -1,5 +1,7 @@
 package com.greencatsoft.angularjs
 
+import com.greencatsoft.angularjs.directive.Directive
+
 import scala.scalajs.js
 import scala.scalajs.js.Any.{ fromFunction10, fromString }
 
@@ -10,6 +12,8 @@ trait Module extends js.Object {
   def config(constructor: js.Array[js.Any]): Module = ???
 
   def run(constructor: js.Array[js.Any]): Module = ???
+
+  def directive(name: String, directiveFactory: js.Array[js.Any]): Module = ???
 }
 
 object Module {
@@ -57,5 +61,28 @@ class ModuleProxy(val module: Module) {
     args.push(handler)
 
     fn(args)
+  }
+
+  def directive(directives: Directive*): this.type = {
+    require(directives != null, "Missing argument 'directives'.")
+
+    def registerDirective(d: Directive) {
+      val handler = (a0: js.Any, a1: js.Any, a2: js.Any, a3: js.Any, a4: js.Any,
+                     a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
+        d.inject(Seq(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9))
+        d.initialize()
+        d.ddo
+      }
+
+      val args = js.Array[js.Any]()
+
+      d.dependencies.foreach(d => args.push(d))
+      args.push(handler)
+
+      module.directive(d.name,args)
+    }
+
+    directives.foreach( registerDirective )
+    this
   }
 }
