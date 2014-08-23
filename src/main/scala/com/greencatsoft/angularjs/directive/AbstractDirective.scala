@@ -27,17 +27,17 @@ import scala.scalajs.js
  */
 abstract class AbstractDirective(_name : String = null,
                                  _restrict : String = null,
-                                 _transclude : Boolean = true,
+                                 _transclude : Boolean = false,
                                  _template : String = null,
                                  _templateUrl : String = null,
                                  _scope: Boolean = false,
                                  _isolateScope: js.Dictionary[String] = null,
-                                 _compile : js.Function3[Dynamic,Dynamic,Dynamic,Unit] = null,
-                                 _link : js.Function5[Dynamic,Dynamic,Dynamic,Dynamic,Dynamic,Unit] = null)
+                                 _compile : js.Function = null,
+                                 _link : js.Function = null)
   extends Directive {
 
   override lazy val name : String =
-    // TODO: use getSimpleName whne it is available
+    // TODO: use getSimpleName when it is available
     if(_name==null) {
       val prefix = getClass.getName.split("\\.").last.split("\\$").last.replace("Directive", "")
       prefix.charAt(0).toLower + prefix.substring(1)

@@ -12,20 +12,17 @@ trait Directive extends NamedTarget {
   def transclude : Boolean = false
 
   def template : String = null
-  def templateFn : js.Function2[Dynamic,Dynamic,String] = null
+  def templateFn : js.Function = null
 
   def templateUrl : String = null
-  def templateUrlFn : js.Function2[Dynamic,Dynamic,String] = null
+  def templateUrlFn : js.Function = null
 
   def scope : Boolean = false
   def isolateScope : js.Dictionary[String] = null
 
-  // TODO: replace Dynamic arguments with typed arguments?
-  def compile : js.Function3[Dynamic,Dynamic,Dynamic,Unit] = null
-  def compileWithReturn : js.Function3[Dynamic,Dynamic,Dynamic,js.Object] = null
+  def compile : js.Function = null
 
-  // TODO: replace Dynamic arguments with typed arguments?
-  def link : js.Function5[Dynamic,Dynamic,Dynamic,Dynamic,Dynamic,Unit] = null
+  def link : js.Function = null
 
   // after initialize() is called, this object contains the directive definition
   protected[angularjs] val ddo = literal()
@@ -35,7 +32,8 @@ trait Directive extends NamedTarget {
     if(restrict!=null)
       ddo.restrict = restrict
 
-    ddo.transclude = transclude
+    if(transclude)
+      ddo.transclude = transclude
 
     require(template==null || templateFn==null, "only one of 'template' and 'templateFn' may be defined!")
     if(template!=null)
@@ -49,17 +47,14 @@ trait Directive extends NamedTarget {
     if(templateUrlFn!=null)
       ddo.templateUrl = templateUrlFn
 
-    require( scope==false || isolateScope==null, "'scope' must be false is 'isolateScope' is defined!")
+    require( scope==false || isolateScope==null, "'scope' must be false if 'isolateScope' is defined!")
     if(scope)
       ddo.scope = true
-    if(isolateScope!=null)
+    else if(isolateScope!=null)
       ddo.scope = isolateScope
 
-    require(compile==null || compileWithReturn==null, "only one of 'compile' or 'compileWithReturn' may be defined!")
     if(compile!=null)
       ddo.compile = compile
-    if(compileWithReturn!=null)
-      ddo.compile = compileWithReturn
 
     if(link!=null)
       ddo.link = link
