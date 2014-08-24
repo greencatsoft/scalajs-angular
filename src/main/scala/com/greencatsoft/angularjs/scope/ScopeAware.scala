@@ -6,9 +6,9 @@ import com.greencatsoft.angularjs.InjectionTarget
 
 trait ScopeAware extends InjectionTarget {
 
-  type DataType
+  type ScopeType <: Scope
 
-  implicit var scope: Scope with DataType = _
+  implicit var scope: ScopeType = _
 
   def dynamicScope = scope.asInstanceOf[js.Dynamic]
 
@@ -18,6 +18,6 @@ trait ScopeAware extends InjectionTarget {
     super.inject(args)
 
     var index = dependencies.indexOf(Scope.Name) ensuring (_ >= 0)
-    this.scope = args(index).asInstanceOf[Scope with DataType]
+    this.scope = args(index).asInstanceOf[ScopeType]
   }
 }

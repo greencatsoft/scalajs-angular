@@ -68,10 +68,10 @@ class ModuleProxy(val module: Module) {
 
     def registerDirective(d: Directive) {
       val handler = (a0: js.Any, a1: js.Any, a2: js.Any, a3: js.Any, a4: js.Any,
-                     a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
+        a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
         d.inject(Seq(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9))
         d.initialize()
-        d.ddo
+        d.buildConfig()
       }
 
       val args = js.Array[js.Any]()
@@ -79,10 +79,10 @@ class ModuleProxy(val module: Module) {
       d.dependencies.foreach(d => args.push(d))
       args.push(handler)
 
-      module.directive(d.name,args)
+      module.directive(d.name, args)
     }
 
-    directives.foreach( registerDirective )
+    directives.foreach(registerDirective)
     this
   }
 }

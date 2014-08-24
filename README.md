@@ -81,7 +81,7 @@ trait.
 ```scala
 object UserDetailsController extends HttpServiceAware with ScopeAware {
 
-  override type DataType = UserForm
+  override type ScopeType = UserForm
 
   override def initialize() {
     // (read the user information from the server)
@@ -94,7 +94,7 @@ object UserDetailsController extends HttpServiceAware with ScopeAware {
     dynamicScope.delete = () => userService.delete(scope.id)
   }
 
-  class UserForm extends js.Object {
+  class UserForm extends Scope {
 
     var id: String
 
