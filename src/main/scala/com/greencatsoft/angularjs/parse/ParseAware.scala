@@ -1,14 +1,7 @@
-package com.greencatsoft.angularjs.services
+package com.greencatsoft.angularjs.parse
 
 import com.greencatsoft.angularjs.InjectionTarget
-
 import scala.scalajs.js
-
-trait Parse extends js.Function1[String,js.Function]
-
-object Parse {
-  val Name = "$parse"
-}
 
 trait ParseAware extends InjectionTarget {
   implicit var parse: Parse = _

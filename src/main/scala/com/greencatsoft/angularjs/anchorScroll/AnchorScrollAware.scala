@@ -1,14 +1,8 @@
-package com.greencatsoft.angularjs.services
+package com.greencatsoft.angularjs.anchorScroll
 
 import com.greencatsoft.angularjs.InjectionTarget
 
 import scala.scalajs.js
-
-trait AnchorScroll extends js.Function0[Unit]
-
-object AnchorScroll {
-  val Name = "$anchorScroll"
-}
 
 trait AnchorScrollAware extends InjectionTarget {
   implicit var anchorScroll: AnchorScroll = _

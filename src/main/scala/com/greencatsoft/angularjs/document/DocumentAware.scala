@@ -1,13 +1,7 @@
-package com.greencatsoft.angularjs.services
+package com.greencatsoft.angularjs.document
 
 import com.greencatsoft.angularjs.InjectionTarget
-
 import scala.scalajs.js
-
-object Document {
- val Name = "$document"
-}
-
 
 trait DocumentAware extends InjectionTarget {
   implicit var document: org.scalajs.dom.Document = _

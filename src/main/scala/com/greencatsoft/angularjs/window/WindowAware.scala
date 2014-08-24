@@ -1,12 +1,7 @@
-package com.greencatsoft.angularjs.services
+package com.greencatsoft.angularjs.window
 
 import com.greencatsoft.angularjs.InjectionTarget
-
 import scala.scalajs.js
-
-object Window {
-  val Name = "$window"
-}
 
 trait WindowAware extends InjectionTarget {
   implicit var window: org.scalajs.dom.Window = _
