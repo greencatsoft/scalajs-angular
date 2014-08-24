@@ -6,7 +6,7 @@ trait Location extends js.Object {
 
   def absUrl(): String = ???
 
-  def url(url: String = null, replace: String = null) : String = ???
+  def url(url: String = null, replace: String = null): String = ???
 
   def protocol(): String = ???
 
@@ -17,11 +17,11 @@ trait Location extends js.Object {
   def path(path: String = null): String = ???
 
   // TODO: refine argument types?
-  def search(search: js.Any, paramValue: js.Any = null) : js.Object = ???
+  def search(search: js.Any, paramValue: js.Any = null): js.Object = ???
 
   def hash(hash: String = null): String = ???
 
-  def replace() : Unit = ???
+  def replace(): Unit = ???
 }
 
 object Location {
