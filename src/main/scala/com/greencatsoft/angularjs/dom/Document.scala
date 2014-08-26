@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs.document
+package com.greencatsoft.angularjs.dom
 
 import com.greencatsoft.angularjs.Injectable
 

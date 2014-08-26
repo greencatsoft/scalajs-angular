@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs.timeout
+package com.greencatsoft.angularjs.timer
 
 import scala.scalajs.js
 

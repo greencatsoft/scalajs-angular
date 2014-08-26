@@ -1,7 +1,6 @@
-package com.greencatsoft.angularjs.interval
+package com.greencatsoft.angularjs.timer
 
 import scala.scalajs.js
-
 import com.greencatsoft.angularjs.InjectionTarget
 
 trait IntervalAware extends InjectionTarget {
