@@ -1,8 +1,8 @@
 package com.greencatsoft.angularjs.q
 
-import scala.annotation.implicitNotFound
 import scala.concurrent.{ CanAwait, ExecutionContext, Future }
 import scala.concurrent.duration.Duration
+import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.Any.fromFunction1
 import scala.scalajs.js.JavaScriptException
@@ -10,11 +10,11 @@ import scala.util.{ Failure, Success, Try }
 
 trait Promise extends js.Object {
 
-  def then(successCallback: js.Function1[js.Any, js.Any]): this.type = ???
+  def `then`(successCallback: js.Function1[js.Any, js.Any]): this.type = ???
 
-  def then(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit]): this.type = ???
+  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit]): this.type = ???
 
-  def then(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit], notifyCallback: js.Function1[js.Any, Unit]): this.type = ???
+  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit], notifyCallback: js.Function1[js.Any, Unit]): this.type = ???
 
   def `catch`(errorCallback: js.Function1[js.Any, Unit]): this.type = ???
 
@@ -38,7 +38,7 @@ object Promise {
       Some(result)
     }
 
-    promise then { (r: js.Any) =>
+    promise `then` { (r: js.Any) =>
       this.result = notify(Success(r.asInstanceOf[T]))
       r
     } `catch` { (error: js.Any) =>

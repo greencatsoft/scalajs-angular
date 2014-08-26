@@ -8,6 +8,8 @@ version := "0.1-SNAPSHOT"
 
 scalaVersion := "2.11.1"
 
+scalacOptions ++= Seq("-feature","-deprecation")
+
 homepage := Some(url("http://github.com/greencatsoft/scalajs-angular"))
 
 libraryDependencies ++= Seq(
