@@ -10,8 +10,3 @@ trait InjectionTarget {
 
   def initialize(): Unit
 }
-
-trait NamedTarget extends InjectionTarget {
-
-  val name: String
-}

@@ -5,6 +5,7 @@ import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.any2undefOrA
 
 import com.greencatsoft.angularjs.NamedTarget
+import com.greencatsoft.angularjs.TemplateController
 
 trait Route extends js.Object {
 

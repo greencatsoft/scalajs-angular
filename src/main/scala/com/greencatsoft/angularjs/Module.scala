@@ -1,9 +1,9 @@
 package com.greencatsoft.angularjs
 
-import com.greencatsoft.angularjs.directive.Directive
-
 import scala.scalajs.js
 import scala.scalajs.js.Any.{ fromFunction10, fromString }
+
+import com.greencatsoft.angularjs.directive.Directive
 
 trait Module extends js.Object {
 
@@ -31,7 +31,7 @@ class ModuleProxy(val module: Module) {
     this
   }
 
-  def controller(target: NamedTarget*): this.type = {
+  def controller(target: Controller*): this.type = {
     require(target != null, "Missing argument 'target'.")
 
     target.foreach(t => register(t) { args: js.Array[js.Any] => module.controller(t.name, args) })
@@ -68,7 +68,7 @@ class ModuleProxy(val module: Module) {
 
     def registerDirective(d: Directive) {
       val handler = (a0: js.Any, a1: js.Any, a2: js.Any, a3: js.Any, a4: js.Any,
-                     a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
+        a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
         d.inject(Seq(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9))
         d.initialize()
         d.ddo
@@ -79,10 +79,10 @@ class ModuleProxy(val module: Module) {
       d.dependencies.foreach(d => args.push(d))
       args.push(handler)
 
-      module.directive(d.name,args)
+      module.directive(d.name, args)
     }
 
-    directives.foreach( registerDirective )
+    directives.foreach(registerDirective)
     this
   }
 }
