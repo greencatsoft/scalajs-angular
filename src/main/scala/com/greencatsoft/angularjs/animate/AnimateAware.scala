@@ -1,9 +1,11 @@
 package com.greencatsoft.angularjs.animate
 
-import com.greencatsoft.angularjs.InjectionTarget
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait AnimateAware extends InjectionTarget {
+
   implicit var animate: Animate = _
 
   override def dependencies = super.dependencies :+ Animate.Name

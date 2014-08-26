@@ -1,9 +1,11 @@
 package com.greencatsoft.angularjs.interval
 
-import com.greencatsoft.angularjs.InjectionTarget
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait IntervalAware extends InjectionTarget {
+
   implicit var interval: Interval = _
 
   override def dependencies = super.dependencies :+ Interval.Name

@@ -1,9 +1,11 @@
 package com.greencatsoft.angularjs.window
 
-import com.greencatsoft.angularjs.InjectionTarget
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait WindowAware extends InjectionTarget {
+
   implicit var window: org.scalajs.dom.Window = _
 
   override def dependencies = super.dependencies :+ Window.Name
@@ -12,6 +14,6 @@ trait WindowAware extends InjectionTarget {
     super.inject(args)
 
     var index = dependencies.indexOf(Window.Name) ensuring (_ >= 0)
-    this.window = args(index).asInstanceOf[org.scalajs.dom.Window]
+    this.window = args(index).asInstanceOf[Window]
   }
 }

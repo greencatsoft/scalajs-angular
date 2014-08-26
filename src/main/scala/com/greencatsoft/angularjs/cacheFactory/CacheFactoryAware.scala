@@ -1,10 +1,11 @@
 package com.greencatsoft.angularjs.cacheFactory
 
-import com.greencatsoft.angularjs.InjectionTarget
-
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait CacheFactoryAware extends InjectionTarget {
+
   implicit var cacheFactory: CacheFactory = _
 
   override def dependencies = super.dependencies :+ CacheFactory.Name

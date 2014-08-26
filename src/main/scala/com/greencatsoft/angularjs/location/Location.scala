@@ -2,7 +2,9 @@ package com.greencatsoft.angularjs.location
 
 import scala.scalajs.js
 
-trait Location extends js.Object {
+import com.greencatsoft.angularjs.Injectable
+
+trait Location extends Injectable {
 
   def absUrl(): String = ???
 

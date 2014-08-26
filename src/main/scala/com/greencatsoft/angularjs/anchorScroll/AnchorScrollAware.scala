@@ -1,10 +1,11 @@
 package com.greencatsoft.angularjs.anchorScroll
 
-import com.greencatsoft.angularjs.InjectionTarget
-
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait AnchorScrollAware extends InjectionTarget {
+
   implicit var anchorScroll: AnchorScroll = _
 
   override def dependencies = super.dependencies :+ AnchorScroll.Name

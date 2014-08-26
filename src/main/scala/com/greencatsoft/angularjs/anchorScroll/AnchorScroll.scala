@@ -1,9 +1,13 @@
 package com.greencatsoft.angularjs.anchorScroll
 
-import scala.scalajs.js
+import com.greencatsoft.angularjs.Injectable
 
-trait AnchorScroll extends js.Function0[Unit]
+trait AnchorScroll extends Injectable {
+
+  def apply(): Unit = ???
+}
 
 object AnchorScroll {
+
   val Name = "$anchorScroll"
 }

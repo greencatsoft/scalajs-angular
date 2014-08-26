@@ -1,9 +1,11 @@
 package com.greencatsoft.angularjs.timeout
 
-import com.greencatsoft.angularjs.InjectionTarget
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait TimeoutAware extends InjectionTarget {
+
   implicit var timeout: Timeout = _
 
   override def dependencies = super.dependencies :+ Timeout.Name

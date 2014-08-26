@@ -1,9 +1,11 @@
 package com.greencatsoft.angularjs.parse
 
-import com.greencatsoft.angularjs.InjectionTarget
 import scala.scalajs.js
 
+import com.greencatsoft.angularjs.InjectionTarget
+
 trait ParseAware extends InjectionTarget {
+
   implicit var parse: Parse = _
 
   override def dependencies = super.dependencies :+ Parse.Name
