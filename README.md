@@ -79,7 +79,9 @@ To achieve this, the controller can implement either the ```ScopeAware``` or the
 trait.
 
 ```scala
-object UserDetailsController extends HttpServiceAware with ScopeAware {
+object UserDetailsController extends Controller with HttpServiceAware {
+
+  override val name = "UserDetailsCtrl"
 
   override type ScopeType = UserForm
 
@@ -113,6 +115,36 @@ To workaround the problem, you need to cast the ```scope``` variable into ```js.
 first, and accessing it in a dynamic manner. To facilitate the process, ```ScopeAware``` 
 provides ```scope.dynamic``` method, which returns a dynamic version of the same ```scope```
 variable.
+
+Alternatively, you can rewrite the above example as follows :
+
+```scala
+@JSExport
+object UserDetailsController extends AbstractController with HttpServiceAware {
+
+  override def initialize(scope ScopeType) {
+    // (read the user information from the server)
+    http.get(url).success(...).error(...)
+
+    scope.id = user.id
+    scope.name = user.name
+    scope.email = user.email
+  }
+
+  @JSExport
+  def delete(): Unit = userService.delete(scope.id)
+
+  class ScopeType extends Scope {
+
+    var id: String
+
+    var name: String
+
+    var email: String
+  }
+}
+```
+In this case, you can refer to the _delete_ method from your template as _controller.delete()_.
 
 ### Defining Routes
 
