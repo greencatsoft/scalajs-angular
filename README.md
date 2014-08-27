@@ -132,7 +132,9 @@ object UserDetailsController extends AbstractController with HttpServiceAware {
   }
 
   @JSExport
-  def delete(): Unit = userService.delete(scope.id)
+  def delete(): Unit = currentScope foreach { scope =>
+    userService.delete(scope.id)
+  }
 
   class ScopeType extends Scope {
 
