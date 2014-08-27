@@ -81,9 +81,9 @@ trait.
 ```scala
 object UserDetailsController extends HttpServiceAware with ScopeAware {
 
-  override type DataType = UserForm
+  override type ScopeType = UserForm
 
-  override def initialize() {
+  override def initialize(scope ScopeType) {
     // (read the user information from the server)
     http.get(url).success(...).error(...)
 
@@ -91,10 +91,10 @@ object UserDetailsController extends HttpServiceAware with ScopeAware {
     scope.name = user.name
     scope.email = user.email
 
-    dynamicScope.delete = () => userService.delete(scope.id)
+    scope.dynamic.delete = () => userService.delete(scope.id)
   }
 
-  class UserForm extends js.Object {
+  class UserForm extends Scope {
 
     var id: String
 
@@ -105,13 +105,13 @@ object UserDetailsController extends HttpServiceAware with ScopeAware {
 }
 ```
 
-``ScopeAware`` defines an abstract type member ```DataType``` with which you can access 
+``ScopeAware`` defines an abstract type member ```ScopeType``` with which you can access 
 the scope object in a type safe manner. Due to a restriction in Scala.js, the target class 
 should inherit from the ```js.Object``` and you _cannot_ declare any methods in it. 
 
 To workaround the problem, you need to cast the ```scope``` variable into ```js.Dynamic``` 
 first, and accessing it in a dynamic manner. To facilitate the process, ```ScopeAware``` 
-provides ```dynamicScope``` variable, which is just a dynamic version of the same ```scope```
+provides ```scope.dynamic``` method, which returns a dynamic version of the same ```scope```
 variable.
 
 ### Defining Routes
