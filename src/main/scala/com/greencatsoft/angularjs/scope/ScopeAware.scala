@@ -16,12 +16,16 @@ trait ScopeAware extends InjectionTarget {
     super.inject(args)
 
     var index = dependencies.indexOf(Scope.Name) ensuring (_ >= 0)
-    this.currentScope = Some(args(index).asInstanceOf[ScopeType])
+
+    val scope = args(index).asInstanceOf[ScopeType]
+    scope.dynamic.controller = this.asInstanceOf[js.Object]
+
+    this.currentScope = Some(scope)
   }
 
   override def initialize(): Unit = currentScope.foreach(initialize(_))
 
-  def initialize(scope: ScopeType): Unit
+  def initialize(scope: ScopeType): Unit = Unit
 
   implicit class DynamicScope(scope: ScopeType) {
 
