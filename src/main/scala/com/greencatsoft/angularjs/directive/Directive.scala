@@ -8,18 +8,16 @@ import scala.scalajs.js.UndefOr.undefOr2ops
 import org.scalajs.dom.Element
 
 import com.greencatsoft.angularjs.{ ConfigBuilder, Controller, NamedTarget }
-import com.greencatsoft.angularjs.scope.Scope
+import com.greencatsoft.angularjs.scope.Scoped
 
-trait Directive extends NamedTarget with ConfigBuilder {
-
-  type ScopeType <: Scope
+trait Directive extends NamedTarget with Scoped with ConfigBuilder {
 
   type ControllerType <: Controller
 
   override def initialize(): Unit = Unit
 
   override def buildConfig(config: js.Dictionary[js.Any]): js.Dictionary[js.Any] = {
-    config("link") = (scope: Scope with ScopeType, elems: js.Array[Element], attrs: Attributes, controller: UndefOr[ControllerType]) =>
+    config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controller: UndefOr[ControllerType]) =>
       if (controller.isDefined) link(scope, elems, attrs, controller.get)
       else link(scope, elems, attrs)
 
@@ -32,3 +30,4 @@ trait Directive extends NamedTarget with ConfigBuilder {
 
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes): Unit = Unit
 }
+
