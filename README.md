@@ -45,6 +45,7 @@ val module = angular.module("myproject", Array("ngRoute", "ui.bootstrap"))
 Module(module)
 	.config(RoutingConfig, HttpTransformerConfig)
 	.controller(UserListController, UserDetailController)
+	.directive(UserInfoDirective)
 	.run(AppInitializer)
 ```
 
@@ -57,7 +58,8 @@ into a controller class by implementing the correspondent traits, like ```HttpSe
 An example of a simple controller is as follows:
 
 ```scala
-object ExampleController extends AbstractController with HttpServiceAware with LocationAware {
+object ExampleController extends AbstractController 
+  with HttpServiceAware with LocationAware {
 
   override def initialize() {
     super.initialize()
@@ -122,7 +124,7 @@ first, and accessing it in a dynamic manner. To facilitate the process, ```Scope
 provides ```scope.dynamic``` method, which returns a dynamic version of the same ```scope```
 variable.
 
-Alternatively, you can rewrite the above example as follows :
+Alternatively, you can rewrite the above example in a more compact form as follows :
 
 ```scala
 @JSExport
@@ -157,6 +159,51 @@ object UserDetailsController extends AbstractController with HttpServiceAware {
 }
 ```
 In this case, you can refer to the _delete_ method from your template as _controller.delete()_.
+
+### Using Directives
+
+To define a directive, you can declare an object which implements ```Directive``` trait.
+
+You can also mixin such traits as ```ElementDirective```, ```AttributeDirective```, 
+```Transcluding```, and so on to assign more specific behaviors to your directive implementation.
+
+Scope related configuration can also be specified by mixing in one of ```InheritParentScope```, 
+```UseParentScope```, or ```IsolatedScope``` traits.
+
+```IsolatedScope``` also provides its own DSL to specify attribute bindings, as specified by 
+_AngularJS_ API:
+
+```scala
+object CustomerDirective extends ElementDirective 
+  with TemplateUrlProvider with IsolatedScope {
+ 
+  override val name = "myCustomer"
+ 
+  override val templateUrl = "my-customer-iso.html"
+ 
+  bindings ++= Seq(
+    "customerInfo" := "info",
+    "title" :@ "",
+    "close" :& "onClose"
+  )
+}
+```
+
+To implement a directive which manipulates DOM elements, you can override the ```link```
+method as follows:
+
+```scala
+object LocationDirective extends AttributeDirective with LocationAware {
+
+  override val name = "currentLocation"
+
+  override def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes) {
+    val elem = elems.head.asInstanceOf[HTMLElement]
+
+    elem.innerHTML = location.path
+  }
+}
+```
 
 ### Defining Routes
 
