@@ -13,8 +13,8 @@ to access them in more natural manner.
 It's still at the very early stage of development, so the most parts of the project are 
 subject to frequent and extensive changes.
 
-And the bindings are by no means comprehensive or exhaustive for now, so please use your 
-own discretion.
+And the bindings are by no means comprehensive or exhaustive for now, so please use it at 
+your discretion.
 
 ## How to Use
 
@@ -23,11 +23,11 @@ own discretion.
 Add the following line to your ```sbt``` build definition:
 
 ```scala
-libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.1-SNAPSHOT"
+libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.1"
 ```
 
-You'll also need to add _Sonatype Snapshot Repository_ to the resolver as follows, 
-because at this moment, there's no release build available yet:
+If you want to test the latest snapshot version instead, change the version to 
+_"0.2-SNAPSHOT"_ and add _Sonatype Snapshot Repository_ to the resolver as follows: 
 
 ```scala
 resolvers += 
