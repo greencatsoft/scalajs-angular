@@ -7,7 +7,8 @@ import scala.scalajs.js.UndefOr.undefOr2ops
 
 import org.scalajs.dom.Element
 
-import com.greencatsoft.angularjs.{ ConfigBuilder, Controller, NamedTarget }
+import com.greencatsoft.angularjs.{ ConfigBuilder, NamedTarget }
+import com.greencatsoft.angularjs.controller.Controller
 import com.greencatsoft.angularjs.scope.Scoped
 
 trait Directive extends NamedTarget with Scoped with ConfigBuilder {

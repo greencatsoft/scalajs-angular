@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs
+package com.greencatsoft.angularjs.controller
 
 trait TemplateController extends Controller {
 

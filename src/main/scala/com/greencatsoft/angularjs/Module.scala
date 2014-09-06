@@ -3,6 +3,7 @@ package com.greencatsoft.angularjs
 import scala.scalajs.js
 import scala.scalajs.js.Any.{ fromFunction10, fromString }
 
+import com.greencatsoft.angularjs.controller.Controller
 import com.greencatsoft.angularjs.directive.Directive
 
 trait Module extends js.Object {
