@@ -47,5 +47,15 @@ pomExtra := (
       <name>Xavier Cho</name>
       <url>http://github.com/mysticfall</url>
     </developer>
+    <developer>
+      <id>jokade</id>
+      <name>Jokade</name>
+      <url>https://github.com/jokade</url>
+    </developer>
+    <developer>
+      <id>mmx900</id>
+      <name>Setzer Kim</name>
+      <url>https://github.com/mmx900</url>
+    </developer>
   </developers>
 )
