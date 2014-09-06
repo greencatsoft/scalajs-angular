@@ -57,9 +57,11 @@ into a controller class by implementing the correspondent traits, like ```HttpSe
 An example of a simple controller is as follows:
 
 ```scala
-object ExampleController extends HttpServiceAware with LocationAware {
+object ExampleController extends AbstractController with HttpServiceAware with LocationAware {
 
   override def initialize() {
+    super.initialize()
+
     val url = location.absUrl + "/example"
     http.get(url).success(success).error(failure)
   }
@@ -86,12 +88,16 @@ object UserDetailsController extends Controller with HttpServiceAware {
   override type ScopeType = UserForm
 
   override def initialize(scope ScopeType) {
-    // (read the user information from the server)
-    http.get(url).success(...).error(...)
+    val future: Future[User] = http.get("/users/john")
 
-    scope.id = user.id
-    scope.name = user.name
-    scope.email = user.email
+    future onComplete {
+      case Success(user) => {
+        scope.id = user.id
+        scope.name = user.name
+        scope.email = user.email
+      }
+      case Failure(t) => println("An error has occured: " + t.getMessage)
+    }
 
     scope.dynamic.delete = () => userService.delete(scope.id)
   }
@@ -123,12 +129,16 @@ Alternatively, you can rewrite the above example as follows :
 object UserDetailsController extends AbstractController with HttpServiceAware {
 
   override def initialize(scope ScopeType) {
-    // (read the user information from the server)
-    http.get(url).success(...).error(...)
+    val future: Future[User] = http.get("/users/john")
 
-    scope.id = user.id
-    scope.name = user.name
-    scope.email = user.email
+    future onComplete {
+      case Success(user) => {
+        scope.id = user.id
+        scope.name = user.name
+        scope.email = user.email
+      }
+      case Failure(t) => println("An error has occured: " + t.getMessage)
+    }
   }
 
   @JSExport
