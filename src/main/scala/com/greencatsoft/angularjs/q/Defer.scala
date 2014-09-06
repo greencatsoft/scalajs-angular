@@ -1,6 +1,7 @@
 package com.greencatsoft.angularjs.q
 
 import scala.concurrent.Future
+import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.util.{ Failure, Success, Try }
 import scala.language.implicitConversions

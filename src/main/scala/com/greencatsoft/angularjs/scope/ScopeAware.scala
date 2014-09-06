@@ -4,9 +4,7 @@ import scala.scalajs.js
 
 import com.greencatsoft.angularjs.InjectionTarget
 
-trait ScopeAware extends InjectionTarget {
-
-  type ScopeType <: Scope
+trait ScopeAware extends InjectionTarget with Scoped {
 
   var currentScope: Option[ScopeType] = None
 
