@@ -205,6 +205,10 @@ object LocationDirective extends AttributeDirective with LocationAware {
 }
 ```
 
+Note that the ```link``` method provides a ```ScopeType``` parameter, which you can 
+redefine as shown above in the controller example to share a common data structure 
+between controllers and directives, and access it in a type-safe manner.
+
 ### Defining Routes
 
 Defining routing rules is quite straight forward, like the following example:
@@ -223,15 +227,6 @@ object RoutingConfig extends RouteProviderAware {
 
 Note that you can make your controller implement the ```TemplateController``` trait and 
 register it directly to the ```routeProvider``` as shown above.
-
-### Limitations
-
-As mentioned earlier, the project is at the very early stage of development, and misses 
-a few bindings to some core classes or functions. Notable example is the support for the 
-directives, which is planned in near future.
-
-On the other hand, we possibly won't add support for services as they can be much more 
-conveniently done using Scala's companion objects.
 
 ### License
 
