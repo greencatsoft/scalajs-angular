@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs.anchorScroll
+package com.greencatsoft.angularjs.anchorscroll
 
 import com.greencatsoft.angularjs.Injectable
 

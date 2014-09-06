@@ -1,4 +1,4 @@
-package com.greencatsoft.angularjs.cacheFactory
+package com.greencatsoft.angularjs.cachefactory
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
