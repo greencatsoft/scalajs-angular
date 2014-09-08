@@ -2,6 +2,8 @@ scalaJSSettings
 
 name := "scalajs-angular"
 
+description := "AngularJS bindings for Scala.js."
+
 organization := "com.greencatsoft"
 
 version := "0.2-SNAPSHOT"
@@ -28,8 +30,6 @@ publishMavenStyle := true
 pomIncludeRepository := { _ => false }
 
 pomExtra := (
-  <description>AngularJS bindings for Scala.js.</description>
-  <url>http://github.com/greencatsoft/scalajs-angular</url>
   <licenses>
     <license>
       <name>Apache License 2.0</name>
