@@ -18,9 +18,14 @@ trait Directive extends NamedTarget with Scoped with ConfigBuilder {
   override def initialize(): Unit = Unit
 
   override def buildConfig(config: js.Dictionary[js.Any]): js.Dictionary[js.Any] = {
-    config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controller: UndefOr[ControllerType]) =>
-      if (controller.isDefined) link(scope, elems, attrs, controller.get)
-      else link(scope, elems, attrs)
+    config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controller: UndefOr[ControllerType]) => {
+      scope.dynamic.directive = this.asInstanceOf[js.Object]
+
+      if (controller.isDefined)
+        link(scope, elems, attrs, controller.get)
+      else
+        link(scope, elems, attrs)
+    }
 
     super.buildConfig(config)
   }
