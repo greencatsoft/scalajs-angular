@@ -24,9 +24,4 @@ trait ScopeAware extends InjectionTarget with Scoped {
   override def initialize(): Unit = currentScope.foreach(initialize(_))
 
   def initialize(scope: ScopeType): Unit = Unit
-
-  implicit class DynamicScope(scope: ScopeType) {
-
-    def dynamic = scope.asInstanceOf[js.Dynamic]
-  }
 }

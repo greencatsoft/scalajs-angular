@@ -18,9 +18,4 @@ trait RootScopeAware extends InjectionTarget with Scoped {
     var index = dependencies.indexOf(RootScope.Name) ensuring (_ >= 0)
     this.rootScope = args(index).asInstanceOf[ScopeType]
   }
-
-  implicit class DynamicScope(scope: ScopeType) {
-
-    def dynamic = scope.asInstanceOf[js.Dynamic]
-  }
 }
