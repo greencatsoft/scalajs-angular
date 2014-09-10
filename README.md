@@ -34,8 +34,6 @@ resolvers +=
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```
 
-** Note: It might take a few days for the release build to show up in the central repository. So, if you see a resolve error, please use the 0.2-SNAPSHOT in the meanwhile. **
-
 ### Defining a Module
 
 You can define an AngularJS module in the following manner. Note that ```config``` and 
