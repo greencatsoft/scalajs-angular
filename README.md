@@ -230,6 +230,12 @@ object RoutingConfig extends RouteProviderAware {
 Note that you can make your controller implement the ```TemplateController``` trait and 
 register it directly to the ```routeProvider``` as shown above.
 
+### Example Project
+
+There's an example implementation of [TodoMvc](http://www.todomvc.com) application as a separate project:
+
+* https://github.com/greencatsoft/scalajs-angular-todomvc
+
 ### License
 
 This project is provided under the terms of _Apache License, Version 2.0_. 
