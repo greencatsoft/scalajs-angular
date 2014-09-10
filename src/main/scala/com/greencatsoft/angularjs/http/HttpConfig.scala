@@ -4,7 +4,7 @@ import scala.scalajs.js
 
 trait HttpConfig extends js.Object {
 
-  val cache = false
+  var cache = false
 
   var responseType = ""
 
