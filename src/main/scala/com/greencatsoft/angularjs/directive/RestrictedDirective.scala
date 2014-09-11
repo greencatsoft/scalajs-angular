@@ -19,6 +19,17 @@ trait RestrictedDirective extends Directive with ConfigBuilder {
 trait ElementDirective extends RestrictedDirective {
 
   override def restrict = super.restrict + "E"
+
+  var transclude = false
+
+  var replace = false
+
+  abstract override def buildConfig(config: js.Dictionary[js.Any]): js.Dictionary[js.Any] = {
+    config("transclude") = transclude
+    config("replace") = replace
+
+    super.buildConfig(config)
+  }
 }
 
 trait AttributeDirective extends RestrictedDirective {
