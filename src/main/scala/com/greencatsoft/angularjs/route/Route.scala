@@ -11,7 +11,7 @@ trait Route extends js.Object {
 
   var title: UndefOr[String]
 
-  var templateUrl: String
+  var templateUrl: UndefOr[String]
 
   var controller: UndefOr[String]
 
