@@ -205,9 +205,8 @@ object LocationDirective extends AttributeDirective with LocationAware {
 }
 ```
 
-Note that the ```link``` method provides a ```ScopeType``` parameter, which you can 
-redefine as shown above in the controller example to share a common data structure 
-between controllers and directives, and access it in a type-safe manner.
+You can also override ```controller``` property to provide a directive specific 
+controller instance.
 
 ### Defining Routes
 
