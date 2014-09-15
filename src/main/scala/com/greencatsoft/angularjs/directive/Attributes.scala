@@ -1,6 +1,7 @@
 package com.greencatsoft.angularjs.directive
 
 import scala.scalajs.js
+import scala.scalajs.js.UndefOr
 import scala.scalajs.js.annotation.JSBracketAccess
 
 trait Attributes extends js.Object {
@@ -14,12 +15,12 @@ trait Attributes extends js.Object {
   def $updateClass(newClasses: String, oldClasses: String): Unit = ???
 
   @JSBracketAccess
-  def apply(name: String): String = ???
+  def apply(name: String): UndefOr[String] = ???
 
   @JSBracketAccess
   def update(name: String, value: String): Unit = ???
 
-  def $get(name: String): String = ???
+  def $get(name: String): UndefOr[String] = ???
 
   def $set(name: String, value: String): Unit = ???
 
