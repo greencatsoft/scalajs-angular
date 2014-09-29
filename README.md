@@ -107,9 +107,7 @@ object UserDetailsController extends Controller with HttpServiceAware {
   trait UserForm extends Scope {
 
     var id: String
-
     var name: String
-
     var email: String
   }
 }
@@ -148,12 +146,10 @@ object UserDetailsController extends AbstractController with HttpServiceAware {
     userService.delete(scope.id)
   }
 
-  class ScopeType extends Scope {
+  trait ScopeType extends Scope {
 
     var id: String
-
     var name: String
-
     var email: String
   }
 }
