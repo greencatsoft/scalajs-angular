@@ -104,7 +104,7 @@ object UserDetailsController extends Controller with HttpServiceAware {
     scope.dynamic.delete = () => userService.delete(scope.id)
   }
 
-  abstract class UserForm extends Scope {
+  trait UserForm extends Scope {
 
     var id: String
 
