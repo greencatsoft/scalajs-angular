@@ -89,7 +89,7 @@ object UserDetailsController extends Controller with HttpServiceAware {
 
   override type ScopeType = UserForm
 
-  override def initialize(scope ScopeType) {
+  override def initialize(scope: ScopeType) {
     val future: Future[User] = http.get("/users/john")
 
     future onComplete {
@@ -104,7 +104,7 @@ object UserDetailsController extends Controller with HttpServiceAware {
     scope.dynamic.delete = () => userService.delete(scope.id)
   }
 
-  class UserForm extends Scope {
+  abstract class UserForm extends Scope {
 
     var id: String
 
