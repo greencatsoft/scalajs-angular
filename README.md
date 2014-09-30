@@ -83,7 +83,7 @@ To achieve this, the controller can implement either the ```ScopeAware``` or the
 trait.
 
 ```scala
-object UserDetailsController extends Controller with HttpServiceAware {
+object UserDetailsController extends Controller with HttpServiceAware with ScopeAware {
 
   override val name = "UserDetailsCtrl"
 
