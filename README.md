@@ -79,11 +79,10 @@ trait.
 Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
 make it available to the HTML template by assigning it to a property of the ```$scope```.
 
-To achieve this, the controller can implement either the ```ScopeAware``` or the ```RootScopeAware```
-trait.
+To achieve this, any class that implements the ```Controller``` trait also inherits from the ```ScopeAware``` trait, hence allowing access to the ```ScopeType```.
 
 ```scala
-object UserDetailsController extends Controller with HttpServiceAware with ScopeAware {
+object UserDetailsController extends Controller with HttpServiceAware {
 
   override val name = "UserDetailsCtrl"
 
