@@ -79,9 +79,6 @@ trait.
 Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
 make it available to the HTML template by assigning it to a property of the ```$scope```.
 
-To achieve this, the controller can implement either the ```ScopeAware``` or the ```RootScopeAware```
-trait.
-
 ```scala
 object UserDetailsController extends Controller with HttpServiceAware {
 
@@ -113,7 +110,7 @@ object UserDetailsController extends Controller with HttpServiceAware {
 }
 ```
 
-``ScopeAware`` defines an abstract type member ```ScopeType``` with which you can access 
+``ScopeAware`` (which is inherited from the ```Controller``` trait) defines an abstract type member ```ScopeType``` with which you can access 
 the scope object in a type safe manner. Due to a restriction in Scala.js, the target class 
 should inherit from the ```js.Object``` and you _cannot_ declare any methods in it. 
 
