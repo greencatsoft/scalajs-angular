@@ -1,6 +1,7 @@
 package com.greencatsoft.angularjs.i18next
 
 import scala.scalajs.js
+import scala.scalajs.js.JSConverters.array2JSRichGenTrav
 
 trait NamespaceConfig extends js.Object {
 
@@ -22,7 +23,7 @@ object NamespaceConfig {
 
     val config = new js.Object().asInstanceOf[NamespaceConfig]
 
-    config.namespaces = namespaces
+    config.namespaces = namespaces.toJSArray
     config.defaultNs = defaultNs.getOrElse(namespaces(0))
 
     config

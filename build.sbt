@@ -8,7 +8,7 @@ organization := "com.greencatsoft"
 
 version := "0.2-SNAPSHOT"
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.2"
 
 scalacOptions ++= Seq("-feature","-deprecation")
 
