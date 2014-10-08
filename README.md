@@ -95,9 +95,9 @@ object UserDetailsController extends Controller with HttpServiceAware {
 
   override def initialize(scope: ScopeType) {
 
-    val future: Future[js.Any] = http.get("/users/john")
+    val untypedFuture: Future[js.Any] = http.get("/users/john")
 
-    val future: Future[User] future
+    val future: Future[User] =  untypedFuture
                               .map(JSON.stringify(_))
                               .map(Unpickle[User].fromString(_))
 
@@ -143,9 +143,9 @@ Alternatively, you can rewrite the above example in a more compact form as follo
 object UserDetailsController extends AbstractController with HttpServiceAware {
 
   override def initialize(scope : ScopeType) {
-    val future: Future[js.Any] = http.get("/users/john")
+    val untypedFuture: Future[js.Any] = http.get("/users/john")
 
-    val future: Future[User] future
+    val future: Future[User] = untypedFuture
                               .map(JSON.stringify(_))
                               .map(Unpickle[User].fromString(_))
 
