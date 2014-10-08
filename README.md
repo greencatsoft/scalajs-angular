@@ -78,6 +78,12 @@ trait.
 
 Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
 make it available to the HTML template by assigning it to a property of the ```$scope```.
+For the sake of example, let's assume that you have a REST API url ```"/users/john"``` that produces a JSON output that could be unpickled to the following ```User``` case class :
+
+```scala
+@JSExportAll
+case class User(id : String, name : String, email : String, friends : Array[String])
+```
 
 ```scala
 object UserDetailsController extends Controller with HttpServiceAware {
@@ -87,13 +93,19 @@ object UserDetailsController extends Controller with HttpServiceAware {
   override type ScopeType = UserForm
 
   override def initialize(scope: ScopeType) {
-    val future: Future[User] = http.get("/users/john")
+
+    val future: Future[js.Any] = http.get("/users/john")
+
+    val future: Future[User] future
+                              .map(JSON.stringify(_))
+                              .map(Unpickle[User].fromString(_))
 
     future onComplete {
       case Success(user) => {
         scope.id = user.id
         scope.name = user.name
         scope.email = user.email
+        scope.friends = user.friends
       }
       case Failure(t) => println("An error has occured: " + t.getMessage)
     }
@@ -108,6 +120,8 @@ object UserDetailsController extends Controller with HttpServiceAware {
     var name: String
 
     var email: String
+
+    var friends: js.Array[String]
   }
 }
 ```
@@ -127,14 +141,20 @@ Alternatively, you can rewrite the above example in a more compact form as follo
 @JSExport
 object UserDetailsController extends AbstractController with HttpServiceAware {
 
-  override def initialize(scope ScopeType) {
-    val future: Future[User] = http.get("/users/john")
+  override def initialize(scope : ScopeType) {
+    val future: Future[js.Any] = http.get("/users/john")
+
+    val future: Future[User] future
+                              .map(JSON.stringify(_))
+                              .map(Unpickle[User].fromString(_))
+
 
     future onComplete {
       case Success(user) => {
         scope.id = user.id
         scope.name = user.name
         scope.email = user.email
+        scope.friends = user.friends
       }
       case Failure(t) => println("An error has occured: " + t.getMessage)
     }
@@ -152,6 +172,8 @@ object UserDetailsController extends AbstractController with HttpServiceAware {
     var name: String
 
     var email: String
+
+    var friends: js.Array[String]
   }
 }
 ```
