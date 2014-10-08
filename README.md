@@ -76,14 +76,15 @@ trait.
 
 ### Using Scopes
 
-Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
-make it available to the HTML template by assigning it to a property of the ```$scope```.
 For the sake of example, let's assume that you have a REST API url ```"/users/john"``` that produces a JSON output that could be unpickled to the following ```User``` case class :
 
 ```scala
 @JSExportAll
 case class User(id : String, name : String, email : String, friends : Array[String])
 ```
+
+Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
+make it available to the HTML template by assigning it to a property of the ```$scope```.
 
 ```scala
 object UserDetailsController extends Controller with HttpServiceAware {
