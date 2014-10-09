@@ -83,6 +83,8 @@ For the sake of example, let's assume that you have a REST API url ```"/users/jo
 case class User(id : String, name : String, email : String, friends : Array[String])
 ```
 
+To see an example of how such unpickling can be done, see [the TaskService from the TodoMVC sample](https://github.com/greencatsoft/scalajs-angular-todomvc/blob/master/scalajs/src/main/scala/todomvc/example/TaskService.scala)
+
 Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
 make it available to the HTML template by assigning it to a property of the ```$scope```.
 
