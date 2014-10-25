@@ -15,7 +15,9 @@ scalacOptions ++= Seq("-feature","-deprecation")
 homepage := Some(url("http://github.com/greencatsoft/scalajs-angular"))
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6")
+  "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6",
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile"
+)
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
