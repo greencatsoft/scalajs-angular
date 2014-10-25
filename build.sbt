@@ -6,7 +6,7 @@ description := "AngularJS bindings for Scala.js."
 
 organization := "com.greencatsoft"
 
-version := "0.2-SNAPSHOT"
+version := "0.2"
 
 scalaVersion := "2.11.2"
 
