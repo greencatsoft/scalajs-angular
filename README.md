@@ -23,11 +23,11 @@ your discretion.
 Add the following line to your ```sbt``` build definition:
 
 ```scala
-libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.1"
+libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.2"
 ```
 
 If you want to test the latest snapshot version instead, change the version to 
-_"0.2-SNAPSHOT"_ and add _Sonatype Snapshot Repository_ to the resolver as follows: 
+_"0.3-SNAPSHOT"_ and add _Sonatype Snapshot Repository_ to the resolver as follows: 
 
 ```scala
 resolvers += 
@@ -40,27 +40,41 @@ You can define an AngularJS module in the following manner. Note that ```config`
 ```controller``` methods can be chained and take variable arguments.
 
 ```scala
-val module = angular.module("myproject", Array("ngRoute", "ui.bootstrap"))
+val module = Angular.module("myproject", Seq("ngRoute", "ui.bootstrap"))
 
-Module(module)
-	.config(RoutingConfig, HttpTransformerConfig)
-	.controller(UserListController, UserDetailController)
-	.directive(UserInfoDirective)
-	.run(AppInitializer)
+module.config(RoutingConfig)
+module.factory(UserServiceFactory)
+module.controller(UserDetailController)
+module.directive(UserInfoDirective)
+module.run(AppInitializer)
 ```
+
+_Note: Although the API itself supports method chaining, it might not work correctly in this 
+version due to a limitation in current macro implementation._
 
 ### Managing Dependencies
 
-Various core AngularJS services like ```HttpService``` or ```Location``` can be injected 
-into a controller class by implementing the correspondent traits, like ```HttpServiceAware```,
-```LocationAware```, etc.
+You can find core AngularJS services like ```HttpService``` or ```Location``` in the 
+```core``` package, while those from any third party modules reside in the ```extensions```
+package.
 
-An example of a simple controller is as follows:
+And such dependencies can be injected into any object which inherits from the ```Service``` 
+trait, including ```Controller```, ```Directive```, ```Factory```, and more.
+
+To inject a specific dependency, you can declare a variable with the ```@inject``` 
+annotation like the following example:
 
 ```scala
-object ExampleController extends AbstractController 
-  with HttpServiceAware with LocationAware {
+object ExampleController extends Controller {
 
+  @inject
+  var location: Location = _
+
+  @inject
+  var http: HttpService = _
+
+  // You can assume all dependencies to be resolved 
+  // after this method is invoked.
   override def initialize() {
     super.initialize()
 
@@ -70,11 +84,37 @@ object ExampleController extends AbstractController
 }
 ```
 
-As ```ExampleController``` object implements ```HttpServiceAware``` trait, it can access 
-```$http``` service provided by AngularJS with the ```http``` member variable defined in the 
-trait.
+You can also declare your own service, by annotating it with the ```@injectable``` 
+annotation, and register it using a factory:
 
-### Using Scopes
+```scala
+@injectable("$taskService")
+class TaskService(val http: HttpService) {
+  // implement service methods.
+}
+
+object TaskServiceFactory extends Factory[TaskService] {
+
+  override val name = "$taskService"
+
+  @inject
+  var http: HttpService = _
+
+  override def apply(): TaskService = new TaskService(http)
+}
+
+object TaskController extends Controller {
+
+  @inject
+  var service: TaskService = _
+
+  override def initialize() {
+    // Use the injected service.
+  }
+}
+```
+
+### Using Controllers
 
 For the sake of example, let's assume that you have a REST API url ```"/users/john"``` that produces a JSON output that could be unpickled to the following ```User``` case class :
 
@@ -91,12 +131,12 @@ make it available to the HTML template by assigning it to a property of the ```$
 ```scala
 object UserDetailsController extends Controller with HttpServiceAware {
 
+  // If not overriden, it'll use the simple class name.
   override val name = "UserDetailsCtrl"
 
   override type ScopeType = UserForm
 
   override def initialize(scope: ScopeType) {
-
     val future: Future[User] = http.get("/users/john")
 
     future onComplete {
@@ -123,9 +163,10 @@ object UserDetailsController extends Controller with HttpServiceAware {
 }
 ```
 
-``ScopeAware`` (which is inherited from the ```Controller``` trait) defines an abstract type member ```ScopeType``` with which you can access 
-the scope object in a type safe manner. Due to a restriction in Scala.js, the target class 
-should inherit from the ```js.Object``` and you _cannot_ declare any methods in it. 
+``ScopeAware`` (which is inherited from the ```Controller``` trait) defines an abstract 
+type member ```ScopeType``` with which you can access the scope object in a type safe 
+manner. Due to a restriction in Scala.js, the target class should inherit from the 
+```js.Object``` and you _cannot_ declare any methods in it. 
 
 To workaround the problem, you need to cast the ```scope``` variable into ```js.Dynamic``` 
 first, and accessing it in a dynamic manner. To facilitate the process, ```ScopeAware``` 
@@ -136,7 +177,7 @@ Alternatively, you can rewrite the above example in a more compact form as follo
 
 ```scala
 @JSExport
-object UserDetailsController extends AbstractController with HttpServiceAware {
+object UserDetailsController extends Controller {
 
   override def initialize(scope : ScopeType) {
     val future: Future[User] = http.get("/users/john")
@@ -153,7 +194,7 @@ object UserDetailsController extends AbstractController with HttpServiceAware {
   }
 
   @JSExport
-  def delete(): Unit = currentScope foreach { scope =>
+  def delete() {
     userService.delete(scope.id)
   }
 
@@ -162,7 +203,6 @@ object UserDetailsController extends AbstractController with HttpServiceAware {
     var id: String
     var name: String
     var email: String
-
     var friends: js.Array[String]
   }
 }
@@ -174,7 +214,7 @@ In this case, you can refer to the _delete_ method from your template as _contro
 To define a directive, you can declare an object which implements ```Directive``` trait.
 
 You can also mixin such traits as ```ElementDirective```, ```AttributeDirective```, 
-```Transcluding```, and so on to assign more specific behaviors to your directive implementation.
+```Requires```, and so on to assign more specific behaviors to your directive implementation.
 
 Scope related configuration can also be specified by mixing in one of ```InheritParentScope```, 
 ```UseParentScope```, or ```IsolatedScope``` traits.
@@ -184,12 +224,12 @@ _AngularJS_ API:
 
 ```scala
 object CustomerDirective extends ElementDirective 
-  with TemplateUrlProvider with IsolatedScope {
+  with TemplatedDirective with IsolatedScope {
  
   override val name = "myCustomer"
- 
+
   override val templateUrl = "my-customer-iso.html"
- 
+
   bindings ++= Seq(
     "customerInfo" := "info",
     "title" :@ "",
@@ -202,9 +242,12 @@ To implement a directive which manipulates DOM elements, you can override the ``
 method as follows:
 
 ```scala
-object LocationDirective extends AttributeDirective with LocationAware {
+object LocationDirective extends AttributeDirective {
 
   override val name = "currentLocation"
+
+  @inject
+  var location: Location = _
 
   override def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes) {
     val elem = elems.head.asInstanceOf[HTMLElement]
@@ -214,26 +257,26 @@ object LocationDirective extends AttributeDirective with LocationAware {
 }
 ```
 
-You can also override ```controller``` property to provide a directive specific 
-controller instance.
-
 ### Defining Routes
 
 Defining routing rules is quite straight forward, like the following example:
 
 ```scala
-object RoutingConfig extends RouteProviderAware {
+object RoutingConfig extends RouteProvider {
+
+  @inject
+  var routeProvider: RouteProvider = _
 
   override def initialize() {
     routeProvider
-      .when("/", Route("/assets/templates/home.html", Some("Home"), None))
+      .when("/", Route("/assets/templates/home.html", "Home"))
       .when("/signup", Route(SignUpController))
       .when("/users", Route(UserListController))
   }
 }
 ```
 
-Note that you can make your controller implement the ```TemplateController``` trait and 
+Note that you can make your controller implement the ```PageController``` trait and 
 register it directly to the ```routeProvider``` as shown above.
 
 ### Example Project
