@@ -136,6 +136,9 @@ object UserDetailsController extends Controller with HttpServiceAware {
 
   override type ScopeType = UserForm
 
+  @inject
+  var http: HttpService = _
+
   override def initialize(scope: ScopeType) {
     val future: Future[User] = http.get("/users/john")
 
@@ -178,6 +181,9 @@ Alternatively, you can rewrite the above example in a more compact form as follo
 ```scala
 @JSExport
 object UserDetailsController extends Controller {
+
+  @inject
+  var http: HttpService = _
 
   override def initialize(scope : ScopeType) {
     val future: Future[User] = http.get("/users/john")
