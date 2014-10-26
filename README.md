@@ -282,7 +282,10 @@ object RoutingConfig extends RouteProvider {
 }
 ```
 
-Note that you can make your controller implement the ```PageController``` trait and 
+_(Note that you'll need to 'ngRoute' in your dependency list, and angular-route.js in the 
+html file for the above code to work)_
+
+You can make your controller implement the ```PageController``` trait and 
 register it directly to the ```routeProvider``` as shown above.
 
 ### Example Project
