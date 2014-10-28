@@ -268,7 +268,7 @@ object LocationDirective extends AttributeDirective {
 Defining routing rules is quite straight forward, like the following example:
 
 ```scala
-object RoutingConfig extends RouteProvider {
+object RoutingConfig extends Config {
 
   @inject
   var routeProvider: RouteProvider = _
