@@ -17,7 +17,9 @@ trait Location extends js.Object {
 
   def port(): Int = ???
 
-  def path(path: String = null): String = ???
+  def path(): String = ???
+
+  def path(path: String): Location = ???
 
   // TODO: refine argument types?
   def search(search: js.Any, paramValue: js.Any = null): js.Object = ???
