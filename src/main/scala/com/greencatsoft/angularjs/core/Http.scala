@@ -23,6 +23,8 @@ trait HttpService extends js.Object {
 
   def post(url: String, data: js.Any, config: HttpConfig): HttpPromise = ???
 
+  def jsonp(url: String, config: HttpConfig): HttpPromise = ???
+
   def put(url: String): HttpPromise = ???
 
   def put(url: String, data: js.Any): HttpPromise = ???
