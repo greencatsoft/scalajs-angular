@@ -14,20 +14,20 @@ import com.greencatsoft.angularjs.injectable
 @injectable("$q")
 trait Q extends js.Object {
 
-  def defer(): Defer = ???
+  def defer(): Defer = js.native
 
-  def promise(): Promise = ???
+  def promise(): Promise = js.native
 }
 
 trait Defer extends js.Object {
 
-  def resolve(value: js.Any): Unit = ???
+  def resolve(value: js.Any): Unit = js.native
 
-  def reject(reason: String): Unit = ???
+  def reject(reason: String): Unit = js.native
 
-  def notify(value: js.Any): Unit = ???
+  def notify(value: js.Any): Unit = js.native
 
-  val promise: Promise = ???
+  val promise: Promise = js.native
 }
 
 object Defer {
@@ -58,15 +58,15 @@ object Defer {
 
 trait Promise extends js.Object {
 
-  def `then`(successCallback: js.Function1[js.Any, js.Any]): this.type = ???
+  def `then`(successCallback: js.Function1[js.Any, js.Any]): this.type = js.native
 
-  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit]): this.type = ???
+  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit]): this.type = js.native
 
-  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit], notifyCallback: js.Function1[js.Any, Unit]): this.type = ???
+  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit], notifyCallback: js.Function1[js.Any, Unit]): this.type = js.native
 
-  def `catch`(errorCallback: js.Function1[js.Any, Unit]): this.type = ???
+  def `catch`(errorCallback: js.Function1[js.Any, Unit]): this.type = js.native
 
-  def `finally`(callback: js.Function1[js.Any, Unit]): Unit = ???
+  def `finally`(callback: js.Function1[js.Any, Unit]): Unit = js.native
 }
 
 object Promise {

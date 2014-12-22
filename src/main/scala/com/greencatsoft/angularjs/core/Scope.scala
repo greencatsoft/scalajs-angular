@@ -7,29 +7,29 @@ import com.greencatsoft.angularjs.{ Initializable, Service, inject, injectable }
 @injectable("$scope")
 trait Scope extends js.Object {
 
-  def $id: String = ???
+  def $id: String = js.native
 
-  def $apply(exp: js.Any = null): js.Any = ???
+  def $apply(exp: js.Any = null): js.Any = js.native
 
-  def $broadcast(name: String, args: js.Any*): js.Object = ???
+  def $broadcast(name: String, args: js.Any*): js.Object = js.native
 
-  def $destroy(): Unit = ???
+  def $destroy(): Unit = js.native
 
-  def $digest(): Unit = ???
+  def $digest(): Unit = js.native
 
-  def $emit(name: String, args: js.Any*): js.Object = ???
+  def $emit(name: String, args: js.Any*): js.Object = js.native
 
-  def $eval(expression: js.Any = null, locals: js.Object = null): js.Any = ???
+  def $eval(expression: js.Any = null, locals: js.Object = null): js.Any = js.native
 
-  def $evalAsync(expression: js.Any = null): Unit = ???
+  def $evalAsync(expression: js.Any = null): Unit = js.native
 
-  def $new(isolate: Boolean): Scope = ???
+  def $new(isolate: Boolean): Scope = js.native
 
-  def $on(name: String, listener: js.Function): js.Any = ???
+  def $on(name: String, listener: js.Function): js.Any = js.native
 
-  def $watch(watchExpression: js.Any, listener: js.Any = null, objectEquality: Boolean = false): js.Function = ???
+  def $watch(watchExpression: js.Any, listener: js.Any = null, objectEquality: Boolean = false): js.Function = js.native
 
-  def $watchCollection(obj: js.Any, listener: js.Function): js.Function = ???
+  def $watchCollection(obj: js.Any, listener: js.Function): js.Function = js.native
 }
 
 trait Scoped {

@@ -7,5 +7,5 @@ import scala.scalajs.js
 @injectable("$anchorScroll")
 trait AnchorScroll extends js.Object {
 
-  def apply(): Unit = ???
+  def apply(): Unit = js.native
 }

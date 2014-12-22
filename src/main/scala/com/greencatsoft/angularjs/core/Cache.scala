@@ -8,21 +8,21 @@ import com.greencatsoft.angularjs.injectable
 @injectable("$cache")
 trait Cache extends js.Object {
 
-  def info(): js.Dictionary[js.Any] = ???
+  def info(): js.Dictionary[js.Any] = js.native
 
-  def put[T <: js.Any](key: String, value: T): T = ???
+  def put[T <: js.Any](key: String, value: T): T = js.native
 
-  def get[T <: js.Any](key: String): UndefOr[T] = ???
+  def get[T <: js.Any](key: String): UndefOr[T] = js.native
 
-  def remove(key: String): Unit = ???
+  def remove(key: String): Unit = js.native
 
-  def removeAll(): Unit = ???
+  def removeAll(): Unit = js.native
 
-  def destroy(): Unit = ???
+  def destroy(): Unit = js.native
 }
 
 @injectable("$cacheFactory")
 trait CacheFactory extends js.Object {
 
-  def apply(cacheId: String, options: js.Object): Cache = ???
+  def apply(cacheId: String, options: js.Object): Cache = js.native
 }

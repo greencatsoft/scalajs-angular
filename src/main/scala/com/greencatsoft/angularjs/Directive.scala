@@ -53,25 +53,25 @@ trait Directive extends NamedService with Function0[Configuration] with Scoped w
 
 trait Attributes extends js.Object {
 
-  val $attr: js.Dictionary[String] = ???
+  val $attr: js.Dictionary[String] = js.native
 
-  def $addClass(classVal: String): Unit = ???
+  def $addClass(classVal: String): Unit = js.native
 
-  def $removeClass(classVal: String): Unit = ???
+  def $removeClass(classVal: String): Unit = js.native
 
-  def $updateClass(newClasses: String, oldClasses: String): Unit = ???
-
-  @JSBracketAccess
-  def apply(name: String): UndefOr[String] = ???
+  def $updateClass(newClasses: String, oldClasses: String): Unit = js.native
 
   @JSBracketAccess
-  def update(name: String, value: String): Unit = ???
+  def apply(name: String): UndefOr[String] = js.native
 
-  def $get(name: String): UndefOr[String] = ???
+  @JSBracketAccess
+  def update(name: String, value: String): Unit = js.native
 
-  def $set(name: String, value: String): Unit = ???
+  def $get(name: String): UndefOr[String] = js.native
 
-  def $observe(key: String, fn: js.Function1[String, Unit]): Unit = ???
+  def $set(name: String, value: String): Unit = js.native
+
+  def $observe(key: String, fn: js.Function1[String, Unit]): Unit = js.native
 }
 
 trait Requires extends ConfigBuilder {

@@ -13,11 +13,11 @@ import ServiceProxy.newInstance
 
 private[angularjs] trait Angular extends js.Object {
 
-  def module(name: String): UndefOr[Module] = ???
+  def module(name: String): UndefOr[Module] = js.native
 
-  def module(name: String, require: js.Array[String]): Module = ???
+  def module(name: String, require: js.Array[String]): Module = js.native
 
-  def element(elem: Element): AngularElement = ???
+  def element(elem: Element): AngularElement = js.native
 }
 
 private[angularjs] object Angular {

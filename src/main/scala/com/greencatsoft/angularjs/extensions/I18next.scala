@@ -15,33 +15,33 @@ trait I18next extends js.Object
 
 @injectable("$i18nextProvider")
 trait I18nextProvider extends js.Object {
-  var options: I18nextOptions = ???
+  var options: I18nextOptions = js.native
 }
 
 trait I18nextOptions extends js.Object {
 
-  var lng: String = ???
+  var lng: String = js.native
 
-  var detectLngQS: String = ???
+  var detectLngQS: String = js.native
 
-  var cookieName: String = ???
+  var cookieName: String = js.native
 
-  var cookieDomain: String = ???
+  var cookieDomain: String = js.native
 
-  var useCookie: Boolean = ???
+  var useCookie: Boolean = js.native
 
-  var ns: NamespaceConfig = ???
+  var ns: NamespaceConfig = js.native
 
-  var fallbackLng: String = ???
+  var fallbackLng: String = js.native
 
-  var resGetPath: String = ???
+  var resGetPath: String = js.native
 }
 
 trait NamespaceConfig extends js.Object {
 
-  var namespaces: js.Array[String] = ???
+  var namespaces: js.Array[String] = js.native
 
-  var defaultNs: String = ???
+  var defaultNs: String = js.native
 }
 
 object NamespaceConfig {

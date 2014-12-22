@@ -15,22 +15,22 @@ import com.greencatsoft.angularjs.injectable
 @injectable("$upload")
 trait FileUpload extends js.Object {
 
-  def upload(config: FileUploadConfig): FileUploadPromise = ???
+  def upload(config: FileUploadConfig): FileUploadPromise = js.native
 }
 
 trait FileUploadConfig extends js.Object {
 
-  var url: String = _
+  var url: String = js.native
 
-  var data: Any = _
+  var data: Any = js.native
 
-  var file: File = _
+  var file: File = js.native
 
-  var method: String = _
+  var method: String = js.native
 
-  var fileName: js.Any = _
+  var fileName: js.Any = js.native
 
-  var fileFormDataName: js.Any = _
+  var fileFormDataName: js.Any = js.native
 }
 
 object FileUploadConfig {
@@ -52,14 +52,14 @@ object FileUploadConfig {
 
 trait FileUploadPromise extends HttpPromise {
 
-  def progress(listener: js.Function1[ProgressEvent, Unit]): this.type = ???
+  def progress(listener: js.Function1[ProgressEvent, Unit]): this.type = js.native
 
-  def abort(): Unit = ???
+  def abort(): Unit = js.native
 }
 
 class ProgressEvent extends js.Object {
 
-  val loaded: Double = ???
+  val loaded: Double = js.native
 
-  val total: Double = ???
+  val total: Double = js.native
 }

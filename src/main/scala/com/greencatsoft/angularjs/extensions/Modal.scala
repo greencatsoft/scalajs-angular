@@ -13,24 +13,24 @@ import com.greencatsoft.angularjs.core.Promise
 @injectable("$modal")
 trait ModalService extends js.Object {
 
-  def open(options: ModalOptions): ModalInstance = ???
+  def open(options: ModalOptions): ModalInstance = js.native
 }
 
 trait ModalOptions extends js.Object {
 
-  var templateUrl: String = _
+  var templateUrl: String = js.native
 
-  var controller: String = _
+  var controller: String = js.native
 
-  var scope: Any = _
+  var scope: Any = js.native
 
-  var size: String = _
+  var size: String = js.native
 
-  var windowClass: String = _
+  var windowClass: String = js.native
 
-  var backdrop = true
+  var backdrop : Boolean = js.native
 
-  var keyboard = true
+  var keyboard : Boolean = js.native
 }
 
 object ModalOptions {
@@ -47,13 +47,13 @@ object ModalOptions {
 @injectable("$modalInstance")
 trait ModalInstance extends js.Object {
 
-  def close(result: js.Any): Unit = ???
+  def close(result: js.Any): Unit = js.native
 
-  def close(): Unit = ???
+  def close(): Unit = js.native
 
-  def dismiss(reason: js.Any): Unit = ???
+  def dismiss(reason: js.Any): Unit = js.native
 
-  def result: Promise = ???
+  def result: Promise = js.native
 
-  def opened: Promise = ???
+  def opened: Promise = js.native
 }

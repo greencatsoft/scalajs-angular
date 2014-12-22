@@ -13,42 +13,42 @@ import com.greencatsoft.angularjs.injectable
 @injectable("$http")
 trait HttpService extends js.Object {
 
-  def get(url: String): HttpPromise = ???
+  def get(url: String): HttpPromise = js.native
 
-  def get(url: String, config: HttpConfig): HttpPromise = ???
+  def get(url: String, config: HttpConfig): HttpPromise = js.native
 
-  def post(url: String): HttpPromise = ???
+  def post(url: String): HttpPromise = js.native
 
-  def post(url: String, data: js.Any): HttpPromise = ???
+  def post(url: String, data: js.Any): HttpPromise = js.native
 
-  def post(url: String, data: js.Any, config: HttpConfig): HttpPromise = ???
+  def post(url: String, data: js.Any, config: HttpConfig): HttpPromise = js.native
 
-  def jsonp(url: String, config: HttpConfig): HttpPromise = ???
+  def jsonp(url: String, config: HttpConfig): HttpPromise = js.native
 
-  def put(url: String): HttpPromise = ???
+  def put(url: String): HttpPromise = js.native
 
-  def put(url: String, data: js.Any): HttpPromise = ???
+  def put(url: String, data: js.Any): HttpPromise = js.native
 
-  def put(url: String, data: js.Any, config: HttpConfig): HttpPromise = ???
+  def put(url: String, data: js.Any, config: HttpConfig): HttpPromise = js.native
 
-  def delete(url: String): HttpPromise = ???
+  def delete(url: String): HttpPromise = js.native
 
-  def delete(url: String, data: js.Any): HttpPromise = ???
+  def delete(url: String, data: js.Any): HttpPromise = js.native
 
-  def delete(url: String, data: js.Any, config: HttpConfig): HttpPromise = ???
+  def delete(url: String, data: js.Any, config: HttpConfig): HttpPromise = js.native
 }
 
 trait HttpConfig extends js.Object {
 
-  var cache = false
+  var cache : Boolean = js.native
 
-  var responseType = ""
+  var responseType : String = js.native
 
-  var headers = new js.Array[js.Any]
+  var headers : js.Array[js.Any] = js.native
 
-  var transformResponse: js.Array[js.Function2[js.Any, js.Any, js.Any]] = _
+  var transformResponse: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
 
-  var transformRequest: js.Array[js.Function2[js.Any, js.Any, js.Any]] = _
+  var transformRequest: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
 }
 
 object HttpConfig {
@@ -74,30 +74,30 @@ object HttpConfig {
 @injectable("$httpProvider")
 trait HttpProvider extends js.Object {
 
-  var defaults: HttpConfig
+  var defaults: HttpConfig = js.native
 }
 
 trait HttpPromise extends Promise {
 
-  def success(callback: js.Function1[js.Any, Unit]): this.type
+  def success(callback: js.Function1[js.Any, Unit]): this.type = js.native
 
-  def success(callback: js.Function2[js.Any, Int, Unit]): this.type
+  def success(callback: js.Function2[js.Any, Int, Unit]): this.type = js.native
 
-  def success(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type
+  def success(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type = js.native
 
-  def success(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type
+  def success(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type  = js.native
 
-  def success(callback: js.Function5[js.Any, Int, js.Any, js.Any, js.Any, Unit]): this.type
+  def success(callback: js.Function5[js.Any, Int, js.Any, js.Any, js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function1[js.Any, Unit]): this.type
+  def error(callback: js.Function1[js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function2[js.Any, Int, Unit]): this.type
+  def error(callback: js.Function2[js.Any, Int, Unit]): this.type = js.native
 
-  def error(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type
+  def error(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type = js.native
 
-  def error(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type
+  def error(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function5[js.Any, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type
+  def error(callback: js.Function5[js.Any, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
 }
 
 object HttpPromise {
@@ -106,13 +106,13 @@ object HttpPromise {
 
   trait HttpResult extends js.Object {
 
-    val config: js.Any = ???
+    val config: js.Any = js.native
 
-    val data: js.Any = ???
+    val data: js.Any = js.native
 
-    val status: Int = ???
+    val status: Int = js.native
 
-    val statusText: String = ???
+    val statusText: String = js.native
   }
 
   class HttpFuture[A](promise: Promise) extends Future[A] {

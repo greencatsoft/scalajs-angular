@@ -9,20 +9,20 @@ import com.greencatsoft.angularjs.{ PageController, TitledPageController, inject
 @injectable("$routeProvider")
 trait RouteProvider extends js.Object {
 
-  def when(path: String, route: Route): this.type = ???
+  def when(path: String, route: Route): this.type = js.native
 
-  def otherwise(route: Route): this.type = ???
+  def otherwise(route: Route): this.type = js.native
 }
 
 trait Route extends js.Object {
 
-  var title: UndefOr[String] = ???
+  var title: UndefOr[String] = js.native
 
-  var templateUrl: UndefOr[String] = ???
+  var templateUrl: UndefOr[String] = js.native
 
-  var controller: UndefOr[String] = ???
+  var controller: UndefOr[String] = js.native
 
-  var redirectTo: UndefOr[String] = ???
+  var redirectTo: UndefOr[String] = js.native
 }
 
 object Route {
@@ -67,13 +67,13 @@ object Route {
 
 trait RouteInfo extends js.Object {
 
-  var $$route: Route = ???
+  var $$route: Route = js.native
 
-  var loadedTemplateUrl: String = ???
+  var loadedTemplateUrl: String = js.native
 
-  var params: js.Array[js.Any] = ???
+  var params: js.Array[js.Any] = js.native
 
-  var pathParams: js.Array[js.Any] = ???
+  var pathParams: js.Array[js.Any] = js.native
 
-  var scope: Scope = ???
+  var scope: Scope = js.native
 }

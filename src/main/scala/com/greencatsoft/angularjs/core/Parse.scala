@@ -9,5 +9,5 @@ trait Parse extends js.Object {
 
   type ParsedExpression = js.Function2[js.Object, js.Object, js.Function]
 
-  def apply(expression: String): ParsedExpression = ???
+  def apply(expression: String): ParsedExpression = js.native
 }
