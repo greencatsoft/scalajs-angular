@@ -4,3 +4,4 @@ target
 .settings
 .cache
 .README.md.html
+/bin/

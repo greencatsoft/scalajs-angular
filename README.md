@@ -23,11 +23,11 @@ your discretion.
 Add the following line to your ```sbt``` build definition:
 
 ```scala
-libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.2"
+libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.3"
 ```
 
 If you want to test the latest snapshot version instead, change the version to 
-_"0.3-SNAPSHOT"_ and add _Sonatype Snapshot Repository_ to the resolver as follows: 
+_"0.4-SNAPSHOT"_ and add _Sonatype Snapshot Repository_ to the resolver as follows: 
 
 ```scala
 resolvers += 
@@ -157,11 +157,11 @@ object UserDetailsController extends Controller with HttpServiceAware {
 
   trait UserForm extends Scope {
 
-    var id: String
-    var name: String
-    var email: String
+    var id: String = js.native
+    var name: String = js.native
+    var email: String = js.native
 
-    var friends: js.Array[String]
+    var friends: js.Array[String] = js.native
   }
 }
 ```
@@ -206,10 +206,10 @@ object UserDetailsController extends Controller {
 
   trait ScopeType extends Scope {
 
-    var id: String
-    var name: String
-    var email: String
-    var friends: js.Array[String]
+    var id: String = js.native
+    var name: String = js.native
+    var email: String = js.native
+    var friends: js.Array[String] = js.native
   }
 }
 ```
