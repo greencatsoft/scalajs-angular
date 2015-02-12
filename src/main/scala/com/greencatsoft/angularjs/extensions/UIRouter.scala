@@ -1,11 +1,11 @@
 package com.greencatsoft.angularjs.extensions
 
-import com.greencatsoft.angularjs.injectable
-import scala.scalajs.js.annotation.JSBracketAccess
-import com.greencatsoft.angularjs.injectable
 import scala.scalajs.js
+import scala.scalajs.js.annotation.JSBracketAccess
+import scala.scalajs.js.JSConverters.JSRichGenMap
 import scala.scalajs.js.RegExp
-import js.JSConverters._
+
+import com.greencatsoft.angularjs.injectable
 
 /**
  * Wrappers for the uirouter module.
@@ -88,8 +88,8 @@ object State {
     val out = new js.Object().asInstanceOf[State]
     out.url = url
     out.`abstract` = isAbstract
-    if (!templateUrl.isEmpty()) out.templateUrl = templateUrl
-    if (!views.isEmpty) out.views = views.toJSDictionary
+    if (templateUrl.nonEmpty) out.templateUrl = templateUrl
+    if (views.nonEmpty) out.views = views.toJSDictionary
     out
   }
 }
@@ -118,7 +118,7 @@ object View {
 trait UrlRouterProvider extends js.Object {
   def when(whenPath: RegExp, handler: js.Function): UrlRouterProvider = js.native
   def when(whenPath: RegExp, toPath: String): UrlRouterProvider = js.native
-  def when(whenPath: UrlMatcher, hanlder: js.Function): UrlRouterProvider = js.native
+  def when(whenPath: UrlMatcher, handler: js.Function): UrlRouterProvider = js.native
   /**
    * Defines a path that is used when an invalid route is requested.
    * The function rule that returns the url path. The function is passed

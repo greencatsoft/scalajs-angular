@@ -31,7 +31,7 @@ object Route {
     require(templateUrl != null, "Missing argument 'templateUrl'.")
     require(title != null, "Missing argument 'title'.")
 
-    var route = new js.Object().asInstanceOf[Route]
+    val route = new js.Object().asInstanceOf[Route]
 
     Option(title).foreach(route.title = _)
 
@@ -42,7 +42,7 @@ object Route {
   def apply(controller: PageController): Route = {
     require(controller != null, "Missing argument 'controller'.")
 
-    var route = new js.Object().asInstanceOf[Route]
+    val route = new js.Object().asInstanceOf[Route]
 
     route.templateUrl = controller.templateUrl
     route.controller = controller.name
@@ -58,7 +58,7 @@ object Route {
   def redirectTo(url: String): Route = {
     require(url != null, "Missing argument 'url'.")
 
-    var route = new js.Object().asInstanceOf[Route]
+    val route = new js.Object().asInstanceOf[Route]
 
     route.redirectTo = url
     route
