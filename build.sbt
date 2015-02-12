@@ -10,7 +10,7 @@ lazy val root = (project in file(".")).
     homepage := Some(url("http://github.com/greencatsoft/scalajs-angular")),
 
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.7.0",
+      "org.scala-js" %%% "scalajs-dom" % "0.8.0",
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile"
     ),
 
