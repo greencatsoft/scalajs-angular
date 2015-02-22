@@ -213,7 +213,19 @@ object UserDetailsController extends Controller {
   }
 }
 ```
-In this case, you can refer to the _delete_ method from your template as _controller.delete()_.
+It automatically exports the controller instance as ```controller``` variable in the 
+associated scope, which enables you to reference any methods or properties of the 
+current controller provided they are annotated with ```@JSExport``` (or ```@JSExportAll```).
+
+In the above example, you can reference the _delete_ method from your template 
+with _controller.delete()_.
+
+The same rule applies to the case when you use the ```controller-as``` syntax, because 
+you cannot directly refer to the controller instance due to a limitation in the 
+implementation.
+
+So, if you have declared your controller as _TodoCtrl as todo_ for instance, you can 
+invoke its _checkAll()_ method with _todo.controller.checkAll()_(instead of _todo.checkAll()_).
 
 ### Using Directives
 

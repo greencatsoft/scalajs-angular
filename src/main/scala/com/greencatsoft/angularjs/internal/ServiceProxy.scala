@@ -12,14 +12,14 @@ object ServiceProxy {
 
   def bind(service: js.Any, target: Service) {
     try {
-      service.asInstanceOf[js.Dynamic]._ng_service_proxy = target.asInstanceOf[js.Object]
+      service.asInstanceOf[js.Dynamic].controller = target.asInstanceOf[js.Object]
     } catch {
       case _: Throwable =>
     }
   }
 
   def unbind[A <: Service](service: js.Any): Option[A] = {
-    val target: UndefOr[Any] = service.asInstanceOf[js.Dynamic]._ng_service_proxy
+    val target: UndefOr[Any] = service.asInstanceOf[js.Dynamic].controller
     target.map(_.asInstanceOf[A]).toOption
   }
 
