@@ -3,13 +3,11 @@ package com.greencatsoft.angularjs.internal
 import scala.reflect.macros.blackbox.Context
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
-
 import org.scalajs.dom.Element
-
 import com.greencatsoft.{ angularjs => api }
 import com.greencatsoft.angularjs.{ AngularElement, Config, Controller, Directive, Factory, NamedService, Runnable }
-
 import ServiceProxy.newInstance
+import com.greencatsoft.angularjs.Filter
 
 private[angularjs] trait Angular extends js.Object {
 
@@ -74,5 +72,14 @@ private[angularjs] object Angular {
     val name = Select(target.tree, TermName("name"))
 
     c.Expr[api.Module](q"{${c.prefix.tree}.module.service($name, $proxy); ${c.prefix.tree}}")
+  }
+
+  def filter[A <: Filter](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+    import c.universe._
+
+    val proxy = newInstance(c)(target)
+    val name = Select(target.tree, TermName("name"))
+
+    c.Expr[api.Module](q"{${c.prefix.tree}.module.filter($name, $proxy); ${c.prefix.tree}}")
   }
 }

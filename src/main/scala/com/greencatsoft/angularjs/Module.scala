@@ -1,6 +1,7 @@
 package com.greencatsoft.angularjs
 
 import scala.language.experimental.macros
+import scala.scalajs.js
 
 class Module private[angularjs] (val module: internal.Module) {
   require(module != null, "Missing argument 'module'.")
@@ -18,4 +19,6 @@ class Module private[angularjs] (val module: internal.Module) {
   def run[A <: Runnable](target: A): Module = macro angular.run[A]
 
   def service[A <: NamedService](target: A): Module = macro angular.service[A]
+
+  def filter[A <: Filter](target: A): Module = macro angular.filter[A]
 }

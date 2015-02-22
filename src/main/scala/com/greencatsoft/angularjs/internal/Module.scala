@@ -13,4 +13,6 @@ private[angularjs] trait Module extends js.Object {
   def run(constructor: js.Array[js.Any]): Module = js.native
 
   def directive(name: String, directiveFactory: js.Array[js.Any]): Module = js.native
+
+  def filter(name: String, constructor: js.Array[js.Any]): Module = js.native
 }
