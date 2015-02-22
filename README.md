@@ -275,6 +275,37 @@ object LocationDirective extends AttributeDirective {
 }
 ```
 
+### Using Filters
+
+To define a filter, you can declare an object which implements ```Filter``` trait, and override the ```filter``` method to handle the actual filtering:
+
+```scala
+object UpperCaseFilter extends Filter {
+
+  override val name = "upper"
+
+  override def filter(text: String): String = text.toUpperCase
+}
+```
+
+As with other types inheriting from the ```Service``` trait, you can inject dependencies to your filter instance using the ```@inject``` annotation, and it also provides an alternative ```filter``` method which takes additional arguments:
+
+```scala
+object UpperCaseFilter extends Filter {
+
+  override val name = "upper"
+
+  @inject
+  var location: Location = _
+
+  override def filter(text: String, args: Seq[Any]): String = 
+    if (location.path.endsWith(args.head.toString)) 
+      text.toUpperCase
+    else
+      text.toLowerCase
+}
+```
+
 ### Defining Routes
 
 Defining routing rules is quite straight forward, like the following example:
