@@ -81,3 +81,18 @@ trait RootScopeAware extends Initializable with Scoped {
     super.initialize()
   }
 }
+
+trait Event extends js.Object {
+
+  val name: String = js.native
+
+  val defaultPrevented: Boolean = js.native
+
+  def preventDefault(): Unit = js.native
+
+  def stopPropagation(): Unit = js.native
+
+  def currentScope[A <: Scope]: A = js.native
+
+  def targetScope[A <: Scope]: A = js.native
+}
