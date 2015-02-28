@@ -6,8 +6,11 @@ import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.{ JavaScriptException, UndefOr }
 import scala.scalajs.js.Any.fromFunction1
+import scala.scalajs.js.annotation.JSExportAll
 import scala.util.{ Failure, Success, Try }
 
+import com.greencatsoft.angularjs.Factory
+import com.greencatsoft.angularjs.core.HttpPromise.HttpResult
 import com.greencatsoft.angularjs.injectable
 
 @injectable("$http")
@@ -40,11 +43,11 @@ trait HttpService extends js.Object {
 
 trait HttpConfig extends js.Object {
 
-  var cache : Boolean = js.native
+  var cache: Boolean = js.native
 
-  var responseType : String = js.native
+  var responseType: String = js.native
 
-  var headers : js.Array[js.Any] = js.native
+  var headers: js.Array[js.Any] = js.native
 
   var transformResponse: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
 
@@ -75,6 +78,8 @@ object HttpConfig {
 trait HttpProvider extends js.Object {
 
   var defaults: HttpConfig = js.native
+
+  var interceptors: js.Array[String] = js.native
 }
 
 trait HttpPromise extends Promise {
@@ -85,7 +90,7 @@ trait HttpPromise extends Promise {
 
   def success(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type = js.native
 
-  def success(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type  = js.native
+  def success(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type = js.native
 
   def success(callback: js.Function5[js.Any, Int, js.Any, js.Any, js.Any, Unit]): this.type = js.native
 
@@ -98,6 +103,32 @@ trait HttpPromise extends Promise {
   def error(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type = js.native
 
   def error(callback: js.Function5[js.Any, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
+}
+
+trait HttpInterceptor {
+
+  def request(config: HttpConfig): HttpConfig = config
+
+  def requestError(rejection: HttpResult): HttpResult = rejection
+
+  def response(response: HttpResult): HttpResult = response
+
+  def responseError(rejection: HttpResult): HttpResult = rejection
+}
+
+@JSExportAll
+case class HttpInterceptorFunctions(
+  request: js.Function1[HttpConfig, HttpConfig],
+  requestError: js.Function1[HttpResult, HttpResult],
+  response: js.Function1[HttpResult, HttpResult],
+  responseError: js.Function1[HttpResult, HttpResult])
+
+trait HttpInterceptorFactory extends Factory[HttpInterceptorFunctions] {
+
+  implicit def toInterceptorFunctions(interceptor: HttpInterceptor): HttpInterceptorFunctions = {
+    import interceptor._
+    HttpInterceptorFunctions(request _, requestError _, response _, responseError _)
+  }
 }
 
 object HttpPromise {
