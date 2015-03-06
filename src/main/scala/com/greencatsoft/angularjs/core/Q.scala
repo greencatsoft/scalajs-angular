@@ -17,6 +17,8 @@ trait Q extends js.Object {
   def defer(): Defer = js.native
 
   def promise(): Promise = js.native
+
+  def reject(reason: js.Any): Promise = js.native
 }
 
 trait Defer extends js.Object {
