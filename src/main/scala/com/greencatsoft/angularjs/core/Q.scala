@@ -6,7 +6,7 @@ import scala.concurrent.duration.Duration
 import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.Any.fromFunction1
-import scala.scalajs.js.JavaScriptException
+import scala.scalajs.runtime.wrapJavaScriptException
 import scala.util.{ Failure, Success, Try }
 
 import com.greencatsoft.angularjs.injectable
@@ -90,7 +90,7 @@ object Promise {
       this.result = notify(Success(r.asInstanceOf[A]))
       r
     } `catch` { (error: js.Any) =>
-      this.result = notify(Failure(JavaScriptException(error)))
+      this.result = notify(Failure(wrapJavaScriptException(error)))
     }
 
     override def ready(atMost: Duration)(implicit permit: CanAwait): this.type =

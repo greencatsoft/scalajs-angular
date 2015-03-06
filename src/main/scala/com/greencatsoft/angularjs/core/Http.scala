@@ -4,9 +4,10 @@ import scala.concurrent.{ CanAwait, ExecutionContext, Future }
 import scala.concurrent.duration.Duration
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.{ JavaScriptException, UndefOr }
+import scala.scalajs.js.UndefOr
 import scala.scalajs.js.Any.fromFunction1
 import scala.scalajs.js.annotation.JSExportAll
+import scala.scalajs.runtime.wrapJavaScriptException
 import scala.util.{ Failure, Success, Try }
 
 import com.greencatsoft.angularjs.Factory
@@ -47,7 +48,7 @@ trait HttpConfig extends js.Object {
 
   var responseType: String = js.native
 
-  var headers: js.Array[js.Any] = js.native
+  var headers: js.Dictionary[String] = js.native
 
   var transformResponse: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
 
@@ -56,20 +57,29 @@ trait HttpConfig extends js.Object {
 
 object HttpConfig {
 
-  def apply() = {
+  def empty: HttpConfig = {
     val config = new js.Object().asInstanceOf[HttpConfig]
 
+    config.headers = js.Dictionary()
     config.transformRequest = js.Array()
     config.transformResponse = js.Array()
 
     config
   }
 
-  def documentHandler(): HttpConfig = {
-    val config = apply()
+  def documentHandler: HttpConfig = {
+    val config = empty
 
     config.responseType = "document"
+    config
+  }
 
+  def postHandler: HttpConfig = {
+    val config = empty
+
+    config.headers = js.Dictionary(
+      "method" -> "POST",
+      "Content-Type" -> "application/x-www-form-urlencoded")
     config
   }
 }
@@ -164,8 +174,7 @@ object HttpPromise {
       this.result = notify(Success(httpResult.data.asInstanceOf[A]))
       r
     } `catch` { (error: js.Any) =>
-      val httpResult = error.asInstanceOf[HttpResult]
-      this.result = notify(Failure(JavaScriptException(httpResult.data)))
+      this.result = notify(Failure(wrapJavaScriptException(error)))
     }
 
     override def ready(atMost: Duration)(implicit permit: CanAwait): this.type =
