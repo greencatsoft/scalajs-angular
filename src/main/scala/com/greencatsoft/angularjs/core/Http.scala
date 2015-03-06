@@ -117,21 +117,23 @@ trait HttpPromise extends Promise {
 
 trait HttpInterceptor {
 
+  def q: Q
+
   def request(config: HttpConfig): HttpConfig = config
 
-  def requestError(rejection: HttpResult): HttpResult = rejection
+  def requestError(rejection: HttpResult): Promise = q.reject(rejection)
 
   def response(response: HttpResult): HttpResult = response
 
-  def responseError(rejection: HttpResult): HttpResult = rejection
+  def responseError(rejection: HttpResult): Promise = q.reject(rejection)
 }
 
 @JSExportAll
 case class HttpInterceptorFunctions(
   request: js.Function1[HttpConfig, HttpConfig],
-  requestError: js.Function1[HttpResult, HttpResult],
+  requestError: js.Function1[HttpResult, Promise],
   response: js.Function1[HttpResult, HttpResult],
-  responseError: js.Function1[HttpResult, HttpResult])
+  responseError: js.Function1[HttpResult, Promise])
 
 trait HttpInterceptorFactory extends Factory[HttpInterceptorFunctions] {
 
