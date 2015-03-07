@@ -13,7 +13,7 @@ import org.scalajs.dom.Element
 import com.greencatsoft.angularjs.core.Scoped
 import com.greencatsoft.angularjs.internal.{ ConfigBuilder, Configuration, ServiceProxy }
 
-trait Directive extends NamedService with Function0[Configuration] with Scoped with ConfigBuilder {
+trait Directive extends Service with Function0[Configuration] with Scoped with ConfigBuilder {
 
   import internal.{ Angular => angular }
 
@@ -46,7 +46,7 @@ trait Directive extends NamedService with Function0[Configuration] with Scoped w
 
   def controller(): Option[js.Any] = None
 
-  protected def proxy[A <: Controller](target: A): js.Any = macro ServiceProxy.newInstance[A]
+  protected def proxy[A <: Controller](target: A): js.Any = macro ServiceProxy.newObjectWrapper[A]
 
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Controller*): Unit = Unit
 }
@@ -90,13 +90,13 @@ trait Requires extends ConfigBuilder {
     override def toString = (if (lookup) "^" else "") + (if (optional) "?" else "") + name
   }
 
-  def ^(requirement: NamedService) = new Requirement(requirement.name, true)
+  def ^(requirement: String) = new Requirement(requirement, true)
 
-  def ^?(requirement: NamedService) = new Requirement(requirement.name, true, true)
+  def ^?(requirement: String) = new Requirement(requirement, true, true)
 
-  def ?(requirement: NamedService) = new Requirement(requirement.name, false, true)
+  def ?(requirement: String) = new Requirement(requirement, false, true)
 
-  implicit def ~(requirement: NamedService) = new Requirement(requirement.name, false)
+  implicit def ~(requirement: String) = new Requirement(requirement, false)
 }
 
 trait RestrictedDirective extends Directive with ConfigBuilder {

@@ -8,6 +8,8 @@ private[angularjs] trait Module extends js.Object {
 
   def controller(name: String, constructor: js.Array[js.Any]): Module = js.native
 
+  def service(name: String, constructor: js.Array[js.Any]): Module = js.native
+
   def config(constructor: js.Array[js.Any]): Module = js.native
 
   def run(constructor: js.Array[js.Any]): Module = js.native

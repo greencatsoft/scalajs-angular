@@ -1,10 +1,11 @@
 package com.greencatsoft.angularjs.core
 
+import scala.reflect.ClassTag
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.any2undefOrA
 
-import com.greencatsoft.angularjs.{ PageController, TitledPageController, injectable }
+import com.greencatsoft.angularjs.injectable
 
 @injectable("$routeProvider")
 trait RouteProvider extends js.Object {
@@ -27,30 +28,29 @@ trait Route extends js.Object {
 
 object Route {
 
-  def apply(templateUrl: String, title: String = null): Route = {
+  def apply(templateUrl: String): Route =
+    apply(templateUrl, None, None, None)
+
+  def apply(templateUrl: String, title: String): Route =
+    apply(templateUrl, Some(title), None, None)
+
+  def apply(templateUrl: String, title: String, controller: String): Route =
+    apply(templateUrl, Some(title), Some(controller), None)
+
+  def apply(
+    templateUrl: String, title: Option[String], controller: Option[String], redirectTo: Option[String]): Route = {
     require(templateUrl != null, "Missing argument 'templateUrl'.")
     require(title != null, "Missing argument 'title'.")
+    require(controller != null, "Missing argument 'controller'.")
+    require(redirectTo != null, "Missing argument 'redirectTo'.")
 
     val route = new js.Object().asInstanceOf[Route]
-
-    Option(title).foreach(route.title = _)
 
     route.templateUrl = templateUrl
-    route
-  }
 
-  def apply(controller: PageController): Route = {
-    require(controller != null, "Missing argument 'controller'.")
-
-    val route = new js.Object().asInstanceOf[Route]
-
-    route.templateUrl = controller.templateUrl
-    route.controller = controller.name
-
-    controller match {
-      case titled: TitledPageController => route.title = titled.title
-      case _ =>
-    }
+    title.foreach(route.title = _)
+    controller.foreach(route.controller = _)
+    redirectTo.foreach(route.redirectTo = _)
 
     route
   }

@@ -9,4 +9,3 @@ trait TemplateSource {
 
   val template: String
 }
-

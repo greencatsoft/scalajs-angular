@@ -23,31 +23,48 @@ object ServiceProxy {
     target.map(_.asInstanceOf[A]).toOption
   }
 
-  def dependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol)] = {
+  def identifier[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): String = {
     import c.universe._
 
-//    Should check if @inject annotation is present:
-//
-//    val members = tag.tpe.members filter {
-//      _.annotations.exists(_.tree.tpe =:= typeOf[inject])
-//    } collect {
-//      case m: MethodSymbol if m.isSetter => m
-//    }
+    val arg = tag.tpe.typeSymbol.annotations.map(_.tree) collectFirst {
+      case a if a.tpe =:= typeOf[injectable] =>
+        a.children.tail
+    }
 
-    val members = tag.tpe.members collect { case m: MethodSymbol if m.isSetter => m }
+    val value = arg collectFirst {
+      case List(Literal(Constant(literal: String))) => literal
+    }
 
-    val names = members map { member =>
-      val argType = member.paramLists.head.head.typeSignature.dealias.typeSymbol
+    value getOrElse {
+      c.abort(c.enclosingPosition, s"The specified type '${tag.tpe}' does not have @injectable annotation.")
+    }
+  }
 
-      val normalizedType = Option(argType.typeSignature) collect {
+  def variableDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol)] = {
+    import c.universe._
+
+    //    Should check if @inject annotation is present:
+    //
+    //    val members = tag.tpe.members filter {
+    //      _.annotations.exists(_.tree.tpe =:= typeOf[inject])
+    //    } collect {
+    //      case m: MethodSymbol if m.isSetter => m
+    //    }
+
+    val setters = tag.tpe.members collect {
+      case m: MethodSymbol if m.isSetter => m
+    }
+
+    val names = setters map { s =>
+      val argType = s.paramLists.head.head.typeSignature.dealias.typeSymbol.typeSignature
+
+      val normalizedType = Option(argType) collect {
         case ClassInfoType(_, _, sym) => sym.asType
       }
 
-      val annotations = normalizedType.map(_.annotations).toSeq.flatten.filter(_.tree.tpe =:= typeOf[injectable])
-
       val members = normalizedType map { n =>
         n.annotations.filter(_.tree.tpe =:= typeOf[injectable]).map(_.tree.children.tail) collect {
-          case List(Literal(Constant(literal: String))) => (literal, n.asType, member)
+          case List(Literal(Constant(literal: String))) => (literal, n.asType, s)
         }
       }
 
@@ -57,22 +74,83 @@ object ServiceProxy {
     names.toSeq.flatten
   }
 
-  def newInstance[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] = {
+  def constantDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol)] = {
     import c.universe._
 
-    val names = dependencies[A](c) collect {
+    val methods = tag.tpe.members collectFirst {
+      case m: MethodSymbol if m.isPrimaryConstructor => m
+    }
+
+    val ctor = methods getOrElse {
+      c.abort(c.enclosingPosition, s"The specified type '${tag.tpe}' does not have a suitable constructor.")
+    }
+
+    val argTypes = ctor.paramLists.head.map(_.typeSignature.dealias.typeSymbol.typeSignature)
+
+    val normalizedTypes = argTypes collect {
+      case ClassInfoType(_, _, sym) => sym.asType
+    }
+
+    val members = normalizedTypes map { n =>
+      n.annotations.filter(_.tree.tpe =:= typeOf[injectable]).map(_.tree.children.tail) collect {
+        case List(Literal(Constant(literal: String))) => (literal, n.asType)
+      }
+    }
+
+    members.toSeq.flatten
+  }
+
+  def newObjectWrapper[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] =
+    newIntance[A](c)(Some(target))
+
+  def newClassWrapper[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] =
+    newIntance[A](c)(None)
+
+  private def newIntance[A <: Service](c: Context)(target: Option[c.Expr[A]])(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] = {
+    import c.universe._
+
+    val (instantiation, constDeps, constDepNames) = target match {
+      case Some(t) => (q"$t", Nil, Nil)
+      case None =>
+        val deps = constantDependencies[A](c)
+        val depNames = deps collect {
+          case (name, _) => name
+        }
+
+        val args = deps.zipWithIndex collect {
+          case ((_, argType), index) =>
+            val argument = List(Ident(TermName(s"a$index")))
+            val value = TypeApply(
+              Select(q"..$argument", TermName("asInstanceOf")),
+              List(Ident(c.mirror.staticClass(argType.fullName))))
+
+            value
+        }
+
+        val expr = Apply(Select(
+          New(Ident(tag.tpe.typeSymbol)), termNames.CONSTRUCTOR), args.toList)
+
+        (expr, deps, depNames)
+    }
+
+    val varDeps = variableDependencies[A](c)
+    val varDepNames = varDeps collect {
       case (name, _, _) => name
     }
 
-    val assignments = dependencies[A](c).zipWithIndex collect {
+    val offset = constDeps.size
+
+    val assignments = varDeps.zipWithIndex collect {
       case ((_, argType, setter), index) =>
-        val argument = List(Ident(TermName(s"a$index")))
+        val argument = List(Ident(TermName(s"a${index + offset}")))
         val value = TypeApply(
           Select(q"..$argument", TermName("asInstanceOf")),
           List(Ident(c.mirror.staticClass(argType.fullName))))
 
-        Apply(Select(target.tree, setter.asTerm), List(value))
+        Apply(Select(q"target", setter.asTerm), List(value))
     }
+
+    val depNames = constDepNames ++ varDepNames
 
     val proxy = q"""{
       import scala.scalajs.js
@@ -82,10 +160,10 @@ object ServiceProxy {
       import com.greencatsoft.angularjs.{ Initializable, Service }
       import com.greencatsoft.angularjs.internal.ServiceProxy
 
-      val target: Service = $target
-
       val handler: js.ThisFunction10[js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, UndefOr[js.Any]] = 
         (t: js.Any, a0: js.Any, a1: js.Any, a2: js.Any, a3: js.Any, a4: js.Any, a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
+
+        val target: Service = { ..$instantiation }
 
         ServiceProxy.bind(t, target)
 
@@ -104,7 +182,7 @@ object ServiceProxy {
         Option(result).map(_.asInstanceOf[js.Any]).orUndefined
       }
 
-      val proxy = js.Array[js.Any](..$names)
+      val proxy = js.Array[js.Any](..$depNames)
 
       proxy.push(handler)
       proxy
