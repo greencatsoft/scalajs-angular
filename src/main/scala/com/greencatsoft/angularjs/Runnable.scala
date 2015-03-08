@@ -1,3 +1,3 @@
 package com.greencatsoft.angularjs
 
-trait Runnable extends Service with Initializable
+trait Runnable extends Service

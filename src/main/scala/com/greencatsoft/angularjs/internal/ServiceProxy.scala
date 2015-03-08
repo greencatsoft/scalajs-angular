@@ -181,10 +181,7 @@ object ServiceProxy {
 
         ..$assignments
 
-        target match {
-          case init: Initializable => init.initialize()
-          case _ =>
-        }
+        target.initialize()
 
         val result = target match {
           case configurable: Function0[_] => configurable()

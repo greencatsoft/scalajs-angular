@@ -1,3 +1,3 @@
 package com.greencatsoft.angularjs
 
-trait Service
+trait Service extends Initializable

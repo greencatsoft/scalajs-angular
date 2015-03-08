@@ -4,7 +4,7 @@ import scala.scalajs.js
 
 import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
 
-trait Controller[A <: Scope] extends Service with ScopeOps with Initializable {
+trait Controller[A <: Scope] extends Service with ScopeOps {
 
   def scope: A
 
