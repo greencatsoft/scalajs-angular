@@ -20,37 +20,90 @@ your discretion.
 
 ### SBT Settings
 
-Add the following line to your ```sbt``` build definition:
+Add the following lines to your ```sbt``` build definition:
 
 ```scala
-libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.3"
+libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.4"
 ```
 
 If you want to test the latest snapshot version instead, change the version to 
-_"0.4-SNAPSHOT"_ and add _Sonatype Snapshot Repository_ to the resolver as follows: 
+```0.5-SNAPSHOT``` and add Sonatype snapshot repository to the resolver as follows: 
 
 ```scala
 resolvers += 
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```
 
+Or more simply as,
+```scala
+resolvers += Resolver.sonatypeRepo("snapshots")
+```
+
+_Note: This guide is based on the latest 0.5-SNAPSHOT version, which has introduced 
+significant changes in API from the earlier version. You might want to check the history 
+of this document and [the example application](https://github.com/greencatsoft/scalajs-angular-todomvc) 
+if you're looking for the guide for the earlier versions or want to upgrade your application from 
+them._
+
 ### Defining a Module
 
-You can define an AngularJS module in the following manner. Note that ```config``` and 
-```controller``` methods can be chained and take variable arguments.
+You can define an AngularJS module in the following manner:
 
 ```scala
 val module = Angular.module("myproject", Seq("ngRoute", "ui.bootstrap"))
+```
 
+And you can either register your Angular components like a controller either as a class, 
+or as a singleton object like below: 
+
+```scala
+// In case of registering a class
+module.config[RoutingConfig]
+module.factory[UserServiceFactory]
+module.controller[UserDetailController]
+module.directive[UserInfoDirective]
+module.run[AppInitializer]
+module.filter[UpperCaseFilter]
+
+// In case of registering a singleton object
 module.config(RoutingConfig)
 module.factory(UserServiceFactory)
 module.controller(UserDetailController)
 module.directive(UserInfoDirective)
 module.run(AppInitializer)
+module.filter(UpperCaseFilter)
 ```
 
-_Note: Although the API itself supports method chaining, it might not work correctly in this 
-version due to a limitation in current macro implementation._
+Any classes or objects which is to be registered as an Angular component should be inheriting 
+from ```Service``` trait (or one of its subtypes, like ```Controller```). And in case with 
+injectable services, like controllers, factories, directives, or filters, you need to specify 
+its name using the ```@injectable``` annotation like shown below:
+
+```scala
+@injectable("todoEscape")
+class EscapeDirective extends AttributeDirective {
+  ...
+}
+```
+
+In case of a factory, both the factory itself and its product type should be annotated with 
+```@injectable``` using the same name:
+
+```scala
+@injectable("taskService")
+class TaskService(http: HttpService) extends Service {
+  ...
+}
+
+@injectable("taskService")
+class TaskServiceFactory(http: HttpService) extends Factory[TaskService] {
+  ...
+}
+```
+
+_Note: Although the API itself supports method chaining, it does not work correctly in this 
+version due to a limitation in the current macro implementation (possibly caused by 
+[this issue](https://issues.scala-lang.org/browse/SI-7245))._
 
 ### Managing Dependencies
 
@@ -61,17 +114,62 @@ package.
 And such dependencies can be injected into any object which inherits from the ```Service``` 
 trait, including ```Controller```, ```Directive```, ```Factory```, and more.
 
+From ```0.5``` version onward, it also supports constructor based dependency injection (which 
+was first attempted by an alternate implementation of the Angular.js API in Scala.js, 
+[scalajs-angulate](https://github.com/jokade/scalajs-angulate)) as well as the traditional 
+property based approach.
+
+In general, the constructor based approach should be preferred, as it adheres to the Scala's 
+principle with using immutable properties. However, if you want to declare your Angular module 
+as a singleton object, you need to use the property based method instead, as a singleton does 
+not have a constructor.
+
+Note that you can mix both types of the injection method in a single component, which might be 
+useful if you're declaring each dependencies as separate traits, like ```LocationAware```.
+
+#### Constructor Based Dependency Injection
+
+You can declare any dependent objects as constructor arguments of the target class you want 
+them to be injected into:
+
+```scala
+@injectable("todoCtrl")
+class TodoCtrl(scope: TodoScope, location: Location, service: TaskService)
+  extends AbstractController[TodoScope](scope) {
+
+  scope.todoItems = service.getItems()
+  ...
+}
+```
+
+Using this method, you can inject any Angular components (including your own services) into 
+any other components, provided that they have the ```@injectable``` annotation.
+
+As the class instantiation is handled by Angular itself, you can only include valid Angular 
+components in your constructor argument list.
+
+Note that the ```@injectable``` annotation need not be declared on the immediate type of an 
+argument. For example, ```TodoScope``` in the above example inhertis from ```Scope``` trait 
+which is annotated with ```@injectable("$scope")```, so you don't have to declare another 
+annotation on the ```TodoScope``` trait itself. 
+
+#### Property Based Dependency Injection
+
+In case of using a Scala object as Angular component, you need to inject any dependencies 
+as properties (variables) instead of constructor arguments.
+
 To inject a specific dependency, you can declare a variable with the ```@inject``` 
 annotation like the following example:
 
 ```scala
-object ExampleController extends Controller {
+@injectable("exampleCtrl")
+object ExampleController extends Controller[Scope] {
 
   @inject
   var location: Location = _
 
   @inject
-  var http: HttpService = _
+  override var scope: Scope = _
 
   // You can assume all dependencies to be resolved 
   // after this method is invoked.
@@ -79,146 +177,95 @@ object ExampleController extends Controller {
     super.initialize()
 
     val url = location.absUrl + "/example"
-    http.get(url).success(success).error(failure)
   }
 }
 ```
 
-You can also declare your own service, by annotating it with the ```@injectable``` 
-annotation, and register it using a factory:
+All injected types must have a valid ```@injectable``` annotation in one of the types in 
+their class hierarchy as mentioned previously.
+
+One of the notable differences from the constructor based method is that, you cannot access 
+injected objects in the constructor block of the object because they are not available at 
+the time of the object creation.
+
+In order to solve this problem, the ```Service``` trait extends from ```Initializable``` 
+which provides a method ```def initialized(): Unit``` which is invoked after all dependencies 
+are injected to the service (like ```@PostConstruct``` in Java). 
+
+### Using Controllers and Scopes
+
+Controller is a special type of Angular service, which is used to communicate with a view 
+template by manipulating a scope object. As such, they are usually tightly coupled with 
+associated scope objects, so their relationship is reflected in the signature of the trait 
+which represents Angular controllers, as ```Controller[A <: Scope]```.
+
+Normally, you would define a scope trait and declare any properties or functions you want to 
+access from your controller class, then write a matching controller class or an object using 
+the name of the scope trait as the type parameter of the ```Controller``` trait (or 
+the ```AbstractController``` class for convenience).
+
+A typical scope would look like an example below:
 
 ```scala
-@injectable("$taskService")
-class TaskService(val http: HttpService) {
-  // implement service methods.
-}
+trait UserScope extends Scope {
 
-object TaskServiceFactory extends Factory[TaskService] {
+  var id: String = js.native
+  var name: String = js.native
+  var email: String = js.native
+  var friends: js.Array[String] = js.native
 
-  override val name = "$taskService"
-
-  @inject
-  var http: HttpService = _
-
-  override def apply(): TaskService = new TaskService(http)
-}
-
-object TaskController extends Controller {
-
-  @inject
-  var service: TaskService = _
-
-  override def initialize() {
-    // Use the injected service.
-  }
+  var delete: js.Function = js.native
 }
 ```
 
-### Using Controllers
+Note that you cannot specify a default value for a property, or write an implementation 
+of a function of your scope trait, since ```Scope``` inherits from ```js.Object``` and Scala.js 
+does not support such an use case yet.
 
-For the sake of example, let's assume that you have a REST API url ```"/users/john"``` that produces a JSON output that could be unpickled to the following ```User``` case class :
-
-```scala
-@JSExportAll
-case class User(id : String, name : String, email : String, friends : Array[String])
-```
-
-To see an example of how such unpickling can be done, see [the TaskService from the TodoMVC sample](https://github.com/greencatsoft/scalajs-angular-todomvc/blob/master/scalajs/src/main/scala/todomvc/example/TaskService.scala)
-
-Normally, you'll need to retrieve some data from the server with the ```http``` service, and 
-make it available to the HTML template by assigning it to a property of the ```$scope```.
+So, typically, they are initialized from a constructor block, or inside the ```initialize```
+method in case of an object, as shown below:
 
 ```scala
-object UserDetailsController extends Controller with HttpServiceAware {
+@injectable("userDetailsCtrl")
+class UserDetailsController(scope: UserScope, http: HttpService) 
+  extends AbstractController[UserScope](scope) {
 
-  // If not overriden, it'll use the simple class name.
-  override val name = "UserDetailsCtrl"
+  val future: Future[User] = http.get("/users/john")
 
-  override type ScopeType = UserForm
-
-  @inject
-  var http: HttpService = _
-
-  override def initialize(scope: ScopeType) {
-    val future: Future[User] = http.get("/users/john")
-
-    future onComplete {
-      case Success(user) => {
-        scope.id = user.id
-        scope.name = user.name
-        scope.email = user.email
-        scope.friends = user.friends
-      }
-      case Failure(t) => println("An error has occured: " + t.getMessage)
+  future onComplete {
+    case Success(user) => {
+      scope.id = user.id
+      scope.name = user.name
+      scope.email = user.email
+      scope.friends = user.friends
     }
-
-    scope.dynamic.delete = () => userService.delete(scope.id)
+    case Failure(t) => 
+      println("An error has occured: " + t.getMessage)
   }
 
-  trait UserForm extends Scope {
-
-    var id: String = js.native
-    var name: String = js.native
-    var email: String = js.native
-
-    var friends: js.Array[String] = js.native
-  }
+  scope.delete = () => userService.delete(scope.id)
 }
 ```
-
-``ScopeAware`` (which is inherited from the ```Controller``` trait) defines an abstract 
-type member ```ScopeType``` with which you can access the scope object in a type safe 
-manner. Due to a restriction in Scala.js, the target class should inherit from the 
-```js.Object``` and you _cannot_ declare any methods in it. 
-
-To workaround the problem, you need to cast the ```scope``` variable into ```js.Dynamic``` 
-first, and accessing it in a dynamic manner. To facilitate the process, ```ScopeAware``` 
-provides ```scope.dynamic``` method, which returns a dynamic version of the same ```scope```
-variable.
-
-Alternatively, you can rewrite the above example in a more compact form as follows :
+By default, the controller instance is automatically exported to the associated scope 
+as ```controller``` variable. So, you can access an arbitrary method after you put 
+```@JSExport``` annotation on the method and on the controller class which encloses it: 
 
 ```scala
 @JSExport
-object UserDetailsController extends Controller {
-
-  @inject
-  var http: HttpService = _
-
-  override def initialize(scope : ScopeType) {
-    val future: Future[User] = http.get("/users/john")
-
-    future onComplete {
-      case Success(user) => {
-        scope.id = user.id
-        scope.name = user.name
-        scope.email = user.email
-        scope.friends = user.friends
-      }
-      case Failure(t) => println("An error has occured: " + t.getMessage)
-    }
-  }
-
+@injectable("userDetailsCtrl")
+class UserDetailsController(scope: UserScope, http: HttpService) 
+  extends AbstractController[UserScope](scope) {
+  ...
   @JSExport
-  def delete() {
-    userService.delete(scope.id)
-  }
-
-  trait ScopeType extends Scope {
-
-    var id: String = js.native
-    var name: String = js.native
-    var email: String = js.native
-    var friends: js.Array[String] = js.native
-  }
+  def delete(): Unit = userService.delete(scope.id)
 }
 ```
-It automatically exports the controller instance as ```controller``` variable in the 
-associated scope, which enables you to reference any methods or properties of the 
-current controller provided they are annotated with ```@JSExport``` (or ```@JSExportAll```).
-
-In the above example, you can reference the _delete_ method from your template 
-with _controller.delete()_.
+```html
+<div ng-controller="userDetailsCtrl">
+  ...
+  <button ng-click="controller.delete()">Delete</button>
+</div>
+```
 
 The same rule applies to the case when you use the ```controller-as``` syntax, because 
 you cannot directly refer to the controller instance due to a limitation in the 
@@ -226,6 +273,61 @@ implementation.
 
 So, if you have declared your controller as _TodoCtrl as todo_ for instance, you can 
 invoke its _checkAll()_ method with _todo.controller.checkAll()_(instead of _todo.checkAll()_).
+
+As a final note, ```Controller``` (and ```Directive```) provides implicit conversion
+from ```Scope``` to ```js.Dynamic``` via ```scope.dynamic``` method, so you can use 
+this feature to attach arbitrary properties or functions to the scope object without 
+declaring them first:
+
+```scala
+@injectable("userDetailsCtrl")
+class UserDetailsController(scope: Scope, http: HttpService) 
+  extends AbstractController[Scope](scope) {
+  ...
+  scope.dynamic.delete = () => userService.delete(scope.id)
+}
+```
+
+### Using Services and Factories
+
+It is recommended to implement service facades (or business delegates) are as plain 
+Scala objects without depending any Angular specific APIs, for the sake of cleaner 
+separation between layers.
+
+But if you need to inject Angular components to your service object, you might want them 
+to be registered as an Angular service as well, using ```Module.service``` method as 
+shown below:
+
+
+```scala
+@injectable("taskService")
+object TaskService extends Service {
+
+  var http: HttpService = _
+
+  override def initialize() {
+    ...
+  }
+}
+...
+module.service(TaskService)
+```
+
+Better still, you can rewrite the above example using ```Factory[A]``` instead:
+
+```scala
+@injectable("taskService")
+class TaskService(http: HttpService) {
+  ...
+}
+
+@injectable("taskService")
+class TaskServiceFactory(http: HttpService) extends Factory[TaskService] {
+  override def apply() = new TaskService(http)
+}
+...
+module.factory[TaskServiceFactory]
+```
 
 ### Using Directives
 
@@ -241,11 +343,10 @@ Scope related configuration can also be specified by mixing in one of ```Inherit
 _AngularJS_ API:
 
 ```scala
-object CustomerDirective extends ElementDirective 
+@injectable("myCustomer")
+class CustomerDirective extends ElementDirective 
   with TemplatedDirective with IsolatedScope {
  
-  override val name = "myCustomer"
-
   override val templateUrl = "my-customer-iso.html"
 
   bindings ++= Seq(
@@ -260,14 +361,11 @@ To implement a directive which manipulates DOM elements, you can override the ``
 method as follows:
 
 ```scala
-object LocationDirective extends AttributeDirective {
+@injectable("currentLocation")
+class LocationDirective(location: Location) extends AttributeDirective {
 
-  override val name = "currentLocation"
-
-  @inject
-  var location: Location = _
-
-  override def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes) {
+  override def link(
+    scope: ScopeType, elems: Seq[Element], attrs: Attributes, controllers: Controller[_]) {
     val elem = elems.head.asInstanceOf[HTMLElement]
 
     elem.innerHTML = location.path
@@ -277,32 +375,30 @@ object LocationDirective extends AttributeDirective {
 
 ### Using Filters
 
-To define a filter, you can declare an object which implements ```Filter``` trait, and override the ```filter``` method to handle the actual filtering:
+To define a filter, you can declare an object which implements ```Filter[A]``` trait, and 
+override the ```filter``` method to handle the actual filtering:
 
 ```scala
-object UpperCaseFilter extends Filter {
+@injectable("upper")
+class UpperCaseFilter extends Filter[String] {
 
-  override val name = "upper"
-
-  override def filter(text: String): String = text.toUpperCase
+  override def filter(item: String): String = item.toUpperCase
 }
 ```
 
-As with other types inheriting from the ```Service``` trait, you can inject dependencies to your filter instance using the ```@inject``` annotation, and it also provides an alternative ```filter``` method which takes additional arguments:
+As with other types inheriting from the ```Service``` trait, you can inject dependencies 
+to your filter instance using the ```@inject``` annotation, and it also provides an alternative 
+```filter``` method which takes additional arguments:
 
 ```scala
-object UpperCaseFilter extends Filter {
+@injectable("upper")
+class UpperCaseFilter(location: Location) extends Filter[String] {
 
-  override val name = "upper"
-
-  @inject
-  var location: Location = _
-
-  override def filter(text: String, args: Seq[Any]): String = 
+  override def filter(item: String, args: Seq[Any]) = 
     if (location.path.endsWith(args.head.toString)) 
-      text.toUpperCase
+      item.toUpperCase
     else
-      text.toLowerCase
+      item.toLowerCase
 }
 ```
 
@@ -311,29 +407,22 @@ object UpperCaseFilter extends Filter {
 Defining routing rules is quite straight forward, like the following example:
 
 ```scala
-object RoutingConfig extends Config {
+class RoutingConfig(routeProvider: RouteProvider) extends Config {
 
-  @inject
-  var routeProvider: RouteProvider = _
-
-  override def initialize() {
-    routeProvider
-      .when("/", Route("/assets/templates/home.html", "Home"))
-      .when("/signup", Route(SignUpController))
-      .when("/users", Route(UserListController))
-  }
+  routeProvider
+    .when("/", Route("/assets/templates/home.html", "Home"))
+    .when("/signup", "Sign up", "signupCtrl")
+    .when("/users", "Users", "usersCtrl")
 }
 ```
 
-_(Note that you'll need to 'ngRoute' in your dependency list, and angular-route.js in the 
+_(Note that you need to 'ngRoute' in your dependency list, and angular-route.js in the 
 html file for the above code to work)_
-
-You can make your controller implement the ```PageController``` trait and 
-register it directly to the ```routeProvider``` as shown above.
 
 ### Example Project
 
-There's an example implementation of [TodoMvc](http://www.todomvc.com) application as a separate project:
+There's an example implementation of [TodoMvc](http://www.todomvc.com) application as a 
+separate project:
 
 * https://github.com/greencatsoft/scalajs-angular-todomvc
 
