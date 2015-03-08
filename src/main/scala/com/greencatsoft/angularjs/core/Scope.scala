@@ -32,53 +32,15 @@ trait Scope extends js.Object {
   def $watchCollection(obj: js.Any, listener: js.Function): js.Function = js.native
 }
 
-trait Scoped {
-  this: Service =>
-
-  type ScopeType <: Scope
-
-  implicit class DynamicScope(scope: ScopeType) {
-
-    def dynamic = scope.asInstanceOf[js.Dynamic]
-  }
-}
-
-trait ScopeAware extends Initializable with Scoped {
-  this: Service =>
-
-  @inject
-  var rawScope: Scope = _
-
-  implicit var scope: ScopeType = _
-
-  abstract override def initialize() {
-    this.scope = rawScope.asInstanceOf[ScopeType]
-
-    super.initialize()
-
-    initialize(scope)
-  }
-
-  def initialize(scope: ScopeType): Unit = Unit
-}
-
 @injectable("$rootScope")
 trait RootScope extends Scope
 
-trait RootScopeAware extends Initializable with Scoped {
+trait ScopeOps {
   this: Service =>
 
-  @inject
-  var rawRootScope: RootScope = _
+  implicit class DynamicScope(scope: Scope) {
 
-  implicit var rootScope: ScopeType = _
-
-  override type ScopeType <: RootScope
-
-  abstract override def initialize() {
-    this.rootScope = rawRootScope.asInstanceOf[ScopeType]
-
-    super.initialize()
+    def dynamic = scope.asInstanceOf[js.Dynamic]
   }
 }
 

@@ -12,9 +12,9 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def config[A <: Config]: Module = macro angular.configFromClass[A]
 
-  def controller[A <: Controller](target: A): Module = macro angular.controller[A]
+  def controller[A <: Controller[_]](target: A): Module = macro angular.controller[A]
 
-  def controller[A <: Controller]: Module = macro angular.controllerFromClass[A]
+  def controller[A <: Controller[_]]: Module = macro angular.controllerFromClass[A]
 
   def directive[A <: Directive](target: A): Module = macro angular.directive[A]
 
@@ -30,7 +30,7 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def service[A <: Service](target: A): Module = macro angular.service[A]
 
-  def filter[A <: Filter](target: A): Module = macro angular.filter[A]
+  def filter[A <: Filter[_]](target: A): Module = macro angular.filter[A]
 
-  def filter[A <: Filter]: Module = macro angular.filterFromClass[A]
+  def filter[A <: Filter[_]]: Module = macro angular.filterFromClass[A]
 }

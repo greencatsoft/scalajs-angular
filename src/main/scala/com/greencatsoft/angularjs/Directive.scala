@@ -1,7 +1,7 @@
 package com.greencatsoft.angularjs
 
-import scala.language.experimental.macros
 import scala.language.implicitConversions
+import scala.language.experimental.macros
 import scala.scalajs.js
 import scala.scalajs.js.Any.{ fromBoolean, fromFunction2, fromFunction4, fromString, wrapArray }
 import scala.scalajs.js.UndefOr
@@ -10,12 +10,14 @@ import scala.scalajs.js.annotation.JSBracketAccess
 
 import org.scalajs.dom.Element
 
-import com.greencatsoft.angularjs.core.Scoped
+import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
 import com.greencatsoft.angularjs.internal.{ ConfigBuilder, Configuration, ServiceProxy }
 
-trait Directive extends Service with Function0[Configuration] with Scoped with ConfigBuilder {
+trait Directive extends Service with Function0[Configuration] with ScopeOps with ConfigBuilder {
 
   import internal.{ Angular => angular }
+
+  type ScopeType <: Scope
 
   override def apply(): Configuration = buildConfig()
 
@@ -28,10 +30,10 @@ trait Directive extends Service with Function0[Configuration] with Scoped with C
     config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controllers: UndefOr[js.Any]) => {
       controllers.toOption match {
         case Some(arr) if js.Array.isArray(arr) =>
-          val args = arr.asInstanceOf[js.Array[js.Any]].toSeq.map(ServiceProxy.unbind[Controller](_)).flatten
+          val args = arr.asInstanceOf[js.Array[js.Any]].toSeq.map(ServiceProxy.unbind[Controller[_]](_)).flatten
           link(bind(scope), elems, attrs, args: _*)
         case Some(c) =>
-          ServiceProxy.unbind[Controller](c) match {
+          ServiceProxy.unbind[Controller[_]](c) match {
             case Some(arg) => link(bind(scope), elems, attrs, arg)
             case _ => link(bind(scope), elems, attrs)
           }
@@ -44,11 +46,11 @@ trait Directive extends Service with Function0[Configuration] with Scoped with C
     super.buildConfig(config)
   }
 
-  def controller(): Option[js.Any] = None
+  def controller: Option[js.Any] = None
 
-  protected def proxy[A <: Controller](target: A): js.Any = macro ServiceProxy.newObjectWrapper[A]
+  protected def proxy[A <: Controller[ScopeType]](target: A): js.Any = macro ServiceProxy.newObjectWrapper[A]
 
-  def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Controller*): Unit = Unit
+  def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Controller[_]*): Unit = Unit
 }
 
 trait Attributes extends js.Object {

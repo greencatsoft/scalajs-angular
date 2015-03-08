@@ -23,21 +23,32 @@ object ServiceProxy {
     target.map(_.asInstanceOf[A]).toOption
   }
 
-  def identifier[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): String = {
+  def identifier[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Option[String] =
+    identifierFromType(c)(tag.tpe)
+
+  def identifierFromType(c: Context)(tpe: c.universe.Type): Option[String] = {
     import c.universe._
 
-    val arg = tag.tpe.typeSymbol.annotations.map(_.tree) collectFirst {
-      case a if a.tpe =:= typeOf[injectable] =>
-        a.children.tail
+    def find(hierarchy: List[Symbol]): Option[String] = hierarchy match {
+      case head :: tail =>
+        val arg = head.typeSignature.typeSymbol.annotations.map(_.tree) collectFirst {
+          case a if a.tpe =:= typeOf[injectable] =>
+            a.children.tail
+        }
+
+        val value = arg collectFirst {
+          case List(Literal(Constant(literal: String))) => literal
+        }
+
+        value match {
+          case Some(s) => Some(s)
+          case _ => find(tail)
+        }
+      case _ =>
+        None
     }
 
-    val value = arg collectFirst {
-      case List(Literal(Constant(literal: String))) => literal
-    }
-
-    value getOrElse {
-      c.abort(c.enclosingPosition, s"The specified type '${tag.tpe}' does not have @injectable annotation.")
-    }
+    find(tpe.baseClasses)
   }
 
   def variableDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol)] = {
@@ -62,13 +73,12 @@ object ServiceProxy {
         case ClassInfoType(_, _, sym) => sym.asType
       }
 
-      val members = normalizedType map { n =>
-        n.annotations.filter(_.tree.tpe =:= typeOf[injectable]).map(_.tree.children.tail) collect {
-          case List(Literal(Constant(literal: String))) => (literal, n.asType, s)
-        }
-      }
+      val members = for (
+        tpe <- normalizedType;
+        name <- identifierFromType(c)(tpe.typeSignature)
+      ) yield (name, tpe.asType, s)
 
-      members.toSeq.flatten
+      members.toSeq
     }
 
     names.toSeq.flatten
@@ -92,12 +102,14 @@ object ServiceProxy {
     }
 
     val members = normalizedTypes map { n =>
-      n.annotations.filter(_.tree.tpe =:= typeOf[injectable]).map(_.tree.children.tail) collect {
-        case List(Literal(Constant(literal: String))) => (literal, n.asType)
+      val name = identifierFromType(c)(n.typeSignature) getOrElse {
+        c.abort(c.enclosingPosition, s"The specified type '${n}' does not have @injectable annotation.")
       }
+
+      (name, n.asType)
     }
 
-    members.toSeq.flatten
+    members.toSeq
   }
 
   def newObjectWrapper[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] =
