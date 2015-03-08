@@ -411,8 +411,8 @@ class RoutingConfig(routeProvider: RouteProvider) extends Config {
 
   routeProvider
     .when("/", Route("/assets/templates/home.html", "Home"))
-    .when("/signup", "Sign up", "signupCtrl")
-    .when("/users", "Users", "usersCtrl")
+    .when("/signup", Route("/assets/templates/signup.html", "Sign up", "signupCtrl"))
+    .when("/users", Route("/assets/templates/users.html", "Users", "usersCtrl"))
 }
 ```
 
