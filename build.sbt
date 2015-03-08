@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).
     description := "AngularJS bindings for Scala.js.",
     organization := "com.greencatsoft",
     version := "0.4-SNAPSHOT",
-    scalaVersion := "2.11.5",
+    scalaVersion := "2.11.6",
     scalacOptions ++= Seq("-feature","-deprecation"),
     homepage := Some(url("http://github.com/greencatsoft/scalajs-angular")),
 
