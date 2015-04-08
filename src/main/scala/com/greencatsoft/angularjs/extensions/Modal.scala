@@ -18,6 +18,8 @@ trait ModalService extends js.Object {
 
 trait ModalOptions extends js.Object {
 
+  var template: String = js.native
+
   var templateUrl: String = js.native
 
   var controller: String = js.native
