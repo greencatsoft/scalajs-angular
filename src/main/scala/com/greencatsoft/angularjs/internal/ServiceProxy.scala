@@ -95,18 +95,19 @@ object ServiceProxy {
       c.abort(c.enclosingPosition, s"The specified type '${tag.tpe}' does not have a suitable constructor.")
     }
 
-    val argTypes = ctor.paramLists.head.map(_.typeSignature.dealias.typeSymbol.typeSignature)
-
-    val normalizedTypes = argTypes collect {
-      case ClassInfoType(_, _, sym) => sym.asType
+    val arguments = ctor.paramLists.head map { arg =>
+      (arg.name.toString, arg.typeSignature.dealias.typeSymbol.typeSignature)
     }
 
-    val members = normalizedTypes map { n =>
-      val name = identifierFromType(c)(n.typeSignature) getOrElse {
-        c.abort(c.enclosingPosition, s"The specified type '${n}' does not have @injectable annotation.")
-      }
+    val normalizedTypes = arguments collect {
+      case (name, ClassInfoType(_, _, sym)) => (name, sym.asType)
+    }
 
-      (name, n.asType)
+    val members = normalizedTypes map {
+      case (n, tpe) =>
+        val name = identifierFromType(c)(tpe.typeSignature) getOrElse n
+
+        (name, tpe.asType)
     }
 
     members.toSeq

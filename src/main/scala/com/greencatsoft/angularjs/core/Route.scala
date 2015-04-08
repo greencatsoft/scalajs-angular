@@ -24,6 +24,8 @@ trait Route extends js.Object {
   var controller: UndefOr[String] = js.native
 
   var redirectTo: UndefOr[String] = js.native
+
+  var resolve: js.Dictionary[js.Any] = js.native
 }
 
 object Route {
@@ -47,6 +49,7 @@ object Route {
     val route = new js.Object().asInstanceOf[Route]
 
     route.templateUrl = templateUrl
+    route.resolve = js.Dictionary.empty
 
     title.foreach(route.title = _)
     controller.foreach(route.controller = _)

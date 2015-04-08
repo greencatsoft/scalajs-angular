@@ -33,6 +33,8 @@ trait ModalOptions extends js.Object {
   var backdrop : Boolean = js.native
 
   var keyboard : Boolean = js.native
+
+  var resolve: js.Dictionary[js.Any] = js.native
 }
 
 object ModalOptions {
@@ -41,6 +43,7 @@ object ModalOptions {
     val options = new js.Object().asInstanceOf[ModalOptions]
 
     options.size = "lg"
+    options.resolve = js.Dictionary.empty
 
     options
   }
