@@ -1,8 +1,6 @@
 package com.greencatsoft.angularjs.core
 
-import scala.annotation.implicitNotFound
-import scala.concurrent.{ CanAwait, ExecutionContext, Future }
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.Any.fromFunction1
@@ -40,7 +38,7 @@ object Defer {
 
     private var completed = false
 
-    override def future: Future[A] = new Promise.DeferredFuture(defer.promise)
+    override def future: Future[A] = Promise.promise2future(defer.promise)
 
     override def isCompleted: Boolean = completed
 
@@ -73,39 +71,18 @@ trait Promise extends js.Object {
 
 object Promise {
 
-  implicit def promise2future[A](promise: Promise): Future[A] = new DeferredFuture[A](promise)
+  implicit def promise2future[A](promise: Promise): Future[A] = {
+    val p = concurrent.Promise[A]
 
-  class DeferredFuture[A](promise: Promise) extends Future[A] {
-
-    type Listener[U] = Try[A] => U
-
-    private var result: Option[Try[A]] = None
-
-    private var listeners: Seq[Listener[_]] = Seq.empty
-
-    private def notify(result: Try[A]): Option[Try[A]] = {
-      listeners.foreach(_(result))
-      Some(result)
+    def onSuccess(data: js.Any): js.Any = {
+      p.success(data.asInstanceOf[A])
+      data
     }
 
-    promise `then` { (r: js.Any) =>
-      this.result = notify(Success(r.asInstanceOf[A]))
-      r
-    } `catch` { (error: js.Any) =>
-      this.result = notify(Failure(wrapJavaScriptException(error)))
-    }
+    def onError(error: js.Any): Unit = p.failure(wrapJavaScriptException(error))
 
-    override def ready(atMost: Duration)(implicit permit: CanAwait): this.type =
-      throw new UnsupportedOperationException
+    promise.`then`(onSuccess _).`catch`(onError _)
 
-    override def result(atMost: Duration)(implicit permit: CanAwait): A =
-      throw new UnsupportedOperationException
-
-    override def isCompleted: Boolean = result.isDefined
-
-    override def onComplete[U](f: Listener[U])(implicit executor: ExecutionContext): Unit =
-      listeners +:= f
-
-    override def value: Option[Try[A]] = result
+    p.future
   }
 }

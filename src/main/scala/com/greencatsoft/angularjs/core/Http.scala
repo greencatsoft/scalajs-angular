@@ -1,17 +1,15 @@
 package com.greencatsoft.angularjs.core
 
-import scala.concurrent.{ CanAwait, ExecutionContext, Future }
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.scalajs.js.Any.{ fromFunction1, fromFunction5 }
 import scala.scalajs.js.UndefOr
-import scala.scalajs.js.Any.fromFunction1
+import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSExportAll
-import scala.scalajs.runtime.wrapJavaScriptException
-import scala.util.{ Failure, Success, Try }
 
 import com.greencatsoft.angularjs.Factory
-import com.greencatsoft.angularjs.core.HttpPromise.HttpResult
+import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
 import com.greencatsoft.angularjs.injectable
 
 @injectable("$http")
@@ -143,53 +141,109 @@ trait HttpInterceptorFactory extends Factory[HttpInterceptorFunctions] {
   }
 }
 
+case class HttpStatus(code: Int)
+
+object HttpStatus {
+  //From https://github.com/spray/spray/blob/master/spray-http/src/main/scala/spray/http/StatusCode.scala
+
+  val Continue = HttpStatus(100)
+  val SwitchingProtocols = HttpStatus(101)
+  val Processing = HttpStatus(102)
+
+  val Ok = HttpStatus(200)
+  val Created = HttpStatus(201)
+  val Accepted = HttpStatus(202)
+  val NonAuthoritativeInformation = HttpStatus(203)
+  val NoContent = HttpStatus(204)
+  val ResetContent = HttpStatus(205)
+  val PartialContent = HttpStatus(206)
+  val MultiStatus = HttpStatus(207)
+  val AlreadyReported = HttpStatus(208)
+  val IMUsed = HttpStatus(226)
+
+  val MultipleChoices = HttpStatus(300)
+  val MovedPermanently = HttpStatus(301)
+  val Found = HttpStatus(302)
+  val SeeOther = HttpStatus(303)
+  val NotModified = HttpStatus(304)
+  val UseProxy = HttpStatus(305)
+  val TemporaryRedirect = HttpStatus(307)
+  val PermanentRedirect = HttpStatus(308)
+
+  val BadRequest = HttpStatus(400)
+  val Unauthorized = HttpStatus(401)
+  val PaymentRequired = HttpStatus(402)
+  val Forbidden = HttpStatus(403)
+  val NotFound = HttpStatus(404)
+  val MethodNotAllowed = HttpStatus(405)
+  val NotAcceptable = HttpStatus(406)
+  val ProxyAuthenticationRequired = HttpStatus(407)
+  val RequestTimeout = HttpStatus(408)
+  val Conflict = HttpStatus(409)
+  val Gone = HttpStatus(410)
+  val LengthRequired = HttpStatus(411)
+  val PreconditionFailed = HttpStatus(412)
+  val EntityTooLarge = HttpStatus(413)
+  val RequestUriTooLong = HttpStatus(414)
+  val UnsupportedMediaType = HttpStatus(415)
+  val RequestedRangeNotSatisfiable = HttpStatus(416)
+  val ExpectationFailed = HttpStatus(417)
+  val EnhanceYourCalm = HttpStatus(420)
+  val UnprocessableEntity = HttpStatus(422)
+  val Locked = HttpStatus(423)
+  val FailedDependency = HttpStatus(424)
+  val UnorderedCollection = HttpStatus(425)
+  val UpgradeRequired = HttpStatus(426)
+  val PreconditionRequired = HttpStatus(428)
+  val TooManyRequests = HttpStatus(429)
+  val RequestHeaderFieldsTooLarge = HttpStatus(431)
+  val RetryWith = HttpStatus(449)
+  val BlockedByParentalControls = HttpStatus(450)
+  val UnavailableForLegalReasons = HttpStatus(451)
+
+  val InternalServerError = HttpStatus(500)
+  val NotImplemented = HttpStatus(501)
+  val BadGateway = HttpStatus(502)
+  val ServiceUnavailable = HttpStatus(503)
+  val GatewayTimeout = HttpStatus(504)
+  val HTTPVersionNotSupported = HttpStatus(505)
+  val VariantAlsoNegotiates = HttpStatus(506)
+  val InsufficientStorage = HttpStatus(507)
+  val LoopDetected = HttpStatus(508)
+  val BandwidthLimitExceeded = HttpStatus(509)
+  val NotExtended = HttpStatus(510)
+  val NetworkAuthenticationRequired = HttpStatus(511)
+  val NetworkReadTimeout = HttpStatus(598)
+  val NetworkConnectTimeout = HttpStatus(599)
+
+  implicit def int2HttpStatus(code: Int): HttpStatus = HttpStatus(code)
+}
+
+case class HttpException(status: HttpStatus, message: String) extends Exception
+
 object HttpPromise {
 
-  implicit def promise2future[A](promise: Promise): Future[A] = new HttpFuture[A](promise)
+  implicit def promise2future[A](promise: HttpPromise): Future[A] = {
+    val p = concurrent.Promise[A]
 
-  trait HttpResult extends js.Object {
+    def onSuccess(data: js.Any): Unit = p.success(data.asInstanceOf[A])
 
-    val config: js.Any = js.native
+    def onError(data: js.Any, status: Int, config: js.Any, headers: js.Any, statusText: UndefOr[String]): Unit =
+      p failure HttpException(status, statusText getOrElse s"Failed to process HTTP request: '$data'")
 
-    val data: js.Any = js.native
+    promise.success(onSuccess _).error(onError _)
 
-    val status: Int = js.native
-
-    val statusText: String = js.native
+    p.future
   }
+}
 
-  class HttpFuture[A](promise: Promise) extends Future[A] {
+trait HttpResult extends js.Object {
 
-    type Listener[U] = Try[A] => U
+  val config: js.Any = js.native
 
-    private var result: Option[Try[A]] = None
+  val data: js.Any = js.native
 
-    private var listeners: Seq[Listener[_]] = Seq.empty
+  val status: Int = js.native
 
-    private def notify(result: Try[A]): Option[Try[A]] = {
-      listeners.foreach(_(result))
-      Some(result)
-    }
-
-    promise `then` { (r: js.Any) =>
-      val httpResult = r.asInstanceOf[HttpResult]
-      this.result = notify(Success(httpResult.data.asInstanceOf[A]))
-      r
-    } `catch` { (error: js.Any) =>
-      this.result = notify(Failure(wrapJavaScriptException(error)))
-    }
-
-    override def ready(atMost: Duration)(implicit permit: CanAwait): this.type =
-      throw new UnsupportedOperationException
-
-    override def result(atMost: Duration)(implicit permit: CanAwait): A =
-      throw new UnsupportedOperationException
-
-    override def isCompleted: Boolean = result.isDefined
-
-    override def onComplete[U](f: Listener[U])(implicit executor: ExecutionContext): Unit =
-      listeners +:= f
-
-    override def value: Option[Try[A]] = result
-  }
+  val statusText: String = js.native
 }
