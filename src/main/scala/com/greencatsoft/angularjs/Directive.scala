@@ -27,15 +27,21 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
       scope
     }
 
+    def toController(obj: js.Any): Either[Controller[_ <: Scope], js.Any] =
+      ServiceProxy.unbind[Controller[_ <: Scope]](obj) match {
+        case Some(c) => Left(c)
+        case None => Right(obj)
+      }
+
     config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controllers: UndefOr[js.Any]) => {
       controllers.toOption match {
         case Some(arr) if js.Array.isArray(arr) =>
-          val args = arr.asInstanceOf[js.Array[js.Any]].toSeq.map(ServiceProxy.unbind[Controller[_]](_)).flatten
+          val args = arr.asInstanceOf[js.Array[js.Any]].toSeq.map(toController)
           link(bind(scope), elems, attrs, args: _*)
         case Some(c) =>
-          ServiceProxy.unbind[Controller[_]](c) match {
-            case Some(arg) => link(bind(scope), elems, attrs, arg)
-            case _ => link(bind(scope), elems, attrs)
+          ServiceProxy.unbind[Controller[_ <: Scope]](c) match {
+            case Some(arg) => link(bind(scope), elems, attrs, Left(arg))
+            case _ => link(bind(scope), elems, attrs, Right(c))
           }
         case None => link(bind(scope), elems, attrs)
       }
@@ -52,7 +58,9 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
 
   protected def proxy[A <: Controller[ScopeType]](target: A): js.Any = macro ServiceProxy.newObjectWrapper[A]
 
-  def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Controller[_]*): Unit = Unit
+  def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes): Unit = Unit
+
+  def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Either[Controller[_], js.Any]*): Unit = link(scope, elems, attrs)
 }
 
 trait Attributes extends js.Object {
