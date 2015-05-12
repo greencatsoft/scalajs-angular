@@ -19,6 +19,10 @@ trait HttpService extends js.Object {
 
   def get(url: String, config: HttpConfig): HttpPromise = js.native
 
+  def head(url: String): HttpPromise = js.native
+
+  def head(url: String, config: HttpConfig): HttpPromise = js.native
+
   def post(url: String): HttpPromise = js.native
 
   def post(url: String, data: js.Any): HttpPromise = js.native
