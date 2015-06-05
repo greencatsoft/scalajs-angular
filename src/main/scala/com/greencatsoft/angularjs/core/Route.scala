@@ -19,6 +19,8 @@ trait Route extends js.Object {
 
   var title: UndefOr[String] = js.native
 
+  var template: UndefOr[String] = js.native
+
   var templateUrl: UndefOr[String] = js.native
 
   var controller: UndefOr[String] = js.native
