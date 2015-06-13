@@ -32,7 +32,9 @@ trait Resource extends js.Object {
 
 trait ResourceResponse extends js.Object {
 
-  var $promise: Promise = js.native
+  def $promise: Promise = js.native
+
+  def $resolved: Boolean = js.native
 }
 
 object ResourceResponse {
