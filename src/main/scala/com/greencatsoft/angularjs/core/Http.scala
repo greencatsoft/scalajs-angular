@@ -46,6 +46,16 @@ trait HttpService extends js.Object {
 
 trait HttpConfig extends js.Object {
 
+  var url: String = js.native
+
+  var params: js.Dictionary[Any] = js.native
+
+  var method: String = js.native
+
+  var timeout: Int = js.native
+
+  var withCredentials: Boolean = js.native
+
   var cache: Boolean = js.native
 
   var responseType: String = js.native

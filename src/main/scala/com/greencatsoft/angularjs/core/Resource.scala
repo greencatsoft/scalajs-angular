@@ -36,11 +36,6 @@ trait ResourceService extends js.Object {
 }
 trait JsonConfig extends HttpConfig {
   var isArray: Boolean = js.native
-  var params: js.Dictionary[Any] = js.native
-  var method: String = js.native
-  var url: String = js.native
-  var timeout: Int = js.native
-  var withCredentials: Boolean = js.native
 }
 
 object JsonConfig {
