@@ -9,35 +9,35 @@ import com.greencatsoft.angularjs.injectable
 
 trait Resource extends js.Object {
 
-  def get(): JsonResult = js.native
+  def get(): ResourceResponse = js.native
 
-  def get(parameters: js.Dictionary[Any]): JsonResult = js.native
+  def get(parameters: js.Dictionary[Any]): ResourceResponse = js.native
 
-  def save(data: js.Any): JsonResult = js.native
+  def save(data: js.Any): ResourceResponse = js.native
 
-  def save(parameters: js.Dictionary[Any], data: js.Any): JsonResult = js.native
+  def save(parameters: js.Dictionary[Any], data: js.Any): ResourceResponse = js.native
 
-  def query(): JsonResult = js.native
+  def query(): ResourceResponse = js.native
 
-  def query(parameters: js.Dictionary[Any]): JsonResult = js.native
+  def query(parameters: js.Dictionary[Any]): ResourceResponse = js.native
 
-  def remove(data: js.Any): JsonResult = js.native
+  def remove(data: js.Any): ResourceResponse = js.native
 
-  def remove(parameters: js.Dictionary[Any], data: js.Any): JsonResult = js.native
+  def remove(parameters: js.Dictionary[Any], data: js.Any): ResourceResponse = js.native
 
-  def delete(data: js.Any): JsonResult = js.native
+  def delete(data: js.Any): ResourceResponse = js.native
 
-  def delete(parameters: js.Dictionary[Any], data: js.Any): JsonResult = js.native
+  def delete(parameters: js.Dictionary[Any], data: js.Any): ResourceResponse = js.native
 }
 
-trait JsonResult extends js.Object {
+trait ResourceResponse extends js.Object {
 
   var $promise: Promise = js.native
 }
 
-object JsonResult {
+object ResourceResponse {
 
-  implicit def promise2future[A](json: JsonResult): Future[A] = json.$promise
+  implicit def promise2future[A](json: ResourceResponse): Future[A] = json.$promise
 }
 
 @injectable("$resource")
@@ -47,18 +47,24 @@ trait ResourceService extends js.Object {
 
   def apply(url: String, paramDefaults: js.Dictionary[Any]): Any = js.native
 
-  def apply(url: String, paramDefaults: js.Dictionary[Any], actions: js.Dictionary[JsonConfig]): Any = js.native
+  def apply(url: String, paramDefaults: js.Dictionary[Any], actions: js.Dictionary[ResourceRequestConfig]): Any = js.native
 }
 
-trait JsonConfig extends HttpConfig {
+trait ResourceRequestConfig extends HttpConfig {
 
   var isArray: Boolean = js.native
 }
 
-object JsonConfig {
+object ResourceRequestConfig {
 
-  def apply(isArray: Boolean = false, params: js.Dictionary[Any] = null, method: String = "GET", url: String = null, timeout: Int = -1): JsonConfig = {
-    val t = js.Dynamic.literal.asInstanceOf[JsonConfig]
+  def apply(
+    isArray: Boolean = false,
+    params: js.Dictionary[Any] = null,
+    method: String = "GET",
+    url: String = null,
+    timeout: Int = -1): ResourceRequestConfig = {
+
+    val t = js.Dynamic.literal.asInstanceOf[ResourceRequestConfig]
 
     if (!isArray) t.isArray = isArray
     if (params != null) t.params = params
