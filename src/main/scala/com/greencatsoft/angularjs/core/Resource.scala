@@ -9,25 +9,34 @@ import com.greencatsoft.angularjs.injectable
 
 trait Resource extends js.Object {
 
-  def get(): ResourceResponse = js.native
+  import Resource._
 
-  def get(parameters: js.Dictionary[Any]): ResourceResponse = js.native
+  def get(success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def save(data: js.Any): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any], success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def save(parameters: js.Dictionary[Any], data: js.Any): ResourceResponse = js.native
+  def save(postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def query(): ResourceResponse = js.native
+  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def query(parameters: js.Dictionary[Any]): ResourceResponse = js.native
+  def query(success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def remove(data: js.Any): ResourceResponse = js.native
+  def query(parameters: js.Dictionary[Any], success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def remove(parameters: js.Dictionary[Any], data: js.Any): ResourceResponse = js.native
+  def remove(postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def delete(data: js.Any): ResourceResponse = js.native
+  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
 
-  def delete(parameters: js.Dictionary[Any], data: js.Any): ResourceResponse = js.native
+  def delete(postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+
+  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+}
+
+object Resource {
+
+  type SuccessHandler = js.Function2[js.Any, js.Any, Unit]
+
+  type ErrorHandler = js.Function1[js.Any, Unit]
 }
 
 trait ResourceResponse extends js.Object {
