@@ -1,11 +1,11 @@
-package com.greencatsoft.angularjs.extensions
+package com.greencatsoft.angularjs.core
 
 import scala.language.implicitConversions
-import scala.scalajs.js
-import com.greencatsoft.angularjs.{ injectable}
-import com.greencatsoft.angularjs.core.{ HttpConfig }
 import scala.concurrent.Future
-import com.greencatsoft.angularjs.core.Promise
+import scala.scalajs.js
+
+import com.greencatsoft.angularjs.injectable
+import com.greencatsoft.angularjs.core.Promise.promise2future
 
 trait Resource extends js.Object {
   def get(): JsonResult = js.native
