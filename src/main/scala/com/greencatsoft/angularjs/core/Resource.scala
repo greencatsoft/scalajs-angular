@@ -11,25 +11,65 @@ trait Resource extends js.Object {
 
   import Resource._
 
-  def get(success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def get(): ResourceResponse = js.native
 
-  def get(parameters: js.Dictionary[Any], success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def get(success: SuccessHandler): ResourceResponse = js.native
 
-  def save(postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def get(success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any]): ResourceResponse = js.native
 
-  def query(success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse = js.native
 
-  def query(parameters: js.Dictionary[Any], success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
 
-  def remove(postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def save(postData: js.Any): ResourceResponse = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def save(postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
 
-  def delete(postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def save(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler = null, error: ErrorHandler = null): ResourceResponse = js.native
+  def save(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse = js.native
+
+  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+
+  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+
+  def query(): ResourceResponse = js.native
+
+  def query(success: SuccessHandler): ResourceResponse = js.native
+
+  def query(success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+
+  def query(parameters: js.Dictionary[Any]): ResourceResponse = js.native
+
+  def query(parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse = js.native
+
+  def query(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+
+  def remove(postData: js.Any): ResourceResponse = js.native
+
+  def remove(postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+
+  def remove(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+
+  def remove(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse = js.native
+
+  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+
+  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+
+  def delete(postData: js.Any): ResourceResponse = js.native
+
+  def delete(postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+
+  def delete(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+
+  def delete(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse = js.native
+
+  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+
+  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
 }
 
 object Resource {
