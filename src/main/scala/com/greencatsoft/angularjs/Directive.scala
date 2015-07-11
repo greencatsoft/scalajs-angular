@@ -54,10 +54,6 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
 
   def controller: Option[js.Any] = None
 
-  protected def proxy[A <: Controller[ScopeType]]: js.Any = macro ServiceProxy.newClassWrapper[A]
-
-  protected def proxy[A <: Controller[ScopeType]](target: A): js.Any = macro ServiceProxy.newObjectWrapper[A]
-
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes): Unit = Unit
 
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Either[Controller[_], js.Any]*): Unit = link(scope, elems, attrs)
