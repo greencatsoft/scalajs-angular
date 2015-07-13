@@ -3,5 +3,6 @@ target
 .classpath
 .settings
 .cache
+.cache-main
 .README.md.html
 /bin/
