@@ -101,8 +101,8 @@ class TaskServiceFactory(http: HttpService) extends Factory[TaskService] {
 }
 ```
 
-_Note: Although the API itself supports method chaining, it does not work correctly in this 
-version due to a limitation in the current macro implementation (possibly caused by 
+_Note: Unlike the original API, ```Module``` does not supports method chaining, due to a 
+limitation in the current macro implementation (possibly caused by 
 [this issue](https://issues.scala-lang.org/browse/SI-7245))._
 
 ### Managing Dependencies
