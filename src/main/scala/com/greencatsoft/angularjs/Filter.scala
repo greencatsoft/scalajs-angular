@@ -12,7 +12,7 @@ trait Filter[A] extends Factory[js.Function] {
     arg8: UndefOr[Any], arg9: UndefOr[Any]) =>
     filter(item, Seq(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9).map(_.toList).filterNot(_.isEmpty).map(_.head))
 
-  def filter(item: A): A = item
+  def filter(item: A): Any = item
 
-  def filter(item: A, args: Seq[Any]): A = filter(item)
+  def filter(item: A, args: Seq[Any]): Any = filter(item)
 }
