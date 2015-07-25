@@ -62,7 +62,13 @@ trait HttpConfig extends js.Object {
 
   var headers: js.Dictionary[String] = js.native
 
-  var transformResponse: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
+  // From AngularJS docs: https://docs.angularjs.org/api/ng/service/$http
+  // transformResponse – {function(data, headersGetter,
+  // status)|Array.<function(data, headersGetter, status)>} – transform
+  // function or an array of such functions. The transform function takes the
+  // http response body, headers and status and returns its transformed
+  // (typically deserialized) version.
+  var transformResponse: js.Array[js.Function3[js.Any, js.Any, js.Any, js.Any]] = js.native
 
   var transformRequest: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
 }
