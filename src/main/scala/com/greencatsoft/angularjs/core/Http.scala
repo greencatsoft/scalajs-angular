@@ -62,7 +62,7 @@ trait HttpConfig extends js.Object {
 
   var headers: js.Dictionary[String] = js.native
 
-  var transformResponse: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
+  var transformResponse: js.Array[js.Function3[js.Any, js.Any, js.Any, js.Any]] = js.native
 
   var transformRequest: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
 }
