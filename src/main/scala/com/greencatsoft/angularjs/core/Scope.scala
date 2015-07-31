@@ -2,7 +2,7 @@ package com.greencatsoft.angularjs.core
 
 import scala.scalajs.js
 
-import com.greencatsoft.angularjs.{ Initializable, Service, inject, injectable }
+import com.greencatsoft.angularjs.{ Service, injectable }
 
 @injectable("$scope")
 trait Scope extends js.Object {

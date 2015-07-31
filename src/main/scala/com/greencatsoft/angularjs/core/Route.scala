@@ -1,6 +1,5 @@
 package com.greencatsoft.angularjs.core
 
-import scala.reflect.ClassTag
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.any2undefOrA
