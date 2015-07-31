@@ -1,10 +1,18 @@
 package com.greencatsoft.angularjs.core
 
 import scala.scalajs.js
+import scala.scalajs.js.annotation.JSBracketAccess
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.any2undefOrA
 
 import com.greencatsoft.angularjs.injectable
+
+@injectable("$routeParams")
+trait RouteParams extends js.Object {
+
+  @JSBracketAccess
+  def apply(key: String): js.Any = js.native
+}
 
 @injectable("$routeProvider")
 trait RouteProvider extends js.Object {
