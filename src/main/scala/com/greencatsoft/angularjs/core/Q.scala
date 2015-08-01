@@ -12,30 +12,24 @@ import com.greencatsoft.angularjs.injectable
 @injectable("$q")
 trait Q extends js.Object {
 
-  def defer(): Defer = js.native
+  def defer[T](): Defer[T] = js.native
 
-  def promise(): Promise = js.native
-
-  def reject(reason: js.Any): Promise = js.native
 }
 
-trait Defer extends js.Object {
+trait Defer[T] extends js.Object {
 
-  def resolve(value: js.Any): Unit = js.native
+  def resolve(value: T): Unit = js.native
 
   def reject(reason: String): Unit = js.native
 
-  def notify(value: js.Any): Unit = js.native
+  def notify(value: T): Unit = js.native
 
-  val promise: Promise = js.native
+  def promise: Promise[T] = js.native
 }
 
 object Defer {
 
-  implicit def defer2promise[A](defer: Defer): scala.concurrent.Promise[A] = new DeferredPromise[A](defer)
-
-  class DeferredPromise[A](defer: Defer) extends scala.concurrent.Promise[A] {
-
+  implicit class DeferredPromise[A](defer: Defer[A]) extends scala.concurrent.Promise[A] {
     private var completed = false
 
     override def future: Future[A] = Promise.promise2future(defer.promise)
@@ -45,9 +39,9 @@ object Defer {
     override def tryComplete(result: Try[A]): Boolean = if (isCompleted) false else {
       result match {
         case Success(r) =>
-          defer.resolve(r.asInstanceOf[js.Any])
+          defer.resolve(r)
         case Failure(e) =>
-          defer.reject(e.getMessage())
+          defer.reject(e.getMessage)
       }
 
       this.completed = true
@@ -56,30 +50,30 @@ object Defer {
   }
 }
 
-trait Promise extends js.Object {
+trait Promise[T] extends js.Object {
 
-  def `then`(successCallback: js.Function1[js.Any, js.Any]): this.type = js.native
+  def `then`(successCallback: js.Function1[T, T]): this.type = js.native
 
-  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit]): this.type = js.native
+  def `then`(successCallback: js.Function1[T, T], errorCallback: js.Function1[T, Unit]): this.type = js.native
 
-  def `then`(successCallback: js.Function1[js.Any, js.Any], errorCallback: js.Function1[js.Any, Unit], notifyCallback: js.Function1[js.Any, Unit]): this.type = js.native
+  def `then`(successCallback: js.Function1[T, T], errorCallback: js.Function1[T, Unit], notifyCallback: js.Function1[T, Unit]): this.type = js.native
 
-  def `catch`(errorCallback: js.Function1[js.Any, Unit]): this.type = js.native
+  def `catch`(errorCallback: js.Function1[T, Unit]): this.type = js.native
 
-  def `finally`(callback: js.Function1[js.Any, Unit]): Unit = js.native
+  def `finally`(callback: js.Function1[T, Unit]): Unit = js.native
 }
 
 object Promise {
 
-  implicit def promise2future[A](promise: Promise): Future[A] = {
-    val p = concurrent.Promise[A]
+  implicit def promise2future[A](promise: Promise[A]): Future[A] = {
+    val p = concurrent.Promise[A]()
 
-    def onSuccess(data: js.Any): js.Any = {
-      p.success(data.asInstanceOf[A])
+    def onSuccess(data: A): A = {
+      p.success(data)
       data
     }
 
-    def onError(error: js.Any): Unit = p.failure(wrapJavaScriptException(error))
+    def onError(error: A): Unit = p.failure(wrapJavaScriptException(error))
 
     promise.`then`(onSuccess _).`catch`(onError _)
 
