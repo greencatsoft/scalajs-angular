@@ -12,6 +12,9 @@ trait RouteParams extends js.Object {
 
   @JSBracketAccess
   def apply(key: String): js.Any = js.native
+
+  @JSBracketAccess
+  def get(key: String): UndefOr[js.Any] = js.native
 }
 
 @injectable("$routeProvider")
