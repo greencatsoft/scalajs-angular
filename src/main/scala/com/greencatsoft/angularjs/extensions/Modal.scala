@@ -58,7 +58,7 @@ trait ModalInstance extends js.Object {
 
   def dismiss(reason: js.Any): Unit = js.native
 
-  def result: Promise = js.native
+  def result: Promise[_] = js.native
 
-  def opened: Promise = js.native
+  def opened: Promise[_] = js.native
 }

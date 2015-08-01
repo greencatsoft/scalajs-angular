@@ -15,7 +15,7 @@ trait ModelController extends js.Object {
 
   var $validators: js.Dictionary[js.Function] = js.native
 
-  var $asyncValidators: js.Dictionary[js.Function2[js.Any, UndefOr[String], Promise]] = js.native
+  var $asyncValidators: js.Dictionary[js.Function2[js.Any, UndefOr[String], Promise[_]]] = js.native
 
   def $setValidity(validationErrorKey: String, isValid: Boolean): Unit = js.native
 

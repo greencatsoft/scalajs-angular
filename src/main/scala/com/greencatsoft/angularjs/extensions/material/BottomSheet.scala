@@ -9,16 +9,18 @@ import scala.scalajs.js
 /** @see https://material.angularjs.org/#/api/material.components.bottomSheet/service/\$mdBottomSheet
   */
 @injectable("$mdBottomSheet")
-trait BottomSheet extends js.Object {
+trait BottomSheet extends BottomSheetHideOrCancel {
 
   /** Show a bottom sheet with the specified options.
     *
     * @param options An options object, with the following properties:
     * @return A promise that can be resolved with \$mdBottomSheet.hide() or rejected with \$mdBottomSheet.cancel().
     */
-  def show(options: BottomSheetOptions): Promise = js.native
+  def show(options: BottomSheetOptions): Promise[BottomSheetHideOrCancel] = js.native
+}
 
-  /** Hide the existing bottom sheet and resolve the promise returned from \$mdBottomSheet.show().
+trait BottomSheetHideOrCancel extends js.Object {
+    /** Hide the existing bottom sheet and resolve the promise returned from \$mdBottomSheet.show().
     *
     * @param response An argument for the resolved promise.
     */
