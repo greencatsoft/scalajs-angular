@@ -7,69 +7,76 @@ import scala.scalajs.js
 import com.greencatsoft.angularjs.core.Promise.promise2future
 import com.greencatsoft.angularjs.injectable
 
-trait Resource extends js.Object {
+trait Resource extends BaseEnhancedResource[js.Any, ResourceResponse, ResourceResponse] {
+  
+}
+
+trait EnhancedResource[A] extends BaseEnhancedResource[A, EnhancedResourceResponse[A], EnhancedResourceResponse[js.Array[A]]] {
+
+}
+trait BaseEnhancedResource[A,B <: EnhancedResourceResponse[_], C <: EnhancedResourceResponse[_]] extends js.Object {
 
   import Resource._
 
-  def get(): ResourceResponse = js.native
+  def get(): B = js.native
 
-  def get(success: SuccessHandler): ResourceResponse = js.native
+  def get(success: SuccessHandler): B = js.native
 
-  def get(success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def get(success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def get(parameters: js.Dictionary[Any]): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any]): B = js.native
 
-  def get(parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any], success: SuccessHandler): B = js.native
 
-  def get(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def get(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def save(postData: js.Any): ResourceResponse = js.native
+  def save(postData: js.Any): B = js.native
 
-  def save(postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+  def save(postData: js.Any, success: SuccessHandler): B = js.native
 
-  def save(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def save(postData: js.Any, success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse = js.native
+  def save(parameters: js.Dictionary[Any], postData: js.Any): B = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): B = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def query(): ResourceResponse = js.native
+  def query(): C = js.native
 
-  def query(success: SuccessHandler): ResourceResponse = js.native
+  def query(success: SuccessHandler): C = js.native
 
-  def query(success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def query(success: SuccessHandler, error: ErrorHandler): C = js.native
 
-  def query(parameters: js.Dictionary[Any]): ResourceResponse = js.native
+  def query(parameters: js.Dictionary[Any]): C = js.native
 
-  def query(parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse = js.native
+  def query(parameters: js.Dictionary[Any], success: SuccessHandler): C = js.native
 
-  def query(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def query(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): C = js.native
 
-  def remove(postData: js.Any): ResourceResponse = js.native
+  def remove(postData: js.Any): B = js.native
 
-  def remove(postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+  def remove(postData: js.Any, success: SuccessHandler): B = js.native
 
-  def remove(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def remove(postData: js.Any, success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse = js.native
+  def remove(parameters: js.Dictionary[Any], postData: js.Any): B = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): B = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def delete(postData: js.Any): ResourceResponse = js.native
+  def delete(postData: js.Any): B = js.native
 
-  def delete(postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+  def delete(postData: js.Any, success: SuccessHandler): B = js.native
 
-  def delete(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def delete(postData: js.Any, success: SuccessHandler, error: ErrorHandler): B = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse = js.native
+  def delete(parameters: js.Dictionary[Any], postData: js.Any): B = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse = js.native
+  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): B = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse = js.native
+  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): B = js.native
 }
 
 object Resource {
@@ -79,15 +86,23 @@ object Resource {
   type ErrorHandler = js.Function1[js.Any, Unit]
 }
 
-trait ResourceResponse extends js.Object {
+trait EnhancedResourceResponse[A] extends js.Object {
 
   def $promise: Promise = js.native
 
   def $resolved: Boolean = js.native
 }
 
-object ResourceResponse {
+trait ResourceResponse extends EnhancedResourceResponse[Any] {
 
+}
+
+object EnhancedResourceResponse {
+
+  implicit def promise2future[A](json: EnhancedResourceResponse[A]): Future[A] = json.$promise
+}
+
+object ResourceResponse {
   implicit def promise2future[A](json: ResourceResponse): Future[A] = json.$promise
 }
 
