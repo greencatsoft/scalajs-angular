@@ -63,6 +63,14 @@ lazy val root = (project in file(".")).
           <name>Reid Spencer</name>
           <url>https://github.com/reid-spencer</url>
         </contributor>
+        <contributor>
+          <name>Johannes Kastner</name>
+          <url>https://github.com/jokaICS</url>
+        </contributor>
+        <contributor>
+          <name>math85360</name>
+          <url>https://github.com/math85360</url>
+        </contributor>
       </contributors>
     )
   )
