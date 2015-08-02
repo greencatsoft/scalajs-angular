@@ -50,7 +50,7 @@ object FileUploadConfig {
   }
 }
 
-trait FileUploadPromise extends HttpPromise {
+trait FileUploadPromise extends HttpPromise[js.Any] {
 
   def progress(listener: js.Function1[ProgressEvent, Unit]): this.type = js.native
 

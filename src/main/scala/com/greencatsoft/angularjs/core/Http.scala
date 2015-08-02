@@ -7,41 +7,41 @@ import scala.scalajs.js.Any.{ fromFunction1, fromFunction5 }
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSExportAll
-
 import com.greencatsoft.angularjs.Factory
 import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
 import com.greencatsoft.angularjs.injectable
+import com.greencatsoft.angularjs.core.Defer.DeferredPromise
 
 @injectable("$http")
 trait HttpService extends js.Object {
 
-  def get(url: String): HttpPromise = js.native
+  def get[T](url: String): HttpPromise[T] = js.native
 
-  def get(url: String, config: HttpConfig): HttpPromise = js.native
+  def get[T](url: String, config: HttpConfig): HttpPromise[T] = js.native
 
-  def head(url: String): HttpPromise = js.native
+  def head[T](url: String): HttpPromise[T] = js.native
 
-  def head(url: String, config: HttpConfig): HttpPromise = js.native
+  def head[T](url: String, config: HttpConfig): HttpPromise[T] = js.native
 
-  def post(url: String): HttpPromise = js.native
+  def post[T](url: String): HttpPromise[T] = js.native
 
-  def post(url: String, data: js.Any): HttpPromise = js.native
+  def post[T](url: String, data: js.Any): HttpPromise[T] = js.native
 
-  def post(url: String, data: js.Any, config: HttpConfig): HttpPromise = js.native
+  def post[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
 
-  def jsonp(url: String, config: HttpConfig): HttpPromise = js.native
+  def jsonp[T](url: String, config: HttpConfig): HttpPromise[T] = js.native
 
-  def put(url: String): HttpPromise = js.native
+  def put[T](url: String): HttpPromise[T] = js.native
 
-  def put(url: String, data: js.Any): HttpPromise = js.native
+  def put[T](url: String, data: js.Any): HttpPromise[T] = js.native
 
-  def put(url: String, data: js.Any, config: HttpConfig): HttpPromise = js.native
+  def put[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
 
-  def delete(url: String): HttpPromise = js.native
+  def delete[T](url: String): HttpPromise[T] = js.native
 
-  def delete(url: String, data: js.Any): HttpPromise = js.native
+  def delete[T](url: String, data: js.Any): HttpPromise[T] = js.native
 
-  def delete(url: String, data: js.Any, config: HttpConfig): HttpPromise = js.native
+  def delete[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
 }
 
 trait HttpConfig extends js.Object {
@@ -104,52 +104,52 @@ trait HttpProvider extends js.Object {
   var interceptors: js.Array[String] = js.native
 }
 
-trait HttpPromise extends Promise {
+trait HttpPromise[T] extends Promise[T] {
 
-  def success(callback: js.Function1[js.Any, Unit]): this.type = js.native
+  def success(callback: js.Function1[T, Unit]): this.type = js.native
 
-  def success(callback: js.Function2[js.Any, Int, Unit]): this.type = js.native
+  def success(callback: js.Function2[T, Int, Unit]): this.type = js.native
 
-  def success(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type = js.native
+  def success(callback: js.Function3[T, js.Any, Int, Unit]): this.type = js.native
 
-  def success(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type = js.native
+  def success(callback: js.Function4[T, Int, js.Any, js.Any, Unit]): this.type = js.native
 
-  def success(callback: js.Function5[js.Any, Int, js.Any, js.Any, js.Any, Unit]): this.type = js.native
+  def success(callback: js.Function5[T, Int, js.Any, js.Any, js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function1[js.Any, Unit]): this.type = js.native
+  def error(callback: js.Function1[T, Unit]): this.type = js.native
 
-  def error(callback: js.Function2[js.Any, Int, Unit]): this.type = js.native
+  def error(callback: js.Function2[T, Int, Unit]): this.type = js.native
 
-  def error(callback: js.Function3[js.Any, js.Any, Int, Unit]): this.type = js.native
+  def error(callback: js.Function3[T, js.Any, Int, Unit]): this.type = js.native
 
-  def error(callback: js.Function4[js.Any, Int, js.Any, js.Any, Unit]): this.type = js.native
+  def error(callback: js.Function4[T, Int, js.Any, js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function5[js.Any, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
+  def error(callback: js.Function5[T, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
 }
 
-trait HttpInterceptor {
+trait HttpInterceptor[T] {
 
   def q: Q
 
   def request(config: HttpConfig): HttpConfig = config
 
-  def requestError(rejection: HttpResult): Promise = q.reject(rejection)
+  def requestError(rejection: HttpResult): Promise[T] = q.reject(rejection)
 
   def response(response: HttpResult): HttpResult = response
 
-  def responseError(rejection: HttpResult): Promise = q.reject(rejection)
+  def responseError(rejection: HttpResult): Promise[T] = q.reject(rejection)
 }
 
 @JSExportAll
 case class HttpInterceptorFunctions(
   request: js.Function1[HttpConfig, HttpConfig],
-  requestError: js.Function1[HttpResult, Promise],
+  requestError: js.Function1[HttpResult, Promise[_]],
   response: js.Function1[HttpResult, HttpResult],
-  responseError: js.Function1[HttpResult, Promise])
+  responseError: js.Function1[HttpResult, Promise[_]])
 
 trait HttpInterceptorFactory extends Factory[HttpInterceptorFunctions] {
 
-  implicit def toInterceptorFunctions(interceptor: HttpInterceptor): HttpInterceptorFunctions = {
+  implicit def toInterceptorFunctions[T](interceptor: HttpInterceptor[T]): HttpInterceptorFunctions = {
     import interceptor._
     HttpInterceptorFunctions(request _, requestError _, response _, responseError _)
   }
@@ -237,12 +237,12 @@ case class HttpException(status: HttpStatus, message: String) extends Exception
 
 object HttpPromise {
 
-  implicit def promise2future[A](promise: HttpPromise): Future[A] = {
+  implicit def promise2future[A](promise: HttpPromise[A]): Future[A] = {
     val p = concurrent.Promise[A]
 
-    def onSuccess(data: js.Any): Unit = p.success(data.asInstanceOf[A])
+    def onSuccess(data: A): Unit = p.success(data.asInstanceOf[A])
 
-    def onError(data: js.Any, status: Int, config: js.Any, headers: js.Any, statusText: UndefOr[String]): Unit =
+    def onError(data: A, status: Int, config: js.Any, headers: js.Any, statusText: UndefOr[String]): Unit =
       p failure HttpException(status, statusText getOrElse s"Failed to process HTTP request: '$data'")
 
     promise.success(onSuccess _).error(onError _)
