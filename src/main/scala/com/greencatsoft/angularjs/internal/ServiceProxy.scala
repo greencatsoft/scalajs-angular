@@ -51,7 +51,7 @@ object ServiceProxy {
     find(tpe.baseClasses)
   }
 
-  def variableDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol)] = {
+  def variableDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol, Seq[c.universe.Type])] = {
     import c.universe._
 
     //    Should check if @inject annotation is present:
@@ -66,25 +66,21 @@ object ServiceProxy {
       case m: MethodSymbol if m.isSetter => m
     }
 
-    val names = setters map { s =>
-      val argType = s.paramLists.head.head.typeSignature.dealias.typeSymbol.typeSignature
+    val deps = setters map { s =>
+      val tpe = s.paramLists.head.head.typeSignature
+      val argType = tpe.dealias.typeSymbol.typeSignature
+      val typeArgs = tpe.typeArgs
+      val name = identifierFromType(c)(tpe.typeSymbol.typeSignature)
 
-      val normalizedType = Option(argType) collect {
-        case ClassInfoType(_, _, sym) => sym.asType
+      name.toSeq map {
+        (_, tpe.typeSymbol.asType, s, typeArgs)
       }
-
-      val members = for (
-        tpe <- normalizedType;
-        name <- identifierFromType(c)(tpe.typeSignature)
-      ) yield (name, tpe.asType, s)
-
-      members.toSeq
     }
 
-    names.toSeq.flatten
+    deps.flatten
   }
 
-  def constantDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol)] = {
+  def constantDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, Seq[c.universe.Type])] = {
     import c.universe._
 
     val methods = tag.tpe.members collectFirst {
@@ -96,18 +92,14 @@ object ServiceProxy {
     }
 
     val arguments = ctor.paramLists.head map { arg =>
-      (arg.name.toString, arg.typeSignature.dealias.typeSymbol.typeSignature)
+      (arg.name.toString, arg.typeSignature.dealias.typeSymbol.asType, arg.typeSignature.typeArgs)
     }
 
-    val normalizedTypes = arguments collect {
-      case (name, ClassInfoType(_, _, sym)) => (name, sym.asType)
-    }
-
-    val members = normalizedTypes map {
-      case (n, tpe) =>
+    val members = arguments map {
+      case (n, tpe, typeArgs) =>
         val name = identifierFromType(c)(tpe.typeSignature) getOrElse n
 
-        (name, tpe.asType)
+        (name, tpe.asType, typeArgs)
     }
 
     members.toSeq
@@ -127,17 +119,18 @@ object ServiceProxy {
       case None =>
         val deps = constantDependencies[A](c)
         val depNames = deps collect {
-          case (name, _) => name
+          case (name, _, _) => name
         }
 
         val args = deps.zipWithIndex collect {
-          case ((_, argType), index) =>
-            val argument = List(Ident(TermName(s"a$index")))
-            val value = TypeApply(
-              Select(q"..$argument", TermName("asInstanceOf")),
-              List(Ident(c.mirror.staticClass(argType.fullName))))
+          case ((_, argType, typeArgs), index) =>
+            val argument = Ident(TermName(s"a$index"))
 
-            value
+            if (argType.typeSignature.takesTypeArgs) {
+              q"$argument.asInstanceOf[$argType[..$typeArgs]]"
+            } else {
+              q"$argument.asInstanceOf[$argType]"
+            }
         }
 
         val expr = Apply(Select(
@@ -148,17 +141,20 @@ object ServiceProxy {
 
     val varDeps = variableDependencies[A](c)
     val varDepNames = varDeps collect {
-      case (name, _, _) => name
+      case (name, _, _, _) => name
     }
 
     val offset = constDeps.size
 
     val assignments = varDeps.zipWithIndex collect {
-      case ((_, argType, setter), index) =>
+      case ((_, argType, setter, typeArgs), index) =>
         val argument = List(Ident(TermName(s"a${index + offset}")))
-        val value = TypeApply(
-          Select(q"..$argument", TermName("asInstanceOf")),
-          List(Ident(c.mirror.staticClass(argType.fullName))))
+
+        val value = if (argType.typeSignature.takesTypeArgs) {
+          q"$argument.asInstanceOf[$argType[..$typeArgs]]"
+        } else {
+          q"$argument.asInstanceOf[$argType]"
+        }
 
         Apply(Select(q"target", setter.asTerm), List(value))
     }
