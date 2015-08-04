@@ -13,7 +13,7 @@ import com.greencatsoft.angularjs.core.Promise
 @injectable("$modal")
 trait ModalService extends js.Object {
 
-  def open(options: ModalOptions): ModalInstance = js.native
+  def open[T](options: ModalOptions): ModalInstance[T] = js.native
 }
 
 trait ModalOptions extends js.Object {
@@ -50,15 +50,15 @@ object ModalOptions {
 }
 
 @injectable("$modalInstance")
-trait ModalInstance extends js.Object {
+trait ModalInstance[T] extends js.Object {
 
-  def close(result: js.Any): Unit = js.native
+  def close(result: T): Unit = js.native
 
   def close(): Unit = js.native
 
   def dismiss(reason: js.Any): Unit = js.native
 
-  def result: Promise[_] = js.native
+  def result: Promise[T] = js.native
 
-  def opened: Promise[_] = js.native
+  def opened: Promise[T] = js.native
 }

@@ -127,17 +127,17 @@ trait HttpPromise[T] extends Promise[T] {
   def error(callback: js.Function5[T, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
 }
 
-trait HttpInterceptor[T] {
+trait HttpInterceptor {
 
   def q: Q
 
   def request(config: HttpConfig): HttpConfig = config
 
-  def requestError(rejection: HttpResult): Promise[T] = q.reject(rejection)
+  def requestError[T](rejection: HttpResult): Promise[T] = q.reject(rejection)
 
   def response(response: HttpResult): HttpResult = response
 
-  def responseError(rejection: HttpResult): Promise[T] = q.reject(rejection)
+  def responseError[T](rejection: HttpResult): Promise[T] = q.reject(rejection)
 }
 
 @JSExportAll
@@ -149,7 +149,7 @@ case class HttpInterceptorFunctions(
 
 trait HttpInterceptorFactory extends Factory[HttpInterceptorFunctions] {
 
-  implicit def toInterceptorFunctions[T](interceptor: HttpInterceptor[T]): HttpInterceptorFunctions = {
+  implicit def toInterceptorFunctions(interceptor: HttpInterceptor): HttpInterceptorFunctions = {
     import interceptor._
     HttpInterceptorFunctions(request _, requestError _, response _, responseError _)
   }
