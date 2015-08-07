@@ -1,11 +1,11 @@
 package com.greencatsoft.angularjs.core
-
+import scala.language.experimental.macros
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSBracketAccess
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.any2undefOrA
 
-import com.greencatsoft.angularjs.injectable
+import com.greencatsoft.angularjs._
 
 @injectable("$routeParams")
 trait RouteParams extends js.Object {
@@ -23,6 +23,30 @@ trait RouteProvider extends js.Object {
   def when(path: String, route: Route): this.type = js.native
 
   def otherwise(route: Route): this.type = js.native
+}
+
+object RouteBuilder {
+  def apply() = new RouteBuilder()
+}
+
+class RouteBuilder {
+  val obj: Route = js.Object().asInstanceOf[Route]
+
+  obj.resolve = js.Dictionary.empty
+
+  def build() = obj
+
+  def title(v: String) = { obj.title = v; this }
+
+  def template(v: String) = { obj.template = v; this }
+
+  def templateUrl(v: String) = { obj.templateUrl = v; this }
+
+  def controller(v: String) = { obj.controller = v; this }
+
+  def redirectTo(v: String) = { obj.redirectTo = v; this }
+
+  def resolve(v: js.Dictionary[js.Any]) = { obj.resolve = v; this }
 }
 
 trait Route extends js.Object {
