@@ -23,11 +23,11 @@ your discretion.
 Add the following lines to your ```sbt``` build definition:
 
 ```scala
-libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.4"
+libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.5"
 ```
 
 If you want to test the latest snapshot version instead, change the version to 
-```0.5-SNAPSHOT``` and add Sonatype snapshot repository to the resolver as follows: 
+```0.6-SNAPSHOT``` and add Sonatype snapshot repository to the resolver as follows: 
 
 ```scala
 resolvers += 
