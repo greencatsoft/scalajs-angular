@@ -148,7 +148,7 @@ object ServiceProxy {
 
     val assignments = varDeps.zipWithIndex collect {
       case ((_, argType, setter, typeArgs), index) =>
-        val argument = List(Ident(TermName(s"a${index + offset}")))
+        val argument = Ident(TermName(s"a${index + offset}"))
 
         val value = if (argType.typeSignature.takesTypeArgs) {
           q"$argument.asInstanceOf[$argType[..$typeArgs]]"
