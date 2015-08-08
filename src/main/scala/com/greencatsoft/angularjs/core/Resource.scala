@@ -180,7 +180,7 @@ object ResourceRequestConfig {
     url: String = null,
     timeout: Int = -1): ResourceRequestConfig = {
 
-    val t = js.Dynamic.literal.asInstanceOf[ResourceRequestConfig]
+    val t = js.Object().asInstanceOf[ResourceRequestConfig]
 
     if (!isArray) t.isArray = isArray
     if (params != null) t.params = params
