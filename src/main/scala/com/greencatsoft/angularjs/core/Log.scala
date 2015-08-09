@@ -38,29 +38,29 @@ trait Log extends js.Object {
     *
     * @param message
     */
-  def log(message: js.Any): Unit = js.native
+  def log(message: js.Any*): Unit = js.native
 
   /** Write an information message
     *
     * @param message
     */
-  def info(message: js.Any): Unit = js.native
+  def info(message: js.Any*): Unit = js.native
 
   /** Write a warning message
     *
     * @param message
     */
-  def warn(message: js.Any): Unit = js.native
+  def warn(message: js.Any*): Unit = js.native
 
   /** Write an error message
     *
     * @param message
     */
-  def error(message: js.Any): Unit = js.native
+  def error(message: js.Any*): Unit = js.native
 
   /** Write a debug message
     *
     * @param message
     */
-  def debug(message: js.Any): Unit = js.native
+  def debug(message: js.Any*): Unit = js.native
 }
