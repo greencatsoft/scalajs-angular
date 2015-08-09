@@ -39,12 +39,6 @@ Or more simply as,
 resolvers += Resolver.sonatypeRepo("snapshots")
 ```
 
-_Note: This guide is based on the latest 0.5-SNAPSHOT version, which has introduced 
-significant changes in API from the earlier version. You might want to check the history 
-of this document and [the example application](https://github.com/greencatsoft/scalajs-angular-todomvc) 
-if you're looking for the guide for the earlier versions or want to upgrade your application from 
-them._
-
 ### Defining a Module
 
 You can define an AngularJS module in the following manner:
@@ -101,9 +95,9 @@ class TaskServiceFactory(http: HttpService) extends Factory[TaskService] {
 }
 ```
 
-_Note: Unlike the original API, ```Module``` does not supports method chaining, due to a 
-limitation in the current macro implementation (possibly caused by 
-[this issue](https://issues.scala-lang.org/browse/SI-7245))._
+_Note: Due to a limitation in the current macro implementation (possibly the same problem with  
+[this issue](https://issues.scala-lang.org/browse/SI-7245)), ```Module``` API in the current 
+release does not support chaining its methods (it's fixed in the latest ```0.6-SNAPHOST```)_.
 
 ### Managing Dependencies
 
