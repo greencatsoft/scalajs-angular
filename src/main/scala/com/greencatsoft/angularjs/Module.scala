@@ -31,7 +31,7 @@ class Module private[angularjs] (val module: internal.Module) {
   def directive[A <: Directive]: Module = macro angular.directiveFromClass[A]
 
   def $directive(name: String, constructor: js.Array[js.Any]): Module = {
-    module.controller(name, constructor)
+    module.directive(name, constructor)
     this
   }
 
