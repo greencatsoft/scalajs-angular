@@ -1,9 +1,8 @@
 package com.greencatsoft.angularjs.core
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSBracketAccess
 import scala.scalajs.js.UndefOr
-import scala.scalajs.js.UndefOr.any2undefOrA
+import scala.scalajs.js.annotation.JSBracketAccess
 
 import com.greencatsoft.angularjs.injectable
 
@@ -73,11 +72,55 @@ object Route {
   def redirectTo(url: String): Route = {
     require(url != null, "Missing argument 'url'.")
 
-    val route = new js.Object().asInstanceOf[Route]
+    val route = js.Object().asInstanceOf[Route]
 
     route.redirectTo = url
     route
   }
+}
+
+class RouteBuilder {
+
+  private val route: Route = js.Object().asInstanceOf[Route]
+
+  route.resolve = js.Dictionary.empty
+
+  def build: Route = route
+
+  def title(title: String): RouteBuilder = {
+    route.title = title
+    this
+  }
+
+  def template(template: String): RouteBuilder = {
+    route.template = template
+    this
+  }
+
+  def templateUrl(templateUrl: String): RouteBuilder = {
+    route.templateUrl = templateUrl
+    this
+  }
+
+  def controller(controller: String): RouteBuilder = {
+    route.controller = controller
+    this
+  }
+
+  def redirectTo(redirectTo: String): RouteBuilder = {
+    route.redirectTo = redirectTo
+    this
+  }
+
+  def resolve(dependencies: js.Dictionary[js.Any]): RouteBuilder = {
+    route.resolve = dependencies
+    this
+  }
+}
+
+object RouteBuilder {
+
+  def apply(): RouteBuilder = new RouteBuilder
 }
 
 trait RouteInfo extends js.Object {
