@@ -1,4 +1,4 @@
-lazy val root = (project in file(".")).
+lazy val scalaJsAngular = (project in file(".")).
   enablePlugins(ScalaJSPlugin).
   settings(
     name := "scalajs-angular",
