@@ -16,6 +16,11 @@ private[angularjs] trait Angular extends js.Object {
   def module(name: String, require: js.Array[String]): Module = js.native
 
   def element(elem: Element): AngularElement = js.native
+
+  def extend(dst: js.Object, src: js.Object*): js.Object = js.native
+
+  def merge(dst: js.Object, src: js.Object*): js.Object = js.native
+
 }
 
 private[angularjs] object Angular {
