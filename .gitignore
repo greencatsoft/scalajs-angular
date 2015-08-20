@@ -5,4 +5,5 @@ target
 .cache
 .cache-main
 .README.md.html
+.idea
 /bin/
