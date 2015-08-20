@@ -75,7 +75,9 @@ trait State extends js.Object {
   var controllerAs: String = js.native
   var controllerProvider: js.Any = js.native
   var url: String = js.native
-  var params: js.Array[js.Any] = js.native
+  var params: js.Dictionary[js.Any] = js.native
+  var parent: js.Any = js.native
+  var resolve: js.Function = js.native
   var `abstract`: Boolean = js.native
   var onEnter: js.Function = js.native
   var onExit: js.Function = js.native

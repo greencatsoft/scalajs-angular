@@ -8,7 +8,7 @@ import com.greencatsoft.angularjs.core.Promise.promise2future
 import com.greencatsoft.angularjs.injectable
 
 trait EnhancedResource[T] extends js.Object {
-  
+
   import Resource._
 
   def get(): ResourceResponse[T] = js.native
@@ -161,9 +161,9 @@ trait ResourceService extends js.Object {
 
   def apply(url: String): Any = js.native
 
-  def apply(url: String, paramDefaults: js.Dictionary[Any]): Any = js.native
+  def apply(url: String, paramDefaults: js.Dictionary[js.Any]): Any = js.native
 
-  def apply(url: String, paramDefaults: js.Dictionary[Any], actions: js.Dictionary[ResourceRequestConfig]): Any = js.native
+  def apply(url: String, paramDefaults: js.Dictionary[js.Any], actions: js.Dictionary[ResourceRequestConfig]): Any = js.native
 }
 
 trait ResourceRequestConfig extends HttpConfig {
@@ -175,7 +175,7 @@ object ResourceRequestConfig {
 
   def apply(
     isArray: Boolean = false,
-    params: js.Dictionary[Any] = null,
+    params: js.Dictionary[js.Any] = null,
     method: String = "GET",
     url: String = null,
     timeout: Int = -1): ResourceRequestConfig = {

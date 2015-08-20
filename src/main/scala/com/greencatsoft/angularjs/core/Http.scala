@@ -48,7 +48,7 @@ trait HttpConfig extends js.Object {
 
   var url: String = js.native
 
-  var params: js.Dictionary[Any] = js.native
+  var params: js.Dictionary[js.Any] = js.native
 
   var method: String = js.native
 
