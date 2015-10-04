@@ -20,7 +20,4 @@ trait TemplateCache extends Cache {
    * @return The value stored.
    */
   def put(id: String, tpl: String): String = js.native
-
 }
-
-// vim: set ts=2 sw=2 et:
