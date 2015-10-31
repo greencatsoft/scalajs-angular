@@ -23,11 +23,11 @@ your discretion.
 Add the following lines to your ```sbt``` build definition:
 
 ```scala
-libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.5"
+libraryDependencies += "com.greencatsoft" %%% "scalajs-angular" % "0.6"
 ```
 
 If you want to test the latest snapshot version instead, change the version to 
-```0.6-SNAPSHOT``` and add Sonatype snapshot repository to the resolver as follows: 
+```0.7-SNAPSHOT``` and add Sonatype snapshot repository to the resolver as follows: 
 
 ```scala
 resolvers += 
@@ -52,20 +52,22 @@ or as a singleton object like below:
 
 ```scala
 // In case of registering a class
-module.config[RoutingConfig]
-module.factory[UserServiceFactory]
-module.controller[UserDetailController]
-module.directive[UserInfoDirective]
-module.run[AppInitializer]
-module.filter[UpperCaseFilter]
+module
+  .config[RoutingConfig]
+  .factory[UserServiceFactory]
+  .controller[UserDetailController]
+  .directive[UserInfoDirective]
+  .run[AppInitializer]
+  .filter[UpperCaseFilter]
 
 // In case of registering a singleton object
-module.config(RoutingConfig)
-module.factory(UserServiceFactory)
-module.controller(UserDetailController)
-module.directive(UserInfoDirective)
-module.run(AppInitializer)
-module.filter(UpperCaseFilter)
+module
+  .config(RoutingConfig)
+  .factory(UserServiceFactory)
+  .controller(UserDetailController)
+  .directive(UserInfoDirective)
+  .run(AppInitializer)
+  .filter(UpperCaseFilter)
 ```
 
 Any classes or objects which is to be registered as an Angular component should be inheriting 
@@ -94,11 +96,6 @@ class TaskServiceFactory(http: HttpService) extends Factory[TaskService] {
   ...
 }
 ```
-
-_Note: Due to a limitation in the current macro implementation (possibly the same problem with  
-[this issue](https://issues.scala-lang.org/browse/SI-7245)), ```Module``` API in the current 
-release does not support chaining its methods (it's fixed in the latest ```0.6-SNAPHOST```)_.
-
 ### Managing Dependencies
 
 You can find core AngularJS services like ```HttpService``` or ```Location``` in the 
