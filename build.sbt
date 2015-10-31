@@ -71,6 +71,18 @@ lazy val scalaJsAngular = (project in file(".")).
           <name>math85360</name>
           <url>https://github.com/math85360</url>
         </contributor>
+        <contributor>
+          <name>Erik LaBianca</name>
+          <url>https://github.com/easel</url>
+        </contributor>
+        <contributor>
+          <name>Johannes Kastner</name>
+          <url>https://github.com/jokaICS</url>
+        </contributor>
+        <contributor>
+          <name>Tomas Zeman</name>
+          <url>https://github.com/tzeman77</url>
+        </contributor>
       </contributors>
     )
   )
