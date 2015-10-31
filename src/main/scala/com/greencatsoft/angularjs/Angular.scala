@@ -6,9 +6,9 @@ import scala.scalajs.js.JSConverters.genTravConvertible2JSRichGenTrav
 
 import org.scalajs.dom.Element
 
-object Angular {
+import com.greencatsoft.angularjs.internal.GlobalDefinitions.angular
 
-  import internal.angular
+object Angular {
 
   def apply(name: String): Option[Module] =
     angular.module(name).toOption.map(new Module(_))

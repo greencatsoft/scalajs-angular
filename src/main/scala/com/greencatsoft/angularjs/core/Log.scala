@@ -8,6 +8,7 @@ import scala.scalajs.js
   *
   * @see https://docs.angularjs.org/api/ng/provider/\$logProvider
   */
+@js.native
 @injectable("$logProvider")
 trait LogProvider extends js.Object {
 
@@ -31,6 +32,7 @@ trait LogProvider extends js.Object {
   *
   * @see https://docs.angularjs.org/api/ng/service/\$log
   */
+@js.native
 @injectable("$log")
 trait Log extends js.Object {
 

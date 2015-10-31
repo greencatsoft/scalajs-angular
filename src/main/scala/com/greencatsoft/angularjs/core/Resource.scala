@@ -7,6 +7,7 @@ import scala.scalajs.js
 import com.greencatsoft.angularjs.core.Promise.promise2future
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 trait EnhancedResource[T] extends js.Object {
 
   import Resource._
@@ -72,6 +73,7 @@ trait EnhancedResource[T] extends js.Object {
   def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 }
 
+@js.native
 trait Resource extends js.Object {
 
   import Resource._
@@ -144,6 +146,7 @@ object Resource {
   type ErrorHandler = js.Function1[js.Any, Unit]
 }
 
+@js.native
 trait ResourceResponse[T] extends js.Object {
 
   def $promise: Promise[T] = js.native
@@ -156,6 +159,7 @@ object ResourceResponse {
   implicit def promise2future[A](json: ResourceResponse[A]): Future[A] = json.$promise
 }
 
+@js.native
 @injectable("$resource")
 trait ResourceService extends js.Object {
 
@@ -166,6 +170,7 @@ trait ResourceService extends js.Object {
   def apply(url: String, paramDefaults: js.Dictionary[js.Any], actions: js.Dictionary[ResourceRequestConfig]): Any = js.native
 }
 
+@js.native
 trait ResourceRequestConfig extends HttpConfig {
 
   var isArray: Boolean = js.native

@@ -12,6 +12,7 @@ import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
 import com.greencatsoft.angularjs.injectable
 import com.greencatsoft.angularjs.core.Defer.DeferredPromise
 
+@js.native
 @injectable("$http")
 trait HttpService extends js.Object {
 
@@ -44,6 +45,7 @@ trait HttpService extends js.Object {
   def delete[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
 }
 
+@js.native
 trait HttpConfig extends js.Object {
 
   var url: String = js.native
@@ -96,6 +98,7 @@ object HttpConfig {
   }
 }
 
+@js.native
 @injectable("$httpProvider")
 trait HttpProvider extends js.Object {
 
@@ -104,6 +107,7 @@ trait HttpProvider extends js.Object {
   var interceptors: js.Array[String] = js.native
 }
 
+@js.native
 trait HttpPromise[T] extends Promise[T] {
 
   def success(callback: js.Function1[T, Unit]): this.type = js.native
@@ -251,6 +255,7 @@ object HttpPromise {
   }
 }
 
+@js.native
 trait HttpResult extends js.Object {
 
   val config: js.Any = js.native

@@ -4,6 +4,7 @@ import scala.scalajs.js
 
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 @injectable("$parse")
 trait Parse extends js.Object {
 

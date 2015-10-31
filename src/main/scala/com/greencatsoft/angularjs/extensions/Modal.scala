@@ -10,12 +10,14 @@ import com.greencatsoft.angularjs.core.Promise
  *
  * @see http://angular-ui.github.io/bootstrap/#/modal
  */
+@js.native
 @injectable("$modal")
 trait ModalService extends js.Object {
 
   def open[T](options: ModalOptions): ModalInstance[T] = js.native
 }
 
+@js.native
 trait ModalOptions extends js.Object {
 
   var template: String = js.native
@@ -49,6 +51,7 @@ object ModalOptions {
   }
 }
 
+@js.native
 @injectable("$modalInstance")
 trait ModalInstance[T] extends js.Object {
 

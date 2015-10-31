@@ -37,6 +37,7 @@ import com.greencatsoft.angularjs.injectable
  *
  * { id:'123', type:'default', repeat:'0', from:'there', to:'here' }
  */
+@js.native
 @injectable("$stateParams")
 trait StateParams extends js.Object {
   /**
@@ -59,6 +60,7 @@ trait StateParams extends js.Object {
  *
  *
  */
+@js.native
 @injectable("$stateProvider")
 trait StateProvider extends js.Object {
   def state(name: String, config: State): StateProvider = js.native
@@ -66,6 +68,7 @@ trait StateProvider extends js.Object {
   def decorator(name: String = js.native, decorator: js.Function2[State, js.Function, Any] = js.native): js.Dynamic = js.native
 }
 
+@js.native
 trait State extends js.Object {
   var name: String = js.native
   var template: String = js.native
@@ -96,6 +99,7 @@ object State {
   }
 }
 
+@js.native
 trait View extends js.Object {
   var templateUrl: String = js.native
   var controller: String = js.native
@@ -116,6 +120,7 @@ object View {
  * \$urlRouterProvider is used behind the scenes anytime you specify a url in a state configuration.
  * All urls are compiled into a UrlMatcher object.
  */
+@js.native
 @injectable("$urlRouterProvider")
 trait UrlRouterProvider extends js.Object {
   def when(whenPath: RegExp, handler: js.Function): UrlRouterProvider = js.native
@@ -136,6 +141,7 @@ trait UrlRouterProvider extends js.Object {
 
 }
 
+@js.native
 trait UrlMatcher extends js.Object {
   def concat(pattern: String): UrlMatcher = js.native
   def exec(path: String, searchParams: js.Any): js.Any = js.native

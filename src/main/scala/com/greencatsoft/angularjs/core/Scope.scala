@@ -4,6 +4,7 @@ import scala.scalajs.js
 
 import com.greencatsoft.angularjs.{ Service, injectable }
 
+@js.native
 @injectable("$scope")
 trait Scope extends js.Object {
 
@@ -32,6 +33,7 @@ trait Scope extends js.Object {
   def $watchCollection(obj: js.Any, listener: js.Function): js.Function = js.native
 }
 
+@js.native
 @injectable("$rootScope")
 trait RootScope extends Scope
 
@@ -44,6 +46,7 @@ trait ScopeOps {
   }
 }
 
+@js.native
 trait Event extends js.Object {
 
   val name: String = js.native

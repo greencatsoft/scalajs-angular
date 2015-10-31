@@ -9,6 +9,7 @@ import scala.util.{ Failure, Success, Try }
 
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 @injectable("$q")
 trait Q extends js.Object {
 
@@ -17,6 +18,7 @@ trait Q extends js.Object {
   def reject[T](reason:js.Any): Promise[T]= js.native
 }
 
+@js.native
 trait Defer[T] extends js.Object {
 
   def resolve(value: T): Unit = js.native
@@ -51,6 +53,7 @@ object Defer {
   }
 }
 
+@js.native
 trait Promise[T] extends js.Object {
 
   def `then`(successCallback: js.Function1[T, T]): this.type = js.native

@@ -17,6 +17,7 @@ trait Filter[A] extends Factory[js.Function] {
   def filter(item: A, args: Seq[Any]): Any = filter(item)
 }
 
+@js.native
 @injectable("$filter")
 trait FilterService extends js.Function1[String, js.Function] {
   def apply(name: String): js.Function = js.native

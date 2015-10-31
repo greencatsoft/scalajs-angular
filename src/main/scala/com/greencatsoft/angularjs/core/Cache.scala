@@ -12,6 +12,7 @@ import com.greencatsoft.angularjs.injectable
  *
  * @see <a href="https://docs.angularjs.org/api/ng/type/\$cacheFactory.Cache">https://docs.angularjs.org/api/ng/type/\$cacheFactory.Cache</a>
  */
+@js.native
 @injectable("$cache")
 trait Cache extends js.Object {
 
@@ -74,6 +75,7 @@ trait Cache extends js.Object {
  *
  * @see <a href="https://docs.angularjs.org/api/ng/service/\$cacheFactory">https://docs.angularjs.org/api/ng/service/\$cacheFactory</a>
  */
+@js.native
 @injectable("$cacheFactory")
 trait CacheFactory extends js.Object {
 

@@ -9,6 +9,7 @@ import scala.scalajs.js
  *
  * @see https://docs.angularjs.org/api/ng/provider/\$locationProvider
  */
+@js.native
 @injectable("$locationProvider")
 trait LocationProvider extends js.Object {
 
@@ -33,6 +34,7 @@ trait LocationProvider extends js.Object {
   def html5Mode(mode: Html5ModeInfo): Html5ModeInfo = js.native
 }
 
+@js.native
 trait Html5ModeInfo extends js.Object {
 
   /**
@@ -67,6 +69,7 @@ object Html5ModeInfo {
   }
 }
 
+@js.native
 @injectable("$location")
 trait Location extends js.Object {
 

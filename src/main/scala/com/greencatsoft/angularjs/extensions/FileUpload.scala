@@ -12,12 +12,14 @@ import com.greencatsoft.angularjs.injectable
  *
  * @see https://github.com/danialfarid/angular-file-upload
  */
+@js.native
 @injectable("$upload")
 trait FileUpload extends js.Object {
 
   def upload(config: FileUploadConfig): FileUploadPromise = js.native
 }
 
+@js.native
 trait FileUploadConfig extends js.Object {
 
   var url: String = js.native
@@ -50,6 +52,7 @@ object FileUploadConfig {
   }
 }
 
+@js.native
 trait FileUploadPromise extends HttpPromise[js.Any] {
 
   def progress(listener: js.Function1[ProgressEvent, Unit]): this.type = js.native
@@ -57,6 +60,7 @@ trait FileUploadPromise extends HttpPromise[js.Any] {
   def abort(): Unit = js.native
 }
 
+@js.native
 class ProgressEvent extends js.Object {
 
   val loaded: Double = js.native

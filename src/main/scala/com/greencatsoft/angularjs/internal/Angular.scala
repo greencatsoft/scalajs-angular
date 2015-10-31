@@ -9,6 +9,7 @@ import com.greencatsoft.{ angularjs => api }
 import com.greencatsoft.angularjs.{ AngularElement, Config, Controller, Directive, Factory, Service, Runnable }
 import com.greencatsoft.angularjs.Filter
 
+@js.native
 private[angularjs] trait Angular extends js.Object {
 
   def module(name: String): UndefOr[Module] = js.native

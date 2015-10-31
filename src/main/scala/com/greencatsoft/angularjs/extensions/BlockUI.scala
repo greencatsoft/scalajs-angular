@@ -10,6 +10,7 @@ import com.greencatsoft.angularjs.injectable
  *
  * @see https://github.com/McNull/angular-block-ui
  */
+@js.native
 @injectable("blockUI")
 trait BlockUI extends js.Object {
 
@@ -26,6 +27,7 @@ trait BlockUI extends js.Object {
   def isBlocking(): Boolean = js.native
 }
 
+@js.native
 @injectable("blockUIConfig")
 trait BlockUIConfig extends js.Object {
 

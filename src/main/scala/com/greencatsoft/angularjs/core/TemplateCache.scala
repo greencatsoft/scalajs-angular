@@ -9,6 +9,7 @@ import scala.scalajs.js
  *
  * @see <a href="https://docs.angularjs.org/api/ng/service/\$templateCache">https://docs.angularjs.org/api/ng/service/\$templateCache</a>
  */
+@js.native
 @injectable("$templateCache")
 trait TemplateCache extends Cache {
 

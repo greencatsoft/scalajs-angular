@@ -8,6 +8,7 @@ import scala.scalajs.js
   *
   * @see https://material.angularjs.org/#/api/material.components.sidenav/service/\$mdSidenav
   */
+@js.native
 @injectable("$mdSidenav")
 trait Sidenav extends js.Object {
 

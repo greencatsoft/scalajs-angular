@@ -6,6 +6,7 @@ import scala.scalajs.js.annotation.JSBracketAccess
 
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 @injectable("$routeParams")
 trait RouteParams extends js.Object {
 
@@ -16,6 +17,7 @@ trait RouteParams extends js.Object {
   def get(key: String): UndefOr[js.Any] = js.native
 }
 
+@js.native
 @injectable("$routeProvider")
 trait RouteProvider extends js.Object {
 
@@ -24,6 +26,7 @@ trait RouteProvider extends js.Object {
   def otherwise(route: Route): this.type = js.native
 }
 
+@js.native
 trait Route extends js.Object {
 
   var title: UndefOr[String] = js.native
@@ -123,6 +126,7 @@ object RouteBuilder {
   def apply(): RouteBuilder = new RouteBuilder
 }
 
+@js.native
 trait RouteInfo extends js.Object {
 
   var $$route: Route = js.native

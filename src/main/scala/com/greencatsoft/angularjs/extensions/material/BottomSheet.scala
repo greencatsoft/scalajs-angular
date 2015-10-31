@@ -8,6 +8,7 @@ import scala.scalajs.js
 
 /** @see https://material.angularjs.org/#/api/material.components.bottomSheet/service/\$mdBottomSheet
   */
+@js.native
 @injectable("$mdBottomSheet")
 trait BottomSheet extends BottomSheetHideOrCancel {
 
@@ -19,6 +20,7 @@ trait BottomSheet extends BottomSheetHideOrCancel {
   def show(options: BottomSheetOptions): Promise[BottomSheetHideOrCancel] = js.native
 }
 
+@js.native
 trait BottomSheetHideOrCancel extends js.Object {
     /** Hide the existing bottom sheet and resolve the promise returned from \$mdBottomSheet.show().
     *
@@ -33,6 +35,7 @@ trait BottomSheetHideOrCancel extends js.Object {
   def cancel(response: Any): Unit = js.native
 }
 
+@js.native
 trait BottomSheetOptions extends js.Object {
 
   /** The url of an html template file that will be used as the content of the bottom sheet. Restrictions: the template

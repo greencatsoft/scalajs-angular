@@ -10,6 +10,7 @@ import com.greencatsoft.angularjs.injectable
  *
  * @see https://docs.angularjs.org/api/ng/service/\$sce
  */
+@js.native
 @injectable("$sce")
 trait SceService extends js.Object {
 
@@ -55,6 +56,7 @@ trait SceService extends js.Object {
  *
  * @see https://docs.angularjs.org/api/ng/provider/\$sceProvider
  */
+@js.native
 @injectable("$sceProvider")
 trait SceProvider extends js.Object {
 
@@ -70,6 +72,7 @@ trait SceProvider extends js.Object {
  *
  * @see https://docs.angularjs.org/api/ng/provider/\$sceDelegateProvider
  */
+@js.native
 @injectable("$sceDelegateProvider")
 trait SceDelegateProvider extends js.Object {
 

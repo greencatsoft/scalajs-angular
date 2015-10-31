@@ -6,12 +6,14 @@ import scala.scalajs.js
 
 /** @see https://material.angularjs.org/#/Theming/03_configuring_a_theme
   */
+@js.native
 @injectable("$mdThemingProvider")
 trait ThemingProvider extends js.Object {
 
   def theme(name: String): Theme = js.native
 }
 
+@js.native
 trait Theme extends js.Object {
 
   def primaryPalette(color: String): this.type = js.native

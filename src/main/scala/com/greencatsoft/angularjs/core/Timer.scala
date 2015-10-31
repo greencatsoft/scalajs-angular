@@ -4,6 +4,7 @@ import scala.scalajs.js
 
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 @injectable("$interval")
 trait Interval extends js.Object {
 
@@ -12,6 +13,7 @@ trait Interval extends js.Object {
   def cancel(promise: Promise[_] = null): Boolean = js.native
 }
 
+@js.native
 @injectable("$timeout")
 trait Timeout extends js.Object {
 

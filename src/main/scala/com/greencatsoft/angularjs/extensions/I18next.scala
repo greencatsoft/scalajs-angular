@@ -10,14 +10,17 @@ import com.greencatsoft.angularjs.injectable
  *
  * @see https://github.com/archer96/ng-i18next
  */
+@js.native
 @injectable("jm.i18next")
 trait I18next extends js.Object
 
+@js.native
 @injectable("$i18nextProvider")
 trait I18nextProvider extends js.Object {
   var options: I18nextOptions = js.native
 }
 
+@js.native
 trait I18nextOptions extends js.Object {
 
   var lng: String = js.native
@@ -37,6 +40,7 @@ trait I18nextOptions extends js.Object {
   var resGetPath: String = js.native
 }
 
+@js.native
 trait NamespaceConfig extends js.Object {
 
   var namespaces: js.Array[String] = js.native

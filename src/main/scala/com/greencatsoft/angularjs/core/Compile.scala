@@ -6,6 +6,7 @@ import org.scalajs.dom.Element
 
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 @injectable("$compile")
 trait Compile extends js.Object {
 

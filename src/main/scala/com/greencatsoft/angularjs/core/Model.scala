@@ -3,6 +3,7 @@ package com.greencatsoft.angularjs.core
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 
+@js.native
 trait ModelController extends js.Object {
 
   var $viewValue: UndefOr[String] = js.native

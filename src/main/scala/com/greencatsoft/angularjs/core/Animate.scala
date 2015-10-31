@@ -4,6 +4,7 @@ import scala.scalajs.js
 
 import com.greencatsoft.angularjs.injectable
 
+@js.native
 @injectable("$animate")
 trait Animate extends js.Object {
 

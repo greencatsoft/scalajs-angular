@@ -59,6 +59,7 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controller: Either[Controller[_], js.Any]*): Unit = link(scope, elems, attrs)
 }
 
+@js.native
 trait Attributes extends js.Object {
 
   val $attr: js.Dictionary[String] = js.native
