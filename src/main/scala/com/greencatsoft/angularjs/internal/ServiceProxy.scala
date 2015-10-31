@@ -169,8 +169,10 @@ object ServiceProxy {
       import com.greencatsoft.angularjs.{ Initializable, Service }
       import com.greencatsoft.angularjs.internal.ServiceProxy
 
-      val handler: js.ThisFunction10[js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, UndefOr[js.Any]] = 
-        (t: js.Any, a0: js.Any, a1: js.Any, a2: js.Any, a3: js.Any, a4: js.Any, a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any) => {
+      val handler: js.ThisFunction20[js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, 
+        js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, UndefOr[js.Any]] = 
+        (t: js.Any, a0: js.Any, a1: js.Any, a2: js.Any, a3: js.Any, a4: js.Any, a5: js.Any, a6: js.Any, a7: js.Any, a8: js.Any, a9: js.Any, 
+        a10: js.Any, a11: js.Any, a12: js.Any, a13: js.Any, a14: js.Any, a15: js.Any, a16: js.Any, a17: js.Any, a18: js.Any, a19: js.Any) => {
 
         val target: Service = { ..$instantiation }
 
