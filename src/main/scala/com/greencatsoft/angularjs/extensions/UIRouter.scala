@@ -1,11 +1,12 @@
 package com.greencatsoft.angularjs.extensions
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSBracketAccess
+import scala.scalajs.js.annotation.{ JSBracketAccess, JSName }
 import scala.scalajs.js.JSConverters.JSRichGenMap
-import scala.scalajs.js.RegExp
+import scala.scalajs.js.{ RegExp, UndefOr, | }
 
 import com.greencatsoft.angularjs.injectable
+import com.greencatsoft.angularjs.core.Promise
 
 /**
  * Wrappers for the uirouter module.
@@ -147,4 +148,104 @@ trait UrlMatcher extends js.Object {
   def exec(path: String, searchParams: js.Any): js.Any = js.native
   def parameters(): js.Array[String] = js.native
   def format(values: js.Any): String = js.native
+}
+
+@js.native
+@injectable("$state")
+trait StateService extends js.Object {
+  def get(stateOrName: String | js.Object): js.Object | js.Array[js.Object] = js.native
+  def get(stateOrName: String | js.Object, context: String | js.Object): js.Object | js.Array[js.Object] = js.native
+
+  def go(to: String): Promise[State] = js.native
+  def go(to: String, params: js.Object): Promise[State] = js.native
+  def go(to: String, params: js.Object, options: TransitionOptions): Promise[State] = js.native
+
+  def href(stateOrName: String | js.Object): String = js.native
+  def href(stateOrName: String | js.Object, params: js.Object): String = js.native
+  def href(stateOrName: String | js.Object, params: js.Object, options: HrefOptions): String = js.native
+
+  def includes(stateOrName: String | js.Object): Boolean = js.native
+  def includes(stateOrName: String | js.Object, params: js.Object): Boolean = js.native
+  def includes(stateOrName: String | js.Object, params: js.Object, options: IncludeOptions): Boolean = js.native
+
+  def is(stateOrName: String | js.Object): Boolean = js.native
+  def is(stateOrName: String | js.Object, params: js.Object): Boolean = js.native
+  def is(stateOrName: String | js.Object, params: js.Object, options: IncludeOptions): Boolean = js.native
+
+  def reload(state: js.Any): Promise[State] = js.native
+
+  def transitionTo(to: String): Promise[State] = js.native
+  def transitionTo(to: String, toParams: js.Object): Promise[State] = js.native
+  def transitionTo(to: String, toParams: js.Object, options: TransitionOptions): Promise[State] = js.native
+}
+
+@js.native
+trait TransitionOptions extends js.Object {
+  var location: UndefOr[String | Boolean] = js.native
+  var inherit: UndefOr[Boolean] = js.native
+  var relative: UndefOr[js.Object] = js.native
+  @JSName("notify") var broadcast: UndefOr[Boolean] = js.native
+  var reload: UndefOr[Boolean] = js.native
+}
+
+object TransitionOptions {
+  def apply(
+    location: UndefOr[String | Boolean] = js.undefined,
+    inherit: UndefOr[Boolean] = js.undefined,
+    relative: UndefOr[js.Object] = js.undefined,
+    broadcast: UndefOr[Boolean] = js.undefined,
+    reload: UndefOr[Boolean] = js.undefined): TransitionOptions = {
+
+    val options = (new js.Object).asInstanceOf[TransitionOptions]
+
+    options.location = location
+    options.inherit = inherit
+    options.relative = relative
+    options.broadcast = broadcast
+    options.reload = reload
+
+    options
+  }
+}
+
+@js.native
+trait HrefOptions extends js.Object {
+  var lossy: UndefOr[Boolean] = js.native
+  var inherit: UndefOr[Boolean] = js.native
+  var relative: UndefOr[js.Object] = js.native
+  var absolute: UndefOr[Boolean] = js.native
+}
+
+object HrefOptions {
+  def apply(
+    lossy: UndefOr[Boolean] = js.undefined,
+    inherit: UndefOr[Boolean] = js.undefined,
+    relative: UndefOr[js.Object] = js.undefined,
+    absolute: UndefOr[Boolean] = js.undefined): HrefOptions = {
+
+    val options = (new js.Object).asInstanceOf[HrefOptions]
+
+    options.lossy = lossy
+    options.inherit = inherit
+    options.relative = relative
+    options.absolute = absolute
+
+    options
+  }
+}
+
+@js.native
+trait IncludeOptions extends js.Object {
+  var relative: UndefOr[js.Object] = js.native
+}
+
+object IncludeOptions {
+  def apply(relative: UndefOr[js.Object] = js.undefined): IncludeOptions = {
+
+    val options = (new js.Object).asInstanceOf[IncludeOptions]
+
+    options.relative = relative
+
+    options
+  }
 }
