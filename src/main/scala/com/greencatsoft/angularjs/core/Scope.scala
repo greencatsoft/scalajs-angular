@@ -26,7 +26,7 @@ trait Scope extends js.Object {
 
   def $new(isolate: Boolean): Scope = js.native
 
-  def $on(name: String, listener: js.Function): js.Any = js.native
+  def $on(name: String, listener: js.Function): js.Function0[Unit] = js.native
 
   def $watch(watchExpression: js.Any, listener: js.Any = null, objectEquality: Boolean = false): js.Function = js.native
 
