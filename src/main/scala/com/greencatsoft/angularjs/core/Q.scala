@@ -1,6 +1,6 @@
 package com.greencatsoft.angularjs.core
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.Any.fromFunction1
@@ -82,5 +82,16 @@ object Promise {
     promise.`then`(onSuccess _).`catch`(onError _)
 
     p.future
+  }
+
+  implicit def future2promise[A](f: Future[A])(implicit ec: ExecutionContext, q: Q): Promise[A] = {
+    val deferred = q.defer[A]()
+    f.onComplete {
+      case Success(a) =>
+        deferred.resolve(a)
+      case Failure(t) =>
+        deferred.reject(t.getMessage)
+    }
+    deferred.promise
   }
 }
