@@ -87,6 +87,8 @@ trait Location extends js.Object {
 
   def path(path: String): Location = js.native
 
+  def search(): js.Object = js.native
+
   // TODO: refine argument types?
   def search(search: js.Any, paramValue: js.Any = null): js.Object = js.native
 
