@@ -39,7 +39,7 @@ trait Route extends js.Object {
 
   var redirectTo: UndefOr[String] = js.native
 
-  var resolve: js.Dictionary[js.Any] = js.native
+  var resolve: js.Dictionary[js.Function0[_]] = js.native
 }
 
 object Route {
@@ -115,7 +115,7 @@ class RouteBuilder {
     this
   }
 
-  def resolve(dependencies: js.Dictionary[js.Any]): RouteBuilder = {
+  def resolve(dependencies: js.Dictionary[js.Function0[_]]): RouteBuilder = {
     route.resolve = dependencies
     this
   }
