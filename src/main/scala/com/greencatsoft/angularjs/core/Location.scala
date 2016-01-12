@@ -75,7 +75,9 @@ trait Location extends js.Object {
 
   def absUrl(): String = js.native
 
-  def url(url: String = null, replace: String = null): String = js.native
+  def url(): String = js.native
+
+  def url(url: String, replace: String = null): Location = js.native
 
   def protocol(): String = js.native
 
