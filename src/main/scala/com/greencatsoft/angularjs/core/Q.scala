@@ -58,13 +58,13 @@ trait Promise[T] extends js.Object {
 
   def `then`(successCallback: js.Function1[T, T]): this.type = js.native
 
-  def `then`(successCallback: js.Function1[T, T], errorCallback: js.Function1[T, Unit]): this.type = js.native
+  def `then`(successCallback: js.Function1[T, T], errorCallback: js.Function1[Any, Unit]): this.type = js.native
 
-  def `then`(successCallback: js.Function1[T, T], errorCallback: js.Function1[T, Unit], notifyCallback: js.Function1[T, Unit]): this.type = js.native
+  def `then`(successCallback: js.Function1[T, T], errorCallback: js.Function1[Any, Unit], notifyCallback: js.Function1[Any, Unit]): this.type = js.native
 
-  def `catch`(errorCallback: js.Function1[T, Unit]): this.type = js.native
+  def `catch`(errorCallback: js.Function1[Any, Unit]): this.type = js.native
 
-  def `finally`(callback: js.Function1[T, Unit]): Unit = js.native
+  def `finally`(callback: js.Function1[Any, Unit]): Unit = js.native
 }
 
 object Promise {
@@ -77,7 +77,7 @@ object Promise {
       data
     }
 
-    def onError(error: A): Unit = p.failure(wrapJavaScriptException(error))
+    def onError(error: Any): Unit = p.failure(wrapJavaScriptException(error))
 
     promise.`then`(onSuccess _).`catch`(onError _)
 

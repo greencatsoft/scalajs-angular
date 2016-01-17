@@ -120,15 +120,15 @@ trait HttpPromise[T] extends Promise[T] {
 
   def success(callback: js.Function5[T, Int, js.Any, js.Any, js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function1[T, Unit]): this.type = js.native
+  def error(callback: js.Function1[Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function2[T, Int, Unit]): this.type = js.native
+  def error(callback: js.Function2[Any, Int, Unit]): this.type = js.native
 
-  def error(callback: js.Function3[T, js.Any, Int, Unit]): this.type = js.native
+  def error(callback: js.Function3[Any, js.Any, Int, Unit]): this.type = js.native
 
-  def error(callback: js.Function4[T, Int, js.Any, js.Any, Unit]): this.type = js.native
+  def error(callback: js.Function4[Any, Int, js.Any, js.Any, Unit]): this.type = js.native
 
-  def error(callback: js.Function5[T, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
+  def error(callback: js.Function5[Any, Int, js.Any, js.Any, UndefOr[String], Unit]): this.type = js.native
 }
 
 trait HttpInterceptor {
@@ -246,7 +246,7 @@ object HttpPromise {
 
     def onSuccess(data: A): Unit = p.success(data.asInstanceOf[A])
 
-    def onError(data: A, status: Int, config: js.Any, headers: js.Any, statusText: UndefOr[String]): Unit =
+    def onError(data: Any, status: Int, config: js.Any, headers: js.Any, statusText: UndefOr[String]): Unit =
       p failure HttpException(status, statusText getOrElse s"Failed to process HTTP request: '$data'")
 
     promise.success(onSuccess _).error(onError _)
