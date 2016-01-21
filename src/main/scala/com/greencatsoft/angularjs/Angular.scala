@@ -1,5 +1,7 @@
 package com.greencatsoft.angularjs
 
+import com.greencatsoft.angularjs.core.Injector
+
 import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.genTravConvertible2JSRichGenTrav
@@ -12,6 +14,8 @@ object Angular {
 
   def apply(name: String): Option[Module] =
     angular.module(name).toOption.map(new Module(_))
+
+  def injector: Injector = angular.injector
 
   def module(name: String, dependencies: Seq[String] = Nil): Module =
     new Module(angular.module(name, dependencies.toJSArray))
