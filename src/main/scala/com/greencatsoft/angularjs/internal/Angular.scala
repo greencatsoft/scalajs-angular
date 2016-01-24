@@ -1,5 +1,7 @@
 package com.greencatsoft.angularjs.internal
 
+import com.greencatsoft.angularjs.core.Injector
+
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox.Context
 import scala.scalajs.js
@@ -11,6 +13,8 @@ import com.greencatsoft.angularjs.Filter
 
 @js.native
 private[angularjs] trait Angular extends js.Object {
+
+  def injector(): Injector = js.native
 
   def module(name: String): UndefOr[Module] = js.native
 
