@@ -32,7 +32,7 @@ trait Route extends js.Object {
 
   var title: UndefOr[String] = js.native
 
-  var template: UndefOr[String] = js.native
+  var template: UndefOr[String | js.Function1[RouteParams, String]] = js.native
 
   var templateUrl: UndefOr[String | js.Function1[RouteParams, String]] = js.native
 
@@ -96,7 +96,7 @@ class RouteBuilder {
     this
   }
 
-  def template(template: String): RouteBuilder = {
+  def template(template: String | js.Function1[RouteParams, String]): RouteBuilder = {
     route.template = template
     this
   }
