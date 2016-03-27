@@ -1,14 +1,15 @@
 package com.greencatsoft.angularjs
 
 import com.greencatsoft.angularjs.core.Injector
-
-import scala.language.implicitConversions
-import scala.scalajs.js
-import scala.scalajs.js.JSConverters.genTravConvertible2JSRichGenTrav
+import com.greencatsoft.angularjs.internal.GlobalDefinitions.angular
 
 import org.scalajs.dom.Element
 
-import com.greencatsoft.angularjs.internal.GlobalDefinitions.angular
+import scala.language.implicitConversions
+
+import scala.scalajs.js
+import scala.scalajs.js.JSConverters.genTravConvertible2JSRichGenTrav
+import scala.scalajs.js.|
 
 object Angular {
 
@@ -23,6 +24,12 @@ object Angular {
   def extend(dst: js.Object, src: js.Object*): js.Object = angular.extend(dst, src)
 
   def merge(dst: js.Object, src: js.Object*): js.Object = angular.extend(dst, src)
+
+  def toJson(obj: Any): String = angular.toJson(obj)
+
+  def toJson(obj: Any, pretty: Boolean | Integer): String = angular.toJson(obj, pretty)
+
+  def fromJson(json: String): Any = angular.fromJson(json)
 
   implicit def element(elem: Element): AngularElement = angular.element(elem)
 }

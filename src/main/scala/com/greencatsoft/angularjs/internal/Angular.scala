@@ -1,15 +1,16 @@
 package com.greencatsoft.angularjs.internal
 
-import com.greencatsoft.angularjs.core.Injector
+import com.greencatsoft.angularjs._
+import com.greencatsoft.angularjs.core._
+import com.greencatsoft.{ angularjs => api }
+
+import org.scalajs.dom.Element
 
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox.Context
+
 import scala.scalajs.js
-import scala.scalajs.js.UndefOr
-import org.scalajs.dom.Element
-import com.greencatsoft.{ angularjs => api }
-import com.greencatsoft.angularjs.{ AngularElement, Config, Controller, Directive, Factory, Service, Runnable }
-import com.greencatsoft.angularjs.Filter
+import scala.scalajs.js.{ UndefOr, | }
 
 @js.native
 private[angularjs] trait Angular extends js.Object {
@@ -26,6 +27,11 @@ private[angularjs] trait Angular extends js.Object {
 
   def merge(dst: js.Object, src: js.Object*): js.Object = js.native
 
+  def toJson(obj: Any): String = js.native
+
+  def toJson(obj: Any, pretty: Boolean | Integer): String = js.native
+
+  def fromJson(json: String): Any = js.native
 }
 
 private[angularjs] object Angular {
