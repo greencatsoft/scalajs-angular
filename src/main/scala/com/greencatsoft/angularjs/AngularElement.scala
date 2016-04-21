@@ -1,9 +1,10 @@
 package com.greencatsoft.angularjs
 
+import org.scalajs.dom.Event
+import org.scalajs.dom.html.Element
+
 import scala.language.implicitConversions
 import scala.scalajs.js
-
-import org.scalajs.dom.{ Element, Event }
 
 @js.native
 trait AngularElement extends Element {

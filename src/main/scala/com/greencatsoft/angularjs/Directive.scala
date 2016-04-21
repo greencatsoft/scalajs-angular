@@ -8,7 +8,7 @@ import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSBracketAccess
 
-import org.scalajs.dom.Element
+import org.scalajs.dom.html.Element
 
 import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
 import com.greencatsoft.angularjs.internal.{ ConfigBuilder, Configuration, ServiceProxy }

@@ -2,7 +2,7 @@ package com.greencatsoft.angularjs.core
 
 import scala.scalajs.js
 
-import org.scalajs.dom.Element
+import org.scalajs.dom.html.Element
 
 import com.greencatsoft.angularjs.injectable
 
@@ -10,9 +10,9 @@ import com.greencatsoft.angularjs.injectable
 @injectable("$compile")
 trait Compile extends js.Object {
 
-  type LinkFunction = js.Function2[Scope, CloneAttachFunction, Element]
+  type LinkFunction = js.Function2[Scope, CloneAttachFunction, js.Array[Element]]
 
-  type CloneAttachFunction = js.Function2[Element, Scope, Unit]
+  type CloneAttachFunction = js.Function2[js.Array[Element], Scope, Unit]
 
   def apply(element: String): LinkFunction = js.native
 
