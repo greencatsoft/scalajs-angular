@@ -108,6 +108,18 @@ trait Requires extends ConfigBuilder {
   implicit def ~(requirement: String) = new Requirement(requirement, false)
 }
 
+trait Priority extends ConfigBuilder {
+  this: Directive =>
+
+  var priority = 0
+
+  override def buildConfig(config: Configuration): Configuration = {
+    config("priority") = priority
+    
+    super.buildConfig(config)
+  }
+}
+
 trait RestrictedDirective extends Directive with ConfigBuilder {
 
   def restrict: Set[String] = Set.empty
