@@ -38,7 +38,6 @@ trait Scope extends js.Object {
 trait RootScope extends Scope
 
 trait ScopeOps {
-  this: Service =>
 
   implicit class DynamicScope(scope: Scope) {
 
