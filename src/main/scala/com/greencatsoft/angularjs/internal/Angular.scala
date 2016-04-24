@@ -15,6 +15,8 @@ import scala.scalajs.js.{ UndefOr, | }
 @js.native
 private[angularjs] trait Angular extends js.Object {
 
+  def injector(): Injector = js.native
+
   def injector(modules: js.Array[String]): Injector = js.native
 
   def module(name: String): UndefOr[Module] = js.native

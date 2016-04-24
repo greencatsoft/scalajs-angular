@@ -14,6 +14,8 @@ object Angular {
   def apply(name: String): Option[Module] =
     angular.module(name).toOption.map(new Module(_))
 
+  def injector(): Injector = angular.injector()
+
   def injector(modules: String*): Injector = angular.injector(modules.toJSArray)
 
   def module(name: String, dependencies: Seq[String] = Nil): Module =
