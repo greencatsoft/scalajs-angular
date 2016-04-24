@@ -1,6 +1,6 @@
 package com.greencatsoft.angularjs.core
 
-import com.greencatsoft.angularjs.injectable
+import com.greencatsoft.angularjs.{injectable, internal}
 import com.greencatsoft.angularjs.internal.ServiceProxy
 
 import scala.language.experimental.macros
@@ -31,15 +31,5 @@ object Injector {
     * @tparam A the type to return an instance of
     * @return instance of the specified type provided by the injector
     */
-  def get[A](implicit injector: Injector): A = macro get_impl[A]
-
-  def get_impl[A](c: Context)(injector: c.Expr[Injector])(implicit tag: c.WeakTypeTag[A]): c.Expr[A] = {
-    import c.universe._
-
-    val name = ServiceProxy.identifierFromType(c)(tag.tpe) getOrElse {
-      c.abort(c.enclosingPosition, s"The specified type '${tag.tpe}' does not have @injectable annotation.")
-    }
-    val nameExpr = c.Expr[String](q"$name")
-    reify { injector.splice.get[A](nameExpr.splice) }
-  }
+  def get[A](implicit injector: Injector): A = macro internal.Injector.get[A]
 }
