@@ -5,6 +5,7 @@ import com.greencatsoft.angularjs.internal.GlobalDefinitions.angular
 
 import org.scalajs.dom.Element
 
+import scala.language.experimental.macros
 import scala.language.implicitConversions
 
 import scala.scalajs.js
@@ -32,4 +33,15 @@ object Angular {
   def fromJson(json: String): Any = angular.fromJson(json)
 
   implicit def element(elem: Element): AngularElement = angular.element(elem)
+
+  /** Retrieve the angular name of an [[com.greencatsoft.angularjs.injectable]] component.
+    *
+    * For example when implementing a directive with a controller we can no write {{{
+    *   override val controller = Some(Angular.nameOf[MyController])
+    * }}}
+    *
+    * @tparam A type annotated with `@injectable` to retrieve the angular name for.
+    * @return the angular name of the specified type.
+    */
+  def nameOf[A]: String = macro internal.Angular.nameOf[A]
 }
