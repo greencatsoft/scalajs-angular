@@ -2,9 +2,11 @@ package com.greencatsoft.angularjs
 
 import com.greencatsoft.angularjs.core.Injector
 import com.greencatsoft.angularjs.internal.GlobalDefinitions.angular
+
 import org.scalajs.dom.Element
 
 import scala.language.implicitConversions
+
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.genTravConvertible2JSRichGenTrav
 import scala.scalajs.js.|
