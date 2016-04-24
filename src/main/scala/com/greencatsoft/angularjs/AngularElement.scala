@@ -1,14 +1,25 @@
 package com.greencatsoft.angularjs
 
+import com.greencatsoft.angularjs.core.Scope
+import org.scalajs.jquery.JQuery
+
 import scala.language.implicitConversions
 import scala.scalajs.js
-
-import org.scalajs.dom.{ Element, Event }
+import scala.scalajs.js.UndefOr
 
 @js.native
-trait AngularElement extends Element {
+trait AngularElement extends JQuery {
+  def controller[A <: Controller[_ <: Scope]](): UndefOr[ControllerWrapper[A]] = js.native
+  def controller[A <: Controller[_ <: Scope]](name: String): UndefOr[ControllerWrapper[A]] = js.native
+}
 
-  def bind[T <: Event](event: String, handler: js.Function1[T, _]): Unit = js.native
+@js.native
+trait ControllerWrapper[A <: Controller[_ <: Scope]] extends js.Object {
+  var controller: A = js.native
+}
 
-  def unbind[T <: Event](event: String, handler: js.Function1[T, _]): Unit = js.native
+object ControllerWrapper {
+
+  implicit def wrapperToController[A <: Controller[_ <: Scope]](wrapper: ControllerWrapper[A]): A =
+    wrapper.controller
 }
