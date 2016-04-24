@@ -68,7 +68,7 @@ trait BottomSheetOptions extends js.Object {
   var controllerAs: String = js.native
 
   /** The element to append the bottom sheet to. Defaults to appending to the root element of the application. */
-  var parent: dom.html.Element = js.native
+  var parent: dom.Element = js.native
 
   /** Whether to disable scrolling while the bottom sheet is open. Default true. */
   var disableParentScroll: Boolean = js.native

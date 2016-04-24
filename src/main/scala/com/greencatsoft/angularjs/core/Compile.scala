@@ -2,7 +2,7 @@ package com.greencatsoft.angularjs.core
 
 import scala.scalajs.js
 
-import org.scalajs.dom.html.Element
+import org.scalajs.dom.Element
 
 import com.greencatsoft.angularjs.injectable
 
