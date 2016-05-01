@@ -162,4 +162,13 @@ private[angularjs] object Angular {
 
     Literal(Constant(name))
   }
+
+  def nameOf[A](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[String] = {
+    import c.universe._
+
+    val name = ServiceProxy.identifierFromType(c)(tag.tpe) getOrElse {
+      c.abort(c.enclosingPosition, s"The specified type '${tag.tpe}' does not have @injectable annotation.")
+    }
+    c.Expr[String](q"$name")
+  }
 }
