@@ -10,7 +10,8 @@ lazy val scalaJsAngular = (project in file(".")).
     homepage := Some(url("http://github.com/greencatsoft/scalajs-angular")),
 
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.8.2",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.0",
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.0",
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile"
     ),
 
