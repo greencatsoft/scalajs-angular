@@ -12,7 +12,7 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def config[A <: Config]: Module = macro angular.configFromClass[A]
 
-  def $config(constructor: js.Array[js.Any]): Module = {
+  def $config(constructor: ServiceDefinition[_ <: Config]): Module = {
     module.config(constructor)
     this
   }
@@ -21,7 +21,7 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def controller[A <: Controller[_]]: Module = macro angular.controllerFromClass[A]
 
-  def $controller(name: String, constructor: js.Array[js.Any]): Module = {
+  def $controller(name: String, constructor: ServiceDefinition[_ <: Controller[_]]): Module = {
     module.controller(name, constructor)
     this
   }
@@ -30,7 +30,7 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def directive[A <: Directive]: Module = macro angular.directiveFromClass[A]
 
-  def $directive(name: String, constructor: js.Array[js.Any]): Module = {
+  def $directive(name: String, constructor: ServiceDefinition[_ <: Directive]): Module = {
     module.directive(name, constructor)
     this
   }
@@ -39,7 +39,7 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def factory[A <: Factory[_]]: Module = macro angular.factoryFromClass[A]
 
-  def $factory(name: String, constructor: js.Array[js.Any]): Module = {
+  def $factory(name: String, constructor: ServiceDefinition[_ <: Factory[_]]): Module = {
     module.factory(name, constructor)
     this
   }
@@ -48,14 +48,14 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def run[A <: Runnable]: Module = macro angular.runFromClass[A]
 
-  def $run(constructor: js.Array[js.Any]): Module = {
+  def $run(constructor: ServiceDefinition[_ <: Runnable]): Module = {
     module.run(constructor)
     this
   }
 
   def service[A <: Service](target: A): Module = macro angular.service[A]
 
-  def $service(name: String, constructor: js.Array[js.Any]): Module = {
+  def $service(name: String, constructor: ServiceDefinition[_]): Module = {
     module.service(name, constructor)
     this
   }
@@ -64,7 +64,7 @@ class Module private[angularjs] (val module: internal.Module) {
 
   def filter[A <: Filter[_]]: Module = macro angular.filterFromClass[A]
 
-  def $filter(name: String, constructor: js.Array[js.Any]): Module = {
+  def $filter(name: String, constructor: ServiceDefinition[_ <: Filter[_]]): Module = {
     module.filter(name, constructor)
     this
   }
