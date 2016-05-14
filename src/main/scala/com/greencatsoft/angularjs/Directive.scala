@@ -12,6 +12,7 @@ import scala.scalajs.js.Any.{ fromBoolean, fromFunction2, fromFunction4, fromStr
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSBracketAccess
+import scala.scalajs.js.{ UndefOr, | }
 
 trait Directive extends Service with Function0[Configuration] with ScopeOps with ConfigBuilder {
 
@@ -50,12 +51,12 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
       }
     }
 
-    controller.foreach(config("controller") = _)
+    controller.map(_.asInstanceOf[js.Any]).foreach(config("controller") = _)
 
     super.buildConfig(config)
   }
 
-  def controller: Option[ServiceDefinition[_ <: Controller[_]]] = None
+  def controller: Option[ServiceDefinition[_ <: Controller[_]] | String] = None
 
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes): Unit = Unit
 
