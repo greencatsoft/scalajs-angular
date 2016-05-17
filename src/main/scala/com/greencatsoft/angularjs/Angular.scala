@@ -17,9 +17,13 @@ object Angular {
   def apply(name: String): Option[Module] =
     angular.module(name).toOption.map(new Module(_))
 
+  def bootstrap(element: Element, modules: String*): Injector = angular.bootstrap(element, modules.toJSArray)
+
   def injector: Injector = angular.injector()
 
   def injector(modules: String*): Injector = angular.injector(modules.toJSArray)
+
+  def injector: Injector = angular.injector
 
   def module(name: String, dependencies: Seq[String] = Nil): Module =
     new Module(angular.module(name, dependencies.toJSArray))
