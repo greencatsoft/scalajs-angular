@@ -1,17 +1,18 @@
 package com.greencatsoft.angularjs
 
-import scala.language.implicitConversions
+import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
+import com.greencatsoft.angularjs.internal.{ ConfigBuilder, Configuration }
+
+import org.scalajs.dom.Element
+
 import scala.language.experimental.macros
+import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.Any.{ fromBoolean, fromFunction2, fromFunction4, fromString, wrapArray }
 import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSBracketAccess
-
-import org.scalajs.dom.Element
-
-import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
-import com.greencatsoft.angularjs.internal.{ ConfigBuilder, Configuration, ServiceProxy }
+import scala.scalajs.js.{ UndefOr, | }
 
 trait Directive extends Service with Function0[Configuration] with ScopeOps with ConfigBuilder {
 
@@ -27,19 +28,22 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
       scope
     }
 
-    def toController(obj: js.Any): Either[Controller[_ <: Scope], js.Any] =
-      ServiceProxy.unbind[Controller[_ <: Scope]](obj) match {
+    def toController(obj: js.Object): Either[Controller[_ <: Scope], js.Object] = {
+      val controller = ServiceWrapper[Controller[_ <: Scope]](obj).map(_.service)
+      controller match {
         case Some(c) => Left(c)
         case None => Right(obj)
       }
+    }
 
-    config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controllers: UndefOr[js.Any]) => {
+    config("link") = (scope: ScopeType, elems: js.Array[Element], attrs: Attributes, controllers: UndefOr[js.Object]) => {
       controllers.toOption match {
         case Some(arr) if js.Array.isArray(arr) =>
-          val args = arr.asInstanceOf[js.Array[js.Any]].toSeq.map(toController)
+          val args = arr.asInstanceOf[js.Array[js.Object]].toSeq.map(toController)
           link(bind(scope), elems, attrs, args: _*)
         case Some(c) =>
-          ServiceProxy.unbind[Controller[_ <: Scope]](c) match {
+          val controller = ServiceWrapper[Controller[_ <: Scope]](c).map(_.service)
+          controller match {
             case Some(arg) => link(bind(scope), elems, attrs, Left(arg))
             case _ => link(bind(scope), elems, attrs, Right(c))
           }
@@ -47,12 +51,12 @@ trait Directive extends Service with Function0[Configuration] with ScopeOps with
       }
     }
 
-    controller.foreach(config("controller") = _)
+    controller.map(_.asInstanceOf[js.Any]).foreach(config("controller") = _)
 
     super.buildConfig(config)
   }
 
-  def controller: Option[js.Any] = None
+  def controller: Option[ServiceDefinition[_ <: Controller[_]] | String] = None
 
   def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes): Unit = Unit
 
@@ -115,7 +119,7 @@ trait Priority extends ConfigBuilder {
 
   override def buildConfig(config: Configuration): Configuration = {
     config("priority") = priority
-    
+
     super.buildConfig(config)
   }
 }
