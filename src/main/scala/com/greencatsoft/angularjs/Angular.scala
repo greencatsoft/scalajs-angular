@@ -38,7 +38,7 @@ object Angular {
 
   /** Retrieve the angular name of an [[com.greencatsoft.angularjs.injectable]] component.
     *
-    * For example when implementing a directive with a controller we can no write {{{
+    * For example when implementing a directive with a controller we can now write {{{
     *   override val controller = Some(Angular.nameOf[MyController])
     * }}}
     *
