@@ -266,5 +266,6 @@ trait HttpResult extends js.Object {
 
   val statusText: String = js.native
 
-  val headers: js.Function1[String, String] = js.native
+  def headers(): js.Dictionary[String] = js.native
+  def headers(key: String): String = js.native
 }
