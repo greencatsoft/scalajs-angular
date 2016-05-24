@@ -23,8 +23,6 @@ object Angular {
 
   def injector(modules: String*): Injector = angular.injector(modules.toJSArray)
 
-  def injector: Injector = angular.injector
-
   def module(name: String, dependencies: Seq[String] = Nil): Module =
     new Module(angular.module(name, dependencies.toJSArray))
 
