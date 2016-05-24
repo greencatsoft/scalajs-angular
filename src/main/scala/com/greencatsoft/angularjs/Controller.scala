@@ -1,10 +1,8 @@
 package com.greencatsoft.angularjs
 
-import scala.language.experimental.macros
-import scala.scalajs.js
-
 import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
-import com.greencatsoft.angularjs.internal.ServiceProxy
+
+import scala.scalajs.js
 
 trait Controller[A <: Scope] extends Service with ScopeOps {
 
@@ -16,13 +14,6 @@ trait Controller[A <: Scope] extends Service with ScopeOps {
     super.initialize()
     scope.dynamic.controller = this.asInstanceOf[js.Object]
   }
-}
-
-object Controller {
-
-  def proxy[A <: Controller[_]]: js.Any = macro ServiceProxy.newClassWrapper[A]
-
-  def proxy[A <: Controller[_]](target: A): js.Any = macro ServiceProxy.newObjectWrapper[A]
 }
 
 abstract class AbstractController[A <: Scope](override val scope: A) extends Controller[A]

@@ -1,26 +1,27 @@
 package com.greencatsoft.angularjs.internal
 
+import com.greencatsoft.angularjs.{ Service, ServiceDefinition, ServiceWrapper, injectable }
+
 import scala.reflect.macros.blackbox.Context
 import scala.scalajs.js
-import scala.scalajs.js.Any.fromString
 import scala.scalajs.js.UndefOr
-import scala.scalajs.js.UndefOr.{ any2undefOrA, undefOr2ops }
-
-import com.greencatsoft.angularjs.{ Service, inject, injectable }
 
 object ServiceProxy {
 
-  def bind(service: js.Any, target: Service) {
+  def bind[A <: Service](wrapper: ServiceWrapper[A], target: A) {
     try {
-      service.asInstanceOf[js.Dynamic].controller = target.asInstanceOf[js.Object]
+      wrapper.asInstanceOf[js.Dynamic].service = target.asInstanceOf[js.Object]
     } catch {
       case _: Throwable =>
     }
   }
 
-  def unbind[A <: Service](service: js.Any): Option[A] = {
-    val target: UndefOr[Any] = service.asInstanceOf[js.Dynamic].controller
-    target.map(_.asInstanceOf[A]).toOption
+  def unbind[A <: Service](wrapper: js.Object): Option[ServiceWrapper[A]] = {
+    val target: UndefOr[Any] = wrapper.asInstanceOf[js.Dynamic].service
+
+    target.toOption.filter(_.isInstanceOf[Service]) map {
+      _ => wrapper.asInstanceOf[ServiceWrapper[A]]
+    }
   }
 
   def identifier[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Option[String] =
@@ -105,13 +106,15 @@ object ServiceProxy {
     members.toSeq
   }
 
-  def newObjectWrapper[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] =
+  def definitionFromObject[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
     newIntance[A](c)(Some(target))
+  }
 
-  def newClassWrapper[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] =
+  def definitionFromClass[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
     newIntance[A](c)(None)
+  }
 
-  private def newIntance[A <: Service](c: Context)(target: Option[c.Expr[A]])(implicit tag: c.WeakTypeTag[A]): c.Expr[js.Any] = {
+  private def newIntance[A <: Service](c: Context)(target: Option[c.Expr[A]])(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
     import c.universe._
 
     val (instantiation, constDeps, constDepNames) = target match {
@@ -166,7 +169,7 @@ object ServiceProxy {
       import scala.scalajs.js.UndefOr
       import scala.scalajs.js.JSConverters.JSRichOption
 
-      import com.greencatsoft.angularjs.{ Initializable, Service }
+      import com.greencatsoft.angularjs.{ Initializable, Service, ServiceDefinition, ServiceWrapper }
       import com.greencatsoft.angularjs.internal.ServiceProxy
 
       val handler: js.ThisFunction20[js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, js.Any, 
@@ -176,7 +179,7 @@ object ServiceProxy {
 
         val target: Service = { ..$instantiation }
 
-        ServiceProxy.bind(t, target)
+        ServiceProxy.bind(t.asInstanceOf[ServiceWrapper[Service]], target)
 
         ..$assignments
 
@@ -193,9 +196,9 @@ object ServiceProxy {
       val proxy = js.Array[js.Any](..$depNames)
 
       proxy.push(handler)
-      proxy
+      proxy.asInstanceOf[ServiceDefinition[${tag.tpe}]]
     }"""
 
-    c.Expr[js.Any](proxy)
+    c.Expr[ServiceDefinition[A]](proxy)
   }
 }
