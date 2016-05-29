@@ -258,7 +258,7 @@ object HttpPromise {
 @js.native
 trait HttpResult extends js.Object {
 
-  val config: js.Any = js.native
+  val config: HttpConfig = js.native
 
   val data: js.Any = js.native
 
