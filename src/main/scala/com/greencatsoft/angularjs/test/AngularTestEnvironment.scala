@@ -11,8 +11,8 @@ import scala.language.experimental.macros
   * Setup for example like this:
   * {{{
   *   class MyDirectiveSpec extends FunSpec with AngularTestEnvironment with ScopeOps with MustMatchers {
-  *       override val app = Angular.module("app", Seq("ngAnimate", "ngMaterial")).directive[MyDirective]
-  *       override val appModuleName = "app"
+  *       override val module = Angular.module("app", Seq("ngAnimate", "ngMaterial")).directive[MyDirective]
+  *       override val moduleName = "app"
   *
   *       describe("MyDirective") {
   *         it("must render") {
