@@ -8,12 +8,16 @@ trait Controller[A <: Scope] extends Service with ScopeOps {
 
   def scope: A
 
+  /** Name to bind the controller to (instead of the default name of `controller`). */
+  def controllerAs: Option[String] = None
+
   abstract override def initialize() {
     assert(scope != null, "Property 'scope' should not be null.")
 
     super.initialize()
-    scope.dynamic.controller = this.asInstanceOf[js.Object]
+    scope.dynamic.updateDynamic(controllerAs.getOrElse("controller"))(this.asInstanceOf[js.Object])
   }
 }
 
-abstract class AbstractController[A <: Scope](override val scope: A) extends Controller[A]
+abstract class AbstractController[A <: Scope](override val scope: A, override val controllerAs: Option[String] = None)
+  extends Controller[A]
