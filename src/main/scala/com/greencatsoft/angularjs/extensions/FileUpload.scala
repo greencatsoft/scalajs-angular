@@ -34,11 +34,13 @@ trait FileUploadConfig extends js.Object {
   var fileName: js.Any = js.native
 
   var fileFormDataName: js.Any = js.native
+  
+  var arrayKey: String = js.native
 }
 
 object FileUploadConfig {
 
-  def apply(url: String, file: File | js.Array[File], data: Option[Any] = None) = {
+  def apply(url: String, file: File | js.Array[File], data: Option[Any] = None, arrayKey: Option[String] = None) = {
     require(url != null, "Missing argument 'url'.")
     require(file != null, "Missing argument 'file'.")
 
@@ -47,6 +49,8 @@ object FileUploadConfig {
     config.url = url
     config.file = file
 
+    arrayKey.foreach(config.arrayKey = _)
+    
     data.foreach(config.data = _)
 
     config
