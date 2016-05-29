@@ -48,10 +48,8 @@ object FileUploadConfig {
 
     config.url = url
     config.file = file
-    
-    arrayKey match {
-      case Some(key) => {config.arrayKey = key}
-    }  
+
+    arrayKey.foreach(config.arrayKey = _)
     
     data.foreach(config.data = _)
 
