@@ -16,12 +16,12 @@ import scala.language.experimental.macros
   *
   *       describe("MyDirective") {
   *         it("must render") {
-  *           val scope = inject[RootScope].$new(true)
+  *           val scope = inject[RootScope].\$new(true)
   *           scope.dynamic.greeting = "Hello World!"
   *
   *           val tag = """<my-directive greeting="{{greeting}}"></my-directive>"""
   *           val element = inject[Compile](tag)(scope, null)
-  *           scope.$digest()
+  *           scope.\$digest()
   *
   *           element.textContent must be ("Hello World!")
   *         }
@@ -50,7 +50,7 @@ trait AngularTestEnvironment {
 
   /** Provides readable access to angular services.
     *
-    * Example: {{{inject[RootScope].$new(true)}}}
+    * Example: {{{inject[RootScope].\$new(true)}}}
     */
   def inject[A](implicit injector: Injector): A = macro internal.Injector.get[A]
 }
