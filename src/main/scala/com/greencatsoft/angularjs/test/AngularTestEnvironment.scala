@@ -2,6 +2,7 @@ package com.greencatsoft.angularjs.test
 
 import com.greencatsoft.angularjs.core.Injector
 import com.greencatsoft.angularjs.{Angular, Module, internal}
+import org.scalajs.dom.document
 
 import scala.language.experimental.macros
 
@@ -33,18 +34,18 @@ trait AngularTestEnvironment {
     *
     * For example {{{Angular.module("app", Seq("ngAnimate", "ngMaterial")).directive[MyDirective]}}}
     */
-  val app: Module
+  val module: Module
 
   /** The name of your application module */
-  val appModuleName: String
+  val moduleName: String
 
   /** Injector you can use in your tests to access services.
     *
     * You may want to use the `inject[A]` method for more readable code.
     */
   implicit lazy val injector: Injector = {
-    val rootElement = org.scalajs.dom.document.documentElement
-    Angular.bootstrap(rootElement, appModuleName)
+    val rootElement = document.documentElement
+    Angular.bootstrap(rootElement, moduleName)
   }
 
   /** Provides readable access to angular services.
