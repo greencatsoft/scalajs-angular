@@ -2,6 +2,7 @@ package com.greencatsoft.angularjs
 
 import com.greencatsoft.angularjs.core.Scope
 import org.scalajs.dom
+import org.scalajs.dom.Node
 import org.scalajs.jquery.JQuery
 
 import scala.language.implicitConversions
@@ -23,14 +24,22 @@ object AngularElement {
 
   implicit def jQueryToAngular(jQuery: JQuery): AngularElement = apply(jQuery)
 
-  implicit class IterableAngularElement(val e: AngularElement) extends AnyVal {
+  implicit class IterableAngularElement(val element: AngularElement) extends Seq[Node] {
 
-    def foreach(f: (Int, AngularElement) => Unit): Unit = {
-      for (i <- 0 until e.length)
-        f(i, AngularElement(e.get(i)))
+    override def length: Int = element.length
+
+    override def apply(idx: Int): Node = element.get(idx)
+
+    override def iterator: Iterator[Node] = new Iterator[Node] {
+      var index = 0
+
+      def hasNext: scala.Boolean = index < length
+
+      def next() = {
+        val node = apply(index)
+        index += 1
+        node
+      }
     }
-
-    def foreach(f: AngularElement => Unit): Unit =
-      foreach((_, e) => f(e))
   }
 }
