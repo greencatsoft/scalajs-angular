@@ -410,6 +410,46 @@ class RoutingConfig(routeProvider: RouteProvider) extends Config {
 _(Note that you need to 'ngRoute' in your dependency list, and angular-route.js in the 
 html file for the above code to work)_
 
+### Asynchronous Task
+
+In order to process asynchronously calculated values in Scala, you need an implicit instance
+of _ExecutionContext_ is needed in scope.
+
+Scala.js provides its own implementation as _RunNowExecutionContext_, which simply resolves
+the submitted tasks immediately.
+
+However, it's been deprecated since `0.6.6` and replaced by _QueueExecutionContext_ which
+is truly asynchronous in nature.
+
+It could pose a problem in the context of an Angular.js application, since it has its own
+lifecycle to manage the scope. For example, you might notice that changed values in a scope
+are not immediately visible if they are assigend asynchronously, like within `onComplete`
+clause of a _Future_ instance.
+
+To deal with this limitation, we provide our own version of _ExecutionContext_, which
+is based on Angular.js's ``$timer` service.
+
+The simplest way to use it is to make your controller or service extend from
+_AngularExecutionContextProvider_, like shown below:
+
+```scala
+// Inject '$timeout' service and extend 'AngularExecutionContextProvider'.
+@injectable("todoCtrl")
+class TodoCtrl(scope: TodoScope, service: TaskServiceProxy,
+  val timeout: Timeout) extends AbstractController[TodoScope](scope)
+  with AngularExecutionContextProvider {
+
+  service.findAll() onComplete {
+    case Success(tasks) =>
+      // This expression is executed within Angular's digest cycle.
+      scope.todos = tasks.toJSArray
+
+      update()
+    case Failure(t) => handleError(t)
+  }
+}
+```
+
 ### Example Project
 
 There's an example implementation of [TodoMvc](http://www.todomvc.com) application as a 
