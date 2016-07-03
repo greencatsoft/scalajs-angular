@@ -7,8 +7,7 @@ import com.greencatsoft.{ angularjs => api }
 import org.scalajs.dom.Element
 
 import scala.language.experimental.macros
-import scala.reflect.macros.blackbox.Context
-
+import scala.reflect.macros.{blackbox => b}
 import scala.scalajs.js
 import scala.scalajs.js.{ UndefOr, | }
 
@@ -40,9 +39,9 @@ private[angularjs] trait Angular extends js.Object {
 
 private[angularjs] object Angular {
 
-  import ServiceProxy.{ identifier, definitionFromClass, definitionFromObject }
+  import ServiceProxy.{definitionFromClass, definitionFromObject, identifier}
 
-  def config[A <: Config](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def config[A <: Config](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -50,7 +49,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$config($proxy)}")
   }
 
-  def configFromClass[A <: Config](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def configFromClass[A <: Config](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromClass(c)
@@ -58,7 +57,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$config($proxy)}")
   }
 
-  def controller[A <: Controller[_]](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def controller[A <: Controller[_]](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -67,7 +66,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$controller($name, $proxy)}")
   }
 
-  def controllerFromClass[A <: Controller[_]](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def controllerFromClass[A <: Controller[_]](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromClass(c)
@@ -76,7 +75,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$controller($name, $proxy)}")
   }
 
-  def directive[A <: Directive](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def directive[A <: Directive](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -85,7 +84,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.module.directive($name, $proxy)}")
   }
 
-  def directiveFromClass[A <: Directive](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def directiveFromClass[A <: Directive](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromClass(c)
@@ -94,7 +93,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$directive($name, $proxy)}")
   }
 
-  def factory[A <: Factory[_]](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def factory[A <: Factory[_]](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -103,7 +102,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$factory($name, $proxy)}")
   }
 
-  def factoryFromClass[A <: Factory[_]](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def factoryFromClass[A <: Factory[_]](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromClass(c)
@@ -112,7 +111,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$factory($name, $proxy)}")
   }
 
-  def run[A <: Runnable](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def run[A <: Runnable](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -120,7 +119,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$run($proxy)}")
   }
 
-  def runFromClass[A <: Runnable](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def runFromClass[A <: Runnable](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromClass(c)
@@ -128,7 +127,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$run($proxy)}")
   }
 
-  def service[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def service[A <: Service](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -137,7 +136,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$service($name, $proxy)}")
   }
 
-  def filter[A <: Filter[_]](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def filter[A <: Filter[_]](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromObject(c)(target)
@@ -146,7 +145,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$filter($name, $proxy)}")
   }
 
-  def filterFromClass[A <: Filter[_]](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
+  def filterFromClass[A <: Filter[_]](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[api.Module] = {
     import c.universe._
 
     val proxy = definitionFromClass(c)
@@ -155,7 +154,7 @@ private[angularjs] object Angular {
     c.Expr[api.Module](q"{${c.prefix.tree}.$$filter($name, $proxy)}")
   }
 
-  private def moduleName[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): c.universe.Literal = {
+  private def moduleName[A <: Service](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.universe.Literal = {
     import c.universe._
 
     val name = identifier[A](c) getOrElse {
@@ -165,7 +164,7 @@ private[angularjs] object Angular {
     Literal(Constant(name))
   }
 
-  def nameOf[A](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[String] = {
+  def nameOf[A](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[String] = {
     import c.universe._
 
     val name = ServiceProxy.identifierFromType(c)(tag.tpe) getOrElse {

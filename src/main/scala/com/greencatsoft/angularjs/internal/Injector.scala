@@ -2,11 +2,11 @@ package com.greencatsoft.angularjs.internal
 
 import com.greencatsoft.angularjs.core
 
-import scala.reflect.macros.blackbox.Context
+import scala.reflect.macros.blackbox
 
 private[angularjs] object Injector {
 
-  def get[A](c: Context)(injector: c.Expr[core.Injector])(implicit tag: c.WeakTypeTag[A]): c.Expr[A] = {
+  def get[A](c: blackbox.Context)(injector: c.Expr[core.Injector])(implicit tag: c.WeakTypeTag[A]): c.Expr[A] = {
     import c.universe._
 
     val name = ServiceProxy.identifierFromType(c)(tag.tpe) getOrElse {

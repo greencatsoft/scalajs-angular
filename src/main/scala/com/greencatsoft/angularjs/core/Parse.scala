@@ -1,8 +1,8 @@
 package com.greencatsoft.angularjs.core
 
-import scala.scalajs.js
-
 import com.greencatsoft.angularjs.injectable
+
+import scala.scalajs.js
 
 @js.native
 @injectable("$parse")

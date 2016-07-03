@@ -1,9 +1,9 @@
 package com.greencatsoft.angularjs.extensions
 
-import scala.scalajs.js
-
 import com.greencatsoft.angularjs.core.HttpConfig
 import com.greencatsoft.angularjs.injectable
+
+import scala.scalajs.js
 
 /**
  * Wrapper for the angular-block-ui module.
@@ -16,7 +16,7 @@ trait BlockUI extends js.Object {
 
   def start(): Unit = js.native
 
-  def start(messsage: String): Unit = js.native
+  def start(message: String): Unit = js.native
 
   def stop(): Unit = js.native
 

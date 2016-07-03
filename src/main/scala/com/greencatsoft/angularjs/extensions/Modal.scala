@@ -1,9 +1,9 @@
 package com.greencatsoft.angularjs.extensions
 
-import scala.scalajs.js
-
-import com.greencatsoft.angularjs.injectable
 import com.greencatsoft.angularjs.core.Promise
+import com.greencatsoft.angularjs.injectable
+
+import scala.scalajs.js
 
 /**
  * Wrapper for the modal service provided by Angular directives for Bootstrap.
@@ -32,9 +32,9 @@ trait ModalOptions extends js.Object {
 
   var windowClass: String = js.native
 
-  var backdrop : Boolean = js.native
+  var backdrop: Boolean = js.native
 
-  var keyboard : Boolean = js.native
+  var keyboard: Boolean = js.native
 
   var resolve: js.Dictionary[js.Any] = js.native
 }

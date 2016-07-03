@@ -1,12 +1,10 @@
 package com.greencatsoft.angularjs
 
-import scala.language.experimental.macros
-import scala.language.implicitConversions
-
 import com.greencatsoft.angularjs.internal.ServiceProxy
 
+import scala.language.experimental.macros
+import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.UndefOr
 
 trait Service extends Initializable
 

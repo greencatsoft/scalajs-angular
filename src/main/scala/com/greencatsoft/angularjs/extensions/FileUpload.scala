@@ -1,12 +1,12 @@
 package com.greencatsoft.angularjs.extensions
 
-import scala.scalajs.js
-import scala.scalajs.js.|
+import com.greencatsoft.angularjs.core.HttpPromise
+import com.greencatsoft.angularjs.injectable
 
 import org.scalajs.dom.File
 
-import com.greencatsoft.angularjs.core.HttpPromise
-import com.greencatsoft.angularjs.injectable
+import scala.scalajs.js
+import scala.scalajs.js.|
 
 /**
  * Wrapper for the ng-file-upload module.
@@ -34,7 +34,7 @@ trait FileUploadConfig extends js.Object {
   var fileName: js.Any = js.native
 
   var fileFormDataName: js.Any = js.native
-  
+
   var arrayKey: String = js.native
 }
 
@@ -50,7 +50,7 @@ object FileUploadConfig {
     config.file = file
 
     arrayKey.foreach(config.arrayKey = _)
-    
+
     data.foreach(config.data = _)
 
     config

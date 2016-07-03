@@ -1,10 +1,8 @@
 package com.greencatsoft.angularjs.core
 
 import com.greencatsoft.angularjs.{injectable, internal}
-import com.greencatsoft.angularjs.internal.ServiceProxy
 
 import scala.language.experimental.macros
-import scala.reflect.macros.blackbox.Context
 import scala.scalajs.js
 
 @injectable("$injector")
@@ -13,7 +11,8 @@ trait Injector extends js.Object {
   def get[A](name: String): A = js.native
 }
 
-/** Supports easy, type safe injection of types annotated with `@injectable`.
+/**
+  * Supports easy, type safe injection of types annotated with `@injectable`.
   *
   * See example:
   * {{{
@@ -23,7 +22,9 @@ trait Injector extends js.Object {
   * }}}
   */
 object Injector {
-  /** Gets an instance of the specified type from the provided injector.
+
+  /**
+    * Gets an instance of the specified type from the provided injector.
     *
     * Fails at compile time, if the type isn't annotated with `@injectable`.
     *

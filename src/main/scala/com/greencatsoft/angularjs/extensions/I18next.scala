@@ -1,9 +1,9 @@
 package com.greencatsoft.angularjs.extensions
 
+import com.greencatsoft.angularjs.injectable
+
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.array2JSRichGenTrav
-
-import com.greencatsoft.angularjs.injectable
 
 /**
  * Wrapper for the ng-i18next module

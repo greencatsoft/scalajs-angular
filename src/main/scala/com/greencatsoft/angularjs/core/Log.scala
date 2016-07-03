@@ -37,32 +37,30 @@ trait LogProvider extends js.Object {
 trait Log extends js.Object {
 
   /** Write a log message
-    *
-    * @param message
     */
   def log(message: js.Any*): Unit = js.native
 
   /** Write an information message
     *
-    * @param message
+    * @param message The message to log.
     */
   def info(message: js.Any*): Unit = js.native
 
   /** Write a warning message
     *
-    * @param message
+    * @param message The message to log.
     */
   def warn(message: js.Any*): Unit = js.native
 
   /** Write an error message
     *
-    * @param message
+    * @param message The message to log.
     */
   def error(message: js.Any*): Unit = js.native
 
   /** Write a debug message
     *
-    * @param message
+    * @param message The message to log.
     */
   def debug(message: js.Any*): Unit = js.native
 }

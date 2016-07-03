@@ -1,11 +1,10 @@
 package com.greencatsoft.angularjs.core
 
+import com.greencatsoft.angularjs.injectable
+
 import scala.concurrent.Future
 import scala.language.implicitConversions
 import scala.scalajs.js
-
-import com.greencatsoft.angularjs.core.Promise.promise2future
-import com.greencatsoft.angularjs.injectable
 
 @js.native
 trait EnhancedResource[T] extends js.Object {

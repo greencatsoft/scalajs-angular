@@ -1,13 +1,12 @@
 package com.greencatsoft.angularjs.core
 
+import com.greencatsoft.angularjs.injectable
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.Any.fromFunction1
 import scala.scalajs.runtime.wrapJavaScriptException
 import scala.util.{ Failure, Success, Try }
-
-import com.greencatsoft.angularjs.injectable
 
 @js.native
 @injectable("$q")
@@ -15,7 +14,7 @@ trait Q extends js.Object {
 
   def defer[T](): Defer[T] = js.native
 
-  def reject[T](reason:js.Any): Promise[T]= js.native
+  def reject[T](reason: js.Any): Promise[T] = js.native
 }
 
 @js.native

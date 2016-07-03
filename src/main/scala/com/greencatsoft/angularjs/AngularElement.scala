@@ -1,6 +1,7 @@
 package com.greencatsoft.angularjs
 
 import com.greencatsoft.angularjs.core.Scope
+
 import org.scalajs.dom
 import org.scalajs.dom.Node
 import org.scalajs.jquery.JQuery

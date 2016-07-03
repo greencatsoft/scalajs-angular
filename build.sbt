@@ -27,7 +27,7 @@ lazy val scalaJsAngular = (project in file(".")).
 
     pomIncludeRepository := { _ => false },
 
-    pomExtra := (
+    pomExtra :=
       <licenses>
         <license>
           <name>Apache License 2.0</name>
@@ -85,5 +85,4 @@ lazy val scalaJsAngular = (project in file(".")).
           <url>https://github.com/tzeman77</url>
         </contributor>
       </contributors>
-    )
   )

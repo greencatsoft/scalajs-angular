@@ -1,16 +1,13 @@
 package com.greencatsoft.angularjs.core
 
+import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
+import com.greencatsoft.angularjs.{Factory, injectable}
+
 import scala.concurrent.Future
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.Any.{ fromFunction1, fromFunction5 }
 import scala.scalajs.js.UndefOr
-import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSExportAll
-import com.greencatsoft.angularjs.Factory
-import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
-import com.greencatsoft.angularjs.injectable
-import com.greencatsoft.angularjs.core.Defer.DeferredPromise
 
 @js.native
 @injectable("$http")

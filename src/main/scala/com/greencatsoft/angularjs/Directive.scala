@@ -8,15 +8,10 @@ import org.scalajs.dom.Element
 import scala.language.experimental.macros
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.Any.{ fromBoolean, fromFunction2, fromFunction4, fromString, wrapArray }
-import scala.scalajs.js.UndefOr
-import scala.scalajs.js.UndefOr.undefOr2ops
 import scala.scalajs.js.annotation.JSBracketAccess
 import scala.scalajs.js.{ UndefOr, | }
 
-trait Directive extends Service with Function0[Configuration] with ScopeOps with ConfigBuilder {
-
-  import internal.{ Angular => angular }
+trait Directive extends Service with (() => Configuration) with ScopeOps with ConfigBuilder {
 
   type ScopeType <: Scope
 
@@ -103,13 +98,16 @@ trait Requires extends ConfigBuilder {
     override def toString = (if (lookup) "^" else "") + (if (optional) "?" else "") + name
   }
 
-  def ^(requirement: String) = new Requirement(requirement, true)
+  def ^(requirement: String): Requirement = Requirement (requirement, lookup = true)
 
-  def ^?(requirement: String) = new Requirement(requirement, true, true)
+  def ^?(requirement: String): Requirement =
+    Requirement (requirement, lookup = true, optional = true)
 
-  def ?(requirement: String) = new Requirement(requirement, false, true)
+  def ?(requirement: String): Requirement =
+    Requirement (requirement, lookup = false, optional = true)
 
-  implicit def ~(requirement: String) = new Requirement(requirement, false)
+  implicit def ~(requirement: String): Requirement =
+    Requirement (requirement, lookup = false)
 }
 
 trait Priority extends ConfigBuilder {

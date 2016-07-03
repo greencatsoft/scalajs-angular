@@ -1,10 +1,10 @@
 package com.greencatsoft.angularjs.extensions
 
+import com.greencatsoft.angularjs.core.Promise
+import com.greencatsoft.angularjs.injectable
+
 import scala.scalajs.js
 import scala.scalajs.js.{ Dictionary, UndefOr, | }
-
-import com.greencatsoft.angularjs.injectable
-import com.greencatsoft.angularjs.core.Promise
 
 @js.native
 @injectable("$translate")

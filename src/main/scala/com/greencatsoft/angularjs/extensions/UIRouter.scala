@@ -1,12 +1,12 @@
 package com.greencatsoft.angularjs.extensions
 
-import scala.scalajs.js
-import scala.scalajs.js.annotation.{ JSBracketAccess, JSName }
-import scala.scalajs.js.JSConverters.JSRichGenMap
-import scala.scalajs.js.{ RegExp, UndefOr, | }
-
-import com.greencatsoft.angularjs.injectable
 import com.greencatsoft.angularjs.core.Promise
+import com.greencatsoft.angularjs.injectable
+
+import scala.scalajs.js
+import scala.scalajs.js.JSConverters.JSRichGenMap
+import scala.scalajs.js.annotation.{JSBracketAccess, JSName}
+import scala.scalajs.js.{ RegExp, UndefOr, | }
 
 /**
  * Wrappers for the uirouter module.
@@ -20,30 +20,30 @@ import com.greencatsoft.angularjs.core.Promise
  * the individual parts of the navigated url.<br/>
  * If you had a url on your state of:
  *
- * url: '/users/:id/details/{type}/{repeat:[0-9]+}?from&to'
+  * url: &#39;/users/:id/details/{type}/{repeat:[0-9]+}?from&to&#39;
  *
  * Then you navigated your browser to:
  *
- * '/users/123/details//0'
+  * &#39;/users/123/details//0&#39;
  *
  * Your \$stateParams object would be
  *
- * { id:'123', type:'', repeat:'0' }
+  * { id:&#39;123&#39;, type:&#39;&#39;, repeat:&#39;0&#39; }
  *
  * Then you navigated your browser to:
  *
- * '/users/123/details/default/0?from=there&to=here'
+  * &#39;/users/123/details/default/0?from=there&to=here&#39;
  *
  * Your \$stateParams object would be
  *
- * { id:'123', type:'default', repeat:'0', from:'there', to:'here' }
+  * { id:&#39;123&#39;, type:&#39;default&#39;, repeat:&#39;0&#39;, from:&#39;there&#39;, to:&#39;here&#39; }
  */
 @js.native
 @injectable("$stateParams")
 trait StateParams extends js.Object {
   /**
    * Get the parameter value from its name.<br/>
-   * If you have a \$stateParams object { id:'123', type:'default', repeat:'0', from:'there', to:'here' },
+    * If you have a \$stateParams object { id:&#39;123&#39;, type:&#39;default&#39;, repeat:&#39;0&#39;, from:&#39;there&#39;, to:&#39;here&#39; },
    * then to get the value of the "type" key, you should call \$stateParams("type").
    */
   @JSBracketAccess
@@ -53,7 +53,7 @@ trait StateParams extends js.Object {
 }
 
 /**
- * The \$stateProvider works similar to Angular's v1 router, but it focuses purely on state.
+  * The \$stateProvider works similar to Angular&#39;s v1 router, but it focuses purely on state.
  *
  * A state corresponds to a "place" in the application in terms of the overall UI and navigation.
  * A state describes (via the controller / template / view properties) what the UI looks like and does at that place.

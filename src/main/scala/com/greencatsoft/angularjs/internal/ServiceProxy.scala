@@ -2,7 +2,7 @@ package com.greencatsoft.angularjs.internal
 
 import com.greencatsoft.angularjs.{ Service, ServiceDefinition, ServiceWrapper, injectable }
 
-import scala.reflect.macros.blackbox.Context
+import scala.reflect.macros.{blackbox => b}
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 
@@ -24,10 +24,10 @@ object ServiceProxy {
     }
   }
 
-  def identifier[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Option[String] =
+  def identifier[A <: Service](c: b.Context)(implicit tag: c.WeakTypeTag[A]): Option[String] =
     identifierFromType(c)(tag.tpe)
 
-  def identifierFromType(c: Context)(tpe: c.universe.Type): Option[String] = {
+  def identifierFromType(c: b.Context)(tpe: c.universe.Type): Option[String] = {
     import c.universe._
 
     def find(hierarchy: List[Symbol]): Option[String] = hierarchy match {
@@ -52,7 +52,7 @@ object ServiceProxy {
     find(tpe.baseClasses)
   }
 
-  def variableDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol, Seq[c.universe.Type])] = {
+  def variableDependencies[A <: Service](c: b.Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, c.universe.MethodSymbol, Seq[c.universe.Type])] = {
     import c.universe._
 
     //    Should check if @inject annotation is present:
@@ -69,7 +69,6 @@ object ServiceProxy {
 
     val deps = setters map { s =>
       val tpe = s.paramLists.head.head.typeSignature
-      val argType = tpe.dealias.typeSymbol.typeSignature
       val typeArgs = tpe.typeArgs
       val name = identifierFromType(c)(tpe.typeSymbol.typeSignature)
 
@@ -81,7 +80,7 @@ object ServiceProxy {
     deps.flatten
   }
 
-  def constantDependencies[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, Seq[c.universe.Type])] = {
+  def constantDependencies[A <: Service](c: b.Context)(implicit tag: c.WeakTypeTag[A]): Iterable[(String, c.universe.TypeSymbol, Seq[c.universe.Type])] = {
     import c.universe._
 
     val methods = tag.tpe.members collectFirst {
@@ -96,25 +95,23 @@ object ServiceProxy {
       (arg.name.toString, arg.typeSignature.dealias.typeSymbol.asType, arg.typeSignature.typeArgs)
     }
 
-    val members = arguments map {
+    arguments map {
       case (n, tpe, typeArgs) =>
         val name = identifierFromType(c)(tpe.typeSignature) getOrElse n
 
         (name, tpe.asType, typeArgs)
     }
-
-    members.toSeq
   }
 
-  def definitionFromObject[A <: Service](c: Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
-    newIntance[A](c)(Some(target))
+  def definitionFromObject[A <: Service](c: b.Context)(target: c.Expr[A])(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
+    newInstance [A](c)(Some (target))
   }
 
-  def definitionFromClass[A <: Service](c: Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
-    newIntance[A](c)(None)
+  def definitionFromClass[A <: Service](c: b.Context)(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
+    newInstance [A](c)(None)
   }
 
-  private def newIntance[A <: Service](c: Context)(target: Option[c.Expr[A]])(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
+  private def newInstance[A <: Service](c: b.Context)(target: Option[c.Expr[A]])(implicit tag: c.WeakTypeTag[A]): c.Expr[ServiceDefinition[A]] = {
     import c.universe._
 
     val (instantiation, constDeps, constDepNames) = target match {

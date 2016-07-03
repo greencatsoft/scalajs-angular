@@ -1,11 +1,10 @@
 package com.greencatsoft.angularjs.core
 
-import scala.scalajs.js
-import scala.scalajs.js.UndefOr
-import scala.scalajs.js.annotation.JSBracketAccess
-import js.|
-
 import com.greencatsoft.angularjs.injectable
+
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSBracketAccess
+import scala.scalajs.js.{UndefOr, |}
 
 @js.native
 @injectable("$routeParams")

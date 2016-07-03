@@ -1,7 +1,6 @@
 package com.greencatsoft.angularjs
 
 import scala.language.experimental.macros
-import scala.scalajs.js
 
 class Module private[angularjs] (val module: internal.Module) {
   require(module != null, "Missing argument 'module'.")

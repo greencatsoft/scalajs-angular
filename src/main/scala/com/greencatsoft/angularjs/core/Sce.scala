@@ -1,9 +1,9 @@
 package com.greencatsoft.angularjs.core
 
+import com.greencatsoft.angularjs.injectable
+
 import scala.language.implicitConversions
 import scala.scalajs.js
-
-import com.greencatsoft.angularjs.injectable
 
 /**
  * \$sce is a service that provides Strict Contextual Escaping services to AngularJS.
