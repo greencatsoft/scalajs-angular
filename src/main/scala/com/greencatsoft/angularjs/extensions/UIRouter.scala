@@ -47,7 +47,7 @@ trait StateParams extends js.Object {
    * then to get the value of the "type" key, you should call \$stateParams("type").
    */
   @JSBracketAccess
-  def apply(key: String): js.Any = js.native
+  def apply[A](key: String): UndefOr[A] = js.native
   @JSBracketAccess
   def update(key: String, v: js.Any): Unit = js.native
 }
