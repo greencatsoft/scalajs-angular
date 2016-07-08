@@ -11,7 +11,7 @@ import scala.scalajs.js
  * @see http://angular-ui.github.io/bootstrap/#/modal
  */
 @js.native
-@injectable("$modal")
+@injectable("$uibModal")
 trait ModalService extends js.Object {
 
   def open[T](options: ModalOptions): ModalInstance[T] = js.native
@@ -52,7 +52,7 @@ object ModalOptions {
 }
 
 @js.native
-@injectable("$modalInstance")
+@injectable("$uibModalInstance")
 trait ModalInstance[T] extends js.Object {
 
   def close(result: T): Unit = js.native
