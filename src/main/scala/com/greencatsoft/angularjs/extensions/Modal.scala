@@ -70,7 +70,7 @@ trait ModalInstance[T] extends js.Object {
 
   def result: Promise[T] = js.native
 
-  def opened: Promise[T] = js.native
+  def opened: Promise[Boolean] = js.native
 
   def rendered: Promise[Unit] = js.native
 }
