@@ -1,12 +1,12 @@
 package com.greencatsoft.angularjs.extensions
 
 import com.greencatsoft.angularjs.core.Promise
-import com.greencatsoft.angularjs.injectable
+import com.greencatsoft.angularjs.{ServiceDefinition, injectable}
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.JSRichGenMap
 import scala.scalajs.js.annotation.{JSBracketAccess, JSName}
-import scala.scalajs.js.{ RegExp, UndefOr, | }
+import scala.scalajs.js.{Dictionary, RegExp, UndefOr, |}
 
 /**
  * Wrappers for the uirouter module.
@@ -83,7 +83,7 @@ trait State extends js.Object {
   var parent: js.Any = js.native
   var resolve: js.Function = js.native
   var `abstract`: Boolean = js.native
-  var onEnter: js.Function = js.native
+  var onEnter: js.Function | ServiceDefinition[_] = js.native
   var onExit: js.Function = js.native
   var data: js.Any = js.native
   var views: js.Dictionary[View] = js.native
@@ -153,30 +153,44 @@ trait UrlMatcher extends js.Object {
 @js.native
 @injectable("$state")
 trait StateService extends js.Object {
-  def get(stateOrName: String | js.Object): js.Object | js.Array[js.Object] = js.native
-  def get(stateOrName: String | js.Object, context: String | js.Object): js.Object | js.Array[js.Object] = js.native
+
+  def get(): js.Array[State] = js.native
+
+  def get(stateOrName: String | State): UndefOr[State] = js.native
+
+  def get(stateOrName: String | State, context: String | State): UndefOr[State] = js.native
 
   def go(to: String): Promise[State] = js.native
-  def go(to: String, params: js.Object): Promise[State] = js.native
-  def go(to: String, params: js.Object, options: TransitionOptions): Promise[State] = js.native
 
-  def href(stateOrName: String | js.Object): String = js.native
-  def href(stateOrName: String | js.Object, params: js.Object): String = js.native
-  def href(stateOrName: String | js.Object, params: js.Object, options: HrefOptions): String = js.native
+  def go(to: String, params: Dictionary[_] | StateParams): Promise[State] = js.native
 
-  def includes(stateOrName: String | js.Object): Boolean = js.native
-  def includes(stateOrName: String | js.Object, params: js.Object): Boolean = js.native
-  def includes(stateOrName: String | js.Object, params: js.Object, options: IncludeOptions): Boolean = js.native
+  def go(to: String, params: Dictionary[_] | StateParams, options: TransitionOptions): Promise[State] = js.native
 
-  def is(stateOrName: String | js.Object): Boolean = js.native
-  def is(stateOrName: String | js.Object, params: js.Object): Boolean = js.native
-  def is(stateOrName: String | js.Object, params: js.Object, options: IncludeOptions): Boolean = js.native
+  def href(stateOrName: String | State): String = js.native
+
+  def href(stateOrName: String | State, params: Dictionary[_] | StateParams): String = js.native
+
+  def href(stateOrName: String | State, params: Dictionary[_] | StateParams, options: HrefOptions): String = js.native
+
+  def includes(stateOrName: String | State): Boolean = js.native
+
+  def includes(stateOrName: String | State, params: Dictionary[_] | StateParams): Boolean = js.native
+
+  def includes(stateOrName: String | State, params: Dictionary[_] | StateParams, options: IncludeOptions): Boolean = js.native
+
+  def is(stateOrName: String | State): Boolean = js.native
+
+  def is(stateOrName: String | State, params: Dictionary[_] | StateParams): Boolean = js.native
+
+  def is(stateOrName: String | State, params: Dictionary[_] | StateParams, options: IncludeOptions): Boolean = js.native
 
   def reload(state: js.Any): Promise[State] = js.native
 
   def transitionTo(to: String): Promise[State] = js.native
-  def transitionTo(to: String, toParams: js.Object): Promise[State] = js.native
-  def transitionTo(to: String, toParams: js.Object, options: TransitionOptions): Promise[State] = js.native
+
+  def transitionTo(to: String, toParams: Dictionary[_] | StateParams): Promise[State] = js.native
+
+  def transitionTo(to: String, toParams: Dictionary[_] | StateParams, options: TransitionOptions): Promise[State] = js.native
 }
 
 @js.native
