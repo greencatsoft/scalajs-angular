@@ -62,6 +62,8 @@ trait Translate extends js.Object {
 
   def isForceAsyncReloadEnabled(): Boolean = js.native
 
+  def resolveClientLocale(): UndefOr[String] = js.native
+
   def refresh(langKey: String): Promise[Unit] = js.native
 
   def instant(translationId: String): Promise[String] = js.native
@@ -180,6 +182,8 @@ trait TranslateProvider extends js.Object {
   def determinePreferredLanguage(): TranslateProvider = js.native
 
   def determinePreferredLanguage(fn: js.Function0[String]): TranslateProvider = js.native
+
+  def resolveClientLocale(): UndefOr[String] = js.native
 
   def registerAvailableLanguageKeys(): js.Array[String] = js.native
 
