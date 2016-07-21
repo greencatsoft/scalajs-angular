@@ -22,6 +22,8 @@ trait ModelController extends js.Object {
 
   var $viewChangeListeners: js.Array[js.Function] = js.native
 
+  var $render: js.Function0[Unit] = js.native
+
   var $error: js.Dictionary[js.Any] = js.native
 
   var $pending: js.Dictionary[js.Any] = js.native
