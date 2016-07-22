@@ -4,11 +4,11 @@ import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 
 @js.native
-trait ModelController extends js.Object {
+trait ModelController[A] extends js.Object {
 
   var $viewValue: UndefOr[String] = js.native
 
-  var $modelValue: js.Any = js.native
+  var $modelValue: UndefOr[A] = js.native
 
   var $parsers: js.Array[js.Function] = js.native
 

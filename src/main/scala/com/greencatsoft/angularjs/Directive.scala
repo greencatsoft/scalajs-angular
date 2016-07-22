@@ -1,6 +1,6 @@
 package com.greencatsoft.angularjs
 
-import com.greencatsoft.angularjs.core.{ Scope, ScopeOps }
+import com.greencatsoft.angularjs.core.{ModelController, Scope, ScopeOps}
 import com.greencatsoft.angularjs.internal.{ ConfigBuilder, Configuration }
 
 import org.scalajs.dom.Element
@@ -162,6 +162,28 @@ trait ClassDirective extends RestrictedDirective {
 trait CommentDirective extends RestrictedDirective {
 
   override def restrict = super.restrict + "M"
+}
+
+trait ModelControllerDirective[A] extends Directive with Requires {
+
+  this.requirements += "ngModel"
+
+  override def link(scope: ScopeType, elems: Seq[Element], attrs: Attributes, controllers: Either[Controller[_], js.Any]*) {
+    val result = controllers collectFirst {
+      case Right (c) => c.asInstanceOf [ModelController[A]]
+    } ensuring (_.isDefined)
+
+    result foreach {
+      link (scope, elems, attrs, _, controllers.tail: _*)
+    }
+  }
+
+  def link(
+            scope: ScopeType,
+            elems: Seq[Element],
+            attrs: Attributes,
+            model: ModelController[A],
+            controllers: Either[Controller[_], js.Any]*): Unit
 }
 
 trait ScopeStrategy extends ConfigBuilder {
