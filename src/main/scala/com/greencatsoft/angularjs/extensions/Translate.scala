@@ -40,6 +40,10 @@ trait Translate extends js.Object {
 
   def nestedObjectDelimeter(): String = js.native
 
+  def negotiateLocale(): UndefOr[String] = js.native
+
+  def negotiateLocale(langKey: String): UndefOr[String] = js.native
+
   def fallbackLanguage(): String | js.Array[String] = js.native
 
   def fallbackLanguage(langKey: String | js.Array[String]): Translate = js.native
