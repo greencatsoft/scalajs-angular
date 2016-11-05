@@ -1,29 +1,46 @@
 package com.greencatsoft.angularjs
 
-import java.lang.{Runnable => JRunnable}
+import java.lang.{ Runnable => JRunnable }
 
-import com.greencatsoft.angularjs.core.Timeout
+import scala.concurrent.{ ExecutionContext, ExecutionContextExecutor }
 
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
+import scala.scalajs.js
+import scala.scalajs.js.{ JavaScriptException, undefined }
 
-class AngularExecutionContext(timeout: Timeout) extends ExecutionContextExecutor {
+import com.greencatsoft.angularjs.core.{ ExceptionHandler, Timeout }
+
+class AngularExecutionContext(
+  timeout: Timeout,
+  exceptionHandler: ExceptionHandler) extends ExecutionContextExecutor {
 
   def execute(runnable: JRunnable) {
     def run() = try {
-      runnable.run ()
+      runnable.run()
     } catch {
-      case t: Throwable => reportFailure (t)
+      case t: Throwable => reportFailure(t)
     }
 
-    timeout (run _, 0)
+    timeout(run _, 0)
   }
 
-  def reportFailure(t: Throwable): Unit = t.printStackTrace ()
+  def reportFailure(t: Throwable) {
+    t match {
+      case t: JavaScriptException if t.exception.isInstanceOf[js.Error] =>
+        exceptionHandler(t.exception.asInstanceOf[js.Error], undefined)
+      case _ =>
+        t.printStackTrace()
+        exceptionHandler(js.Error(t.getMessage), undefined)
+    }
+  }
 }
 
 trait AngularExecutionContextProvider {
 
   def timeout: Timeout
 
-  implicit val executionContext: ExecutionContext = new AngularExecutionContext (timeout)
+  def exceptionHandler: ExceptionHandler
+
+  implicit val executionContext: ExecutionContext = {
+    new AngularExecutionContext(timeout, exceptionHandler)
+  }
 }
