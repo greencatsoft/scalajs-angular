@@ -154,6 +154,10 @@ trait UrlMatcher extends js.Object {
 @injectable("$state")
 trait StateService extends js.Object {
 
+  def current: UndefOr[State] = js.native
+
+  def params: UndefOr[Dictionary[_]] = js.native
+
   def get(): js.Array[State] = js.native
 
   def get(stateOrName: String | State): UndefOr[State] = js.native
