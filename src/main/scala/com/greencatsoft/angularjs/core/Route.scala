@@ -1,10 +1,9 @@
 package com.greencatsoft.angularjs.core
 
-import com.greencatsoft.angularjs.injectable
-
+import com.greencatsoft.angularjs.{ Factory, ServiceDefinition, injectable }
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSBracketAccess
-import scala.scalajs.js.{UndefOr, |}
+import scala.scalajs.js.{ Dictionary, UndefOr, | }
 
 @js.native
 @injectable("$routeParams")
@@ -39,7 +38,7 @@ trait Route extends js.Object {
 
   var redirectTo: UndefOr[String] = js.native
 
-  var resolve: js.Dictionary[js.Function0[_]] = js.native
+  var resolve: Dictionary[js.Function0[_] | ServiceDefinition[Factory[_]]] = js.native
 }
 
 object Route {
@@ -115,7 +114,7 @@ class RouteBuilder {
     this
   }
 
-  def resolve(dependencies: js.Dictionary[js.Function0[_]]): RouteBuilder = {
+  def resolve(dependencies: Dictionary[js.Function0[_] | ServiceDefinition[Factory[_]]]): RouteBuilder = {
     route.resolve = dependencies
     this
   }

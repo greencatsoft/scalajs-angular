@@ -1,12 +1,11 @@
 package com.greencatsoft.angularjs.extensions
 
 import com.greencatsoft.angularjs.core.Promise
-import com.greencatsoft.angularjs.{ServiceDefinition, injectable}
-
+import com.greencatsoft.angularjs.{ Factory, ServiceDefinition, injectable }
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.JSRichGenMap
-import scala.scalajs.js.annotation.{JSBracketAccess, JSName}
-import scala.scalajs.js.{Dictionary, RegExp, UndefOr, |}
+import scala.scalajs.js.annotation.{ JSBracketAccess, JSName }
+import scala.scalajs.js.{ Dictionary, RegExp, UndefOr, | }
 
 /**
  * Wrappers for the uirouter module.
@@ -79,9 +78,9 @@ trait State extends js.Object {
   var controllerAs: String = js.native
   var controllerProvider: js.Any = js.native
   var url: String = js.native
-  var params: js.Dictionary[js.Any] = js.native
+  var params: Dictionary[_] = js.native
   var parent: js.Any = js.native
-  var resolve: js.Function = js.native
+  var resolve: Dictionary[js.Function0[_] | ServiceDefinition[Factory[_]]] = js.native
   var `abstract`: Boolean = js.native
   var onEnter: js.Function | ServiceDefinition[_] = js.native
   var onExit: js.Function = js.native

@@ -43,7 +43,7 @@ trait ModalOptions extends js.Object {
 
   var keyboard: Boolean = js.native
 
-  var resolve: js.Dictionary[js.Any] = js.native
+  var resolve: js.Dictionary[Any] = js.native
 }
 
 object ModalOptions {
