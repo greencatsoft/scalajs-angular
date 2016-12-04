@@ -1,3 +1,3 @@
 package com.greencatsoft.angularjs
 
-trait Factory[A] extends Service with (() => A)
+trait Factory[+A] extends Service with (() => A)

@@ -9,7 +9,7 @@ import scala.scalajs.js
 trait Service extends Initializable
 
 @js.native
-trait ServiceWrapper[A <: Service] extends js.Object {
+trait ServiceWrapper[+A <: Service] extends js.Object {
 
   def service: A = js.native
 }
@@ -22,7 +22,7 @@ object ServiceWrapper {
 }
 
 @js.native
-trait ServiceDefinition[A <: Service] extends js.Array[Any]
+trait ServiceDefinition[+A <: Service] extends js.Array[Any]
 
 object ServiceDefinition {
 
