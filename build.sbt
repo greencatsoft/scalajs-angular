@@ -11,7 +11,7 @@ lazy val scalaJsAngular = (project in file(".")).
 
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.1",
-      "be.doeraene" %%% "scalajs-jquery" % "0.9.0",
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile"
     ),
 

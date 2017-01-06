@@ -20,7 +20,7 @@ class AngularExecutionContext(
       case t: Throwable => reportFailure(t)
     }
 
-    timeout(run _, 0)
+    timeout(run: Function0[Unit], 0)
   }
 
   def reportFailure(t: Throwable) {
