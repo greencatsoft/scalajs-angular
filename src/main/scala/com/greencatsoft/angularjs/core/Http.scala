@@ -208,9 +208,6 @@ trait HttpProvider extends js.Object {
   var interceptors: js.Array[String] = js.native
 }
 
-@js.native
-trait HttpPromise[T] extends Promise[HttpResult[T]]
-
 trait HttpInterceptor {
 
   def q: Q
@@ -318,6 +315,9 @@ object HttpStatus {
 }
 
 case class HttpException(status: HttpStatus, message: String) extends Exception
+
+@js.native
+trait HttpPromise[T] extends Promise[HttpResult[T]]
 
 object HttpPromise {
   implicit def promise2future[A](promise: HttpPromise[A]): Future[A] = {
