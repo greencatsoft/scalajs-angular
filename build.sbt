@@ -6,6 +6,7 @@ lazy val scalaJsAngular = (project in file(".")).
     organization := "com.greencatsoft",
     version := "0.8-SNAPSHOT",
     scalaVersion := "2.11.8",
+    crossScalaVersions := Seq("2.11.8", "2.12.1"),
     scalacOptions ++= Seq("-feature","-deprecation"),
     homepage := Some(url("http://github.com/greencatsoft/scalajs-angular")),
 
