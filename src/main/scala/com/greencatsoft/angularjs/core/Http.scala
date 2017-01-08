@@ -1,12 +1,12 @@
 package com.greencatsoft.angularjs.core
 
 import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
-import com.greencatsoft.angularjs.{Factory, injectable}
+import com.greencatsoft.angularjs.{ Factory, injectable }
 
 import scala.concurrent.Future
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.UndefOr
+import scala.scalajs.js.{ Dictionary, UndefOr }
 import scala.scalajs.js.annotation.JSExportAll
 
 @js.native
@@ -45,7 +45,7 @@ trait HttpConfig extends js.Object {
 
   var url: String = js.native
 
-  var params: js.Dictionary[js.Any] = js.native
+  var params: Dictionary[js.Any] = js.native
 
   var method: String = js.native
 
@@ -57,7 +57,7 @@ trait HttpConfig extends js.Object {
 
   var responseType: String = js.native
 
-  var headers: js.Dictionary[String] = js.native
+  var headers: Dictionary[String] = js.native
 
   var transformResponse: js.Array[js.Function3[js.Any, js.Any, js.Any, js.Any]] = js.native
 
@@ -69,7 +69,7 @@ object HttpConfig {
   def empty: HttpConfig = {
     val config = new js.Object().asInstanceOf[HttpConfig]
 
-    config.headers = js.Dictionary()
+    config.headers = Dictionary()
     config.transformRequest = js.Array()
     config.transformResponse = js.Array()
 
@@ -86,7 +86,7 @@ object HttpConfig {
   def postHandler: HttpConfig = {
     val config = empty
 
-    config.headers = js.Dictionary(
+    config.headers = Dictionary(
       "method" -> "POST",
       "Content-Type" -> "application/x-www-form-urlencoded")
     config

@@ -5,6 +5,7 @@ import com.greencatsoft.angularjs.injectable
 import scala.concurrent.Future
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.scalajs.js.Dictionary
 
 @js.native
 trait EnhancedResource[T] extends js.Object {
@@ -17,11 +18,11 @@ trait EnhancedResource[T] extends js.Object {
 
   def get(success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def get(parameters: js.Dictionary[Any]): ResourceResponse[T] = js.native
+  def get(parameters: Dictionary[Any]): ResourceResponse[T] = js.native
 
-  def get(parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse[T] = js.native
+  def get(parameters: Dictionary[Any], success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def get(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def get(parameters: Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def save(postData: T): ResourceResponse[T] = js.native
 
@@ -29,11 +30,11 @@ trait EnhancedResource[T] extends js.Object {
 
   def save(postData: T, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
+  def save(parameters: Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
+  def save(parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def save(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def save(parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def query(): ResourceResponse[js.Array[T]] = js.native
 
@@ -41,11 +42,11 @@ trait EnhancedResource[T] extends js.Object {
 
   def query(success: SuccessHandler, error: ErrorHandler): ResourceResponse[js.Array[T]] = js.native
 
-  def query(parameters: js.Dictionary[Any]): ResourceResponse[js.Array[T]] = js.native
+  def query(parameters: Dictionary[Any]): ResourceResponse[js.Array[T]] = js.native
 
-  def query(parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse[js.Array[T]] = js.native
+  def query(parameters: Dictionary[Any], success: SuccessHandler): ResourceResponse[js.Array[T]] = js.native
 
-  def query(parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[js.Array[T]] = js.native
+  def query(parameters: Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[js.Array[T]] = js.native
 
   def remove(postData: js.Any): ResourceResponse[T] = js.native
 
@@ -53,11 +54,11 @@ trait EnhancedResource[T] extends js.Object {
 
   def remove(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
+  def remove(parameters: Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
+  def remove(parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def remove(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def remove(parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def delete(postData: js.Any): ResourceResponse[T] = js.native
 
@@ -65,11 +66,11 @@ trait EnhancedResource[T] extends js.Object {
 
   def delete(postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
+  def delete(parameters: Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
+  def delete(parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def delete(parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def delete(parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 }
 
 @js.native
@@ -83,11 +84,11 @@ trait Resource extends js.Object {
 
   def get[T](success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def get[T](parameters: js.Dictionary[Any]): ResourceResponse[T] = js.native
+  def get[T](parameters: Dictionary[Any]): ResourceResponse[T] = js.native
 
-  def get[T](parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse[T] = js.native
+  def get[T](parameters: Dictionary[Any], success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def get[T](parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def get[T](parameters: Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def save[T](postData: js.Any): ResourceResponse[T] = js.native
 
@@ -95,11 +96,11 @@ trait Resource extends js.Object {
 
   def save[T](postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def save[T](parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
+  def save[T](parameters: Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
 
-  def save[T](parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
+  def save[T](parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def save[T](parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def save[T](parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def query[T](): ResourceResponse[T] = js.native
 
@@ -107,11 +108,11 @@ trait Resource extends js.Object {
 
   def query[T](success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def query[T](parameters: js.Dictionary[Any]): ResourceResponse[T] = js.native
+  def query[T](parameters: Dictionary[Any]): ResourceResponse[T] = js.native
 
-  def query[T](parameters: js.Dictionary[Any], success: SuccessHandler): ResourceResponse[T] = js.native
+  def query[T](parameters: Dictionary[Any], success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def query[T](parameters: js.Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def query[T](parameters: Dictionary[Any], success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def remove[T](postData: js.Any): ResourceResponse[T] = js.native
 
@@ -119,11 +120,11 @@ trait Resource extends js.Object {
 
   def remove[T](postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def remove[T](parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
+  def remove[T](parameters: Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
 
-  def remove[T](parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
+  def remove[T](parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def remove[T](parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def remove[T](parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
   def delete[T](postData: js.Any): ResourceResponse[T] = js.native
 
@@ -131,11 +132,11 @@ trait Resource extends js.Object {
 
   def delete[T](postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 
-  def delete[T](parameters: js.Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
+  def delete[T](parameters: Dictionary[Any], postData: js.Any): ResourceResponse[T] = js.native
 
-  def delete[T](parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
+  def delete[T](parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler): ResourceResponse[T] = js.native
 
-  def delete[T](parameters: js.Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
+  def delete[T](parameters: Dictionary[Any], postData: js.Any, success: SuccessHandler, error: ErrorHandler): ResourceResponse[T] = js.native
 }
 
 object Resource {
@@ -164,9 +165,9 @@ trait ResourceService extends js.Object {
 
   def apply(url: String): Any = js.native
 
-  def apply(url: String, paramDefaults: js.Dictionary[js.Any]): Any = js.native
+  def apply(url: String, paramDefaults: Dictionary[js.Any]): Any = js.native
 
-  def apply(url: String, paramDefaults: js.Dictionary[js.Any], actions: js.Dictionary[ResourceRequestConfig]): Any = js.native
+  def apply(url: String, paramDefaults: Dictionary[js.Any], actions: Dictionary[ResourceRequestConfig]): Any = js.native
 }
 
 @js.native
@@ -179,7 +180,7 @@ object ResourceRequestConfig {
 
   def apply(
     isArray: Boolean = false,
-    params: js.Dictionary[js.Any] = null,
+    params: Dictionary[js.Any] = null,
     method: String = "GET",
     url: String = null,
     timeout: Int = -1): ResourceRequestConfig = {
