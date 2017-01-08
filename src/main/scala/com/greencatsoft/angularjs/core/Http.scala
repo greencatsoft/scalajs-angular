@@ -37,9 +37,7 @@ trait HttpService extends js.Object {
 
   def delete[T](url: String): HttpPromise[T] = js.native
 
-  def delete[T](url: String, data: js.Any): HttpPromise[T] = js.native
-
-  def delete[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
+  def delete[T](url: String, config: HttpConfig): HttpPromise[T] = js.native
 }
 
 @js.native
