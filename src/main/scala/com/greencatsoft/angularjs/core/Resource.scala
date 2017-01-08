@@ -1,11 +1,12 @@
 package com.greencatsoft.angularjs.core
 
-import com.greencatsoft.angularjs.injectable
-
 import scala.concurrent.Future
 import scala.language.implicitConversions
+
 import scala.scalajs.js
 import scala.scalajs.js.Dictionary
+
+import com.greencatsoft.angularjs.injectable
 
 @js.native
 trait EnhancedResource[T] extends js.Object {
@@ -178,20 +179,17 @@ trait ResourceRequestConfig extends HttpConfig {
 
 object ResourceRequestConfig {
 
-  def apply(
-    isArray: Boolean = false,
-    params: Dictionary[js.Any] = null,
-    method: String = "GET",
-    url: String = null,
-    timeout: Int = -1): ResourceRequestConfig = {
+  implicit class ResourceRequestConfigBuilder(builder: HttpConfigBuilder) {
 
-    val t = js.Object().asInstanceOf[ResourceRequestConfig]
+    def isArray(isArray: Boolean): ResourceRequestConfigBuilder = {
+      build.isArray = isArray
+      this
+    }
 
-    if (!isArray) t.isArray = isArray
-    if (params != null) t.params = params
-    if (method != null) t.method = method
-    if (url != null) t.url = url
+    def build: ResourceRequestConfig = builder.build.asInstanceOf[ResourceRequestConfig]
+  }
 
-    t
+  implicit def httpConfig2ResourceRequestConfig(config: HttpConfig): ResourceRequestConfig = {
+    config.asInstanceOf[ResourceRequestConfig]
   }
 }

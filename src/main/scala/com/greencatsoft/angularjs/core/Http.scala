@@ -1,17 +1,22 @@
 package com.greencatsoft.angularjs.core
 
+import scala.concurrent.Future
+import scala.language.implicitConversions
+
+import scala.scalajs.js
+import scala.scalajs.js.JSConverters._
+import scala.scalajs.js.annotation.JSExportAll
+import scala.scalajs.js.{ Dictionary, UndefOr, | }
+
+import com.greencatsoft.angularjs.core.HttpConfig.HeadersGetter
 import com.greencatsoft.angularjs.core.HttpStatus.int2HttpStatus
 import com.greencatsoft.angularjs.{ Factory, injectable }
 
-import scala.concurrent.Future
-import scala.language.implicitConversions
-import scala.scalajs.js
-import scala.scalajs.js.{ Dictionary, UndefOr }
-import scala.scalajs.js.annotation.JSExportAll
-
 @js.native
 @injectable("$http")
-trait HttpService extends js.Object {
+trait HttpService extends js.Function1[HttpConfig, Any] {
+
+  def defaults: HttpConfig = js.native
 
   def get[T](url: String): HttpPromise[T] = js.native
 
@@ -23,17 +28,17 @@ trait HttpService extends js.Object {
 
   def post[T](url: String): HttpPromise[T] = js.native
 
-  def post[T](url: String, data: js.Any): HttpPromise[T] = js.native
+  def post[T](url: String, data: Any): HttpPromise[T] = js.native
 
-  def post[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
+  def post[T](url: String, data: Any, config: HttpConfig): HttpPromise[T] = js.native
 
   def jsonp[T](url: String, config: HttpConfig): HttpPromise[T] = js.native
 
   def put[T](url: String): HttpPromise[T] = js.native
 
-  def put[T](url: String, data: js.Any): HttpPromise[T] = js.native
+  def put[T](url: String, data: Any): HttpPromise[T] = js.native
 
-  def put[T](url: String, data: js.Any, config: HttpConfig): HttpPromise[T] = js.native
+  def put[T](url: String, data: Any, config: HttpConfig): HttpPromise[T] = js.native
 
   def delete[T](url: String): HttpPromise[T] = js.native
 
@@ -45,31 +50,45 @@ trait HttpConfig extends js.Object {
 
   var url: String = js.native
 
-  var params: Dictionary[js.Any] = js.native
+  var params: Dictionary[Any] = js.native
 
   var method: String = js.native
 
-  var timeout: Int = js.native
+  var timeout: Int | Promise[_] = js.native
 
   var withCredentials: Boolean = js.native
 
-  var cache: Boolean = js.native
+  var cache: js.Any = js.native
 
   var responseType: String = js.native
 
-  var headers: Dictionary[String] = js.native
+  var xsrfCookieName: String = js.native
 
-  var transformResponse: js.Array[js.Function3[js.Any, js.Any, js.Any, js.Any]] = js.native
+  var xsrfHeaderName: String = js.native
 
-  var transformRequest: js.Array[js.Function2[js.Any, js.Any, js.Any]] = js.native
+  var paramSerializer: String | js.Function1[Any, String] = js.native
+
+  var jsonpCallbackParam: String = js.native
+
+  var headers: Dictionary[String] | js.Function1[String, Dictionary[String]] = js.native
+
+  var transformResponse: js.Array[js.Function3[Any, HeadersGetter | js.Array[HeadersGetter], Int, Any]] = js.native
+
+  var transformRequest: js.Array[js.Function2[Any, HeadersGetter | js.Array[HeadersGetter], Any]] = js.native
 }
 
 object HttpConfig {
 
+  type HeadersGetter = js.Function1[String, String]
+
+  def apply(config: HttpConfig = HttpConfig.empty): HttpConfigBuilder = {
+    new HttpConfigBuilder(config)
+  }
+
   def empty: HttpConfig = {
     val config = new js.Object().asInstanceOf[HttpConfig]
 
-    config.headers = Dictionary()
+    config.headers = Dictionary[String]()
     config.transformRequest = js.Array()
     config.transformResponse = js.Array()
 
@@ -93,6 +112,95 @@ object HttpConfig {
   }
 }
 
+class HttpConfigBuilder(init: HttpConfig) {
+
+  private val config: HttpConfig = {
+    val obj = new js.Object().asInstanceOf[HttpConfig]
+
+    val source = init.asInstanceOf[js.Dynamic]
+    val target = obj.asInstanceOf[js.Dynamic]
+
+    js.Object.keys(init) collect {
+      case key if init.hasOwnProperty(key) =>
+        target.updateDynamic(key)(source.selectDynamic(key))
+    }
+
+    obj
+  }
+
+  def build: HttpConfig = config
+
+  def url(url: String): HttpConfigBuilder = {
+    config.url = url
+    this
+  }
+
+  def params(params: Dictionary[Any]): HttpConfigBuilder = {
+    config.params = params
+    this
+  }
+
+  def method(method: String): HttpConfigBuilder = {
+    config.method = method
+    this
+  }
+
+  def timeout(timeout: Int | Promise[_]): HttpConfigBuilder = {
+    config.timeout = timeout
+    this
+  }
+
+  def withCredentials(withCredentials: Boolean): HttpConfigBuilder = {
+    config.withCredentials = withCredentials
+    this
+  }
+
+  def cache(cache: js.Any): HttpConfigBuilder = {
+    config.cache = cache
+    this
+  }
+
+  def responseType(responseType: String): HttpConfigBuilder = {
+    config.responseType = responseType
+    this
+  }
+
+  def xsrfCookieName(xsrfCookieName: String): HttpConfigBuilder = {
+    config.xsrfCookieName = xsrfCookieName
+    this
+  }
+
+  def xsrfHeaderName(xsrfHeaderName: String): HttpConfigBuilder = {
+    config.xsrfHeaderName = xsrfHeaderName
+    this
+  }
+
+  def paramSerializer(paramSerializer: String | js.Function1[Any, String]): HttpConfigBuilder = {
+    config.paramSerializer = paramSerializer
+    this
+  }
+
+  def jsonpCallbackParam(jsonpCallbackParam: String): HttpConfigBuilder = {
+    config.jsonpCallbackParam = jsonpCallbackParam
+    this
+  }
+
+  def headers(headers: Dictionary[String] | js.Function1[String, Dictionary[String]]): HttpConfigBuilder = {
+    config.headers = headers
+    this
+  }
+
+  def transformResponse(transformResponse: js.Function3[Any, HeadersGetter | js.Array[HeadersGetter], Int, Any]*): HttpConfigBuilder = {
+    config.transformResponse = transformResponse.toJSArray
+    this
+  }
+
+  def transformRequest(transformRequest: js.Function2[Any, HeadersGetter | js.Array[HeadersGetter], Any]*): HttpConfigBuilder = {
+    config.transformRequest = transformRequest.toJSArray
+    this
+  }
+}
+
 @js.native
 @injectable("$httpProvider")
 trait HttpProvider extends js.Object {
@@ -101,8 +209,7 @@ trait HttpProvider extends js.Object {
 }
 
 @js.native
-trait HttpPromise[T] extends Promise[HttpResult[T]] {
-}
+trait HttpPromise[T] extends Promise[HttpResult[T]]
 
 trait HttpInterceptor {
 
@@ -110,19 +217,19 @@ trait HttpInterceptor {
 
   def request(config: HttpConfig): HttpConfig = config
 
-  def requestError[T](rejection: HttpResult[js.Any]): Promise[T] = q.reject(rejection)
+  def requestError[T](rejection: HttpResult[_]): Promise[T] = q.reject(rejection)
 
-  def response(response: HttpResult[js.Any]): HttpResult[js.Any] = response
+  def response(response: HttpResult[_]): HttpResult[_] = response
 
-  def responseError[T](rejection: HttpResult[js.Any]): Promise[T] = q.reject(rejection)
+  def responseError[T](rejection: HttpResult[_]): Promise[T] = q.reject(rejection)
 }
 
 @JSExportAll
 case class HttpInterceptorFunctions(
   request: js.Function1[HttpConfig, HttpConfig],
-  requestError: js.Function1[HttpResult[js.Any], Promise[_]],
-  response: js.Function1[HttpResult[js.Any], HttpResult[js.Any]],
-  responseError: js.Function1[HttpResult[js.Any], Promise[_]])
+  requestError: js.Function1[HttpResult[_], Promise[_]],
+  response: js.Function1[HttpResult[_], HttpResult[_]],
+  responseError: js.Function1[HttpResult[_], Promise[_]])
 
 trait HttpInterceptorFactory extends Factory[HttpInterceptorFunctions] {
 
@@ -223,7 +330,7 @@ object HttpPromise {
 
     def onError(arg: Any): Unit = {
       val data = arg.asInstanceOf[HttpResult[String]]
-      p failure HttpException(data.status, data.statusText getOrElse s"Failed to process HTTP request: '${data.data}'")
+      p failure HttpException(data.status, data.statusText getOrElse s"Failed to process HTTP request: '${ data.data }'")
     }
 
     promise.`then`(onSuccess _).`catch`(onError _)
