@@ -1,14 +1,13 @@
 package com.greencatsoft.angularjs.extensions
 
 import com.greencatsoft.angularjs.core.Promise
-import com.greencatsoft.angularjs.{AngularElement, ServiceDefinition, injectable}
+import com.greencatsoft.angularjs.{ AngularElement, ServiceDefinition, injectable }
 
 import scala.scalajs.js
 import scala.scalajs.js.|
 
 /**
  * Wrapper for the modal service provided by Angular directives for Bootstrap.
- *
  * @see http://angular-ui.github.io/bootstrap/#/modal
  */
 @js.native
@@ -48,7 +47,7 @@ trait ModalOptions extends js.Object {
 
 object ModalOptions {
 
-  def apply() = {
+  def apply(): ModalOptions = {
     val options = new js.Object().asInstanceOf[ModalOptions]
 
     options.size = "lg"
@@ -66,11 +65,26 @@ trait ModalInstance[T] extends js.Object {
 
   def close(): Unit = js.native
 
-  def dismiss(reason: js.Any): Unit = js.native
+  def dismiss(reason: Any): Unit = js.native
 
   def result: Promise[T] = js.native
 
   def opened: Promise[Boolean] = js.native
 
   def rendered: Promise[Unit] = js.native
+}
+
+@js.native
+@injectable("$uibModalStack")
+trait ModalStack extends js.Object {
+
+  def close[T](key: String, result: T): Unit = js.native
+
+  def dismiss(key: String): Unit = js.native
+
+  def dismiss(key: String, reason: Any): Unit = js.native
+
+  def dismissAll(): Unit = js.native
+
+  def dismissAll(reason: Any): Unit = js.native
 }
