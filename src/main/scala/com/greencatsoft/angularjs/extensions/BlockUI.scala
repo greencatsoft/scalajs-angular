@@ -43,7 +43,7 @@ trait BlockUIConfig extends js.Object {
 
   var resetOnException: Boolean = js.native
 
-  var requestFilter: js.Function1[HttpConfig, Unit] = js.native
+  var requestFilter: js.Function1[HttpConfig, Boolean] = js.native
 
   var autoInjectBodyBlock: Boolean = js.native
 
