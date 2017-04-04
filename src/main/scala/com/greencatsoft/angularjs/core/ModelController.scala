@@ -10,7 +10,7 @@ trait ModelController[A] extends js.Object {
 
   var $modelValue: UndefOr[A] = js.native
 
-  var $setViewValue: js.Function1[UndefOr[A], Unit] = js.native
+  def $setViewValue(value: UndefOr[A]): Unit = js.native
 
   var $parsers: js.Array[js.Function] = js.native
 
