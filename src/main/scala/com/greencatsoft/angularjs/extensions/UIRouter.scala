@@ -266,3 +266,115 @@ object IncludeOptions {
     options
   }
 }
+
+@js.native
+// https://ui-router.github.io/ng1/docs/latest/modules/transition.html
+trait Transition extends js.Object {
+  var id: Int = js.native
+
+  var success: Boolean = js.native
+
+  def $from(): State = js.native
+
+  def $to(): State = js.native
+
+  def abort(): Unit = js.native
+
+  def dynamic(): Boolean = js.native
+
+  def from(): State = js.native
+
+  def to(): State = js.native
+
+  def params(): StateParams = js.native
+
+  def params(pathname: String): StateParams = js.native
+}
+
+object Transition {
+  // https://ui-router.github.io/ng1/docs/latest/modules/transition.html#hookmatchcriterion
+  type HookMatchCriterion = String | Boolean | js.Function1[State, Boolean]
+
+  // https://ui-router.github.io/ng1/docs/latest/modules/transition.html#hookresult
+  type HookResult = Boolean | Unit
+}
+
+@js.native
+@injectable("$transitions")
+// https://ui-router.github.io/ng1/docs/latest/classes/transition.transitionservice.html
+trait TransitionService extends js.Object {
+  import TransitionService._
+
+  def onBefore(criteria: HookMatchCriteria, callback: TransitionHookFn): js.Function = js.native
+
+  def onBefore(criteria: HookMatchCriteria, callback: TransitionHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onCreate(criteria: HookMatchCriteria, options: HookRegOptions): js.Function
+
+  def onCreate(criteria: HookMatchCriteria, callback: TransitionCreateHookFn, options: HookRegOptions): js.Function
+
+  def onEnter(criteria: HookMatchCriteria, callback: TransitionStateHookFn): js.Function = js.native
+
+  def onEnter(criteria: HookMatchCriteria, callback: TransitionStateHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onError(criteria: HookMatchCriteria, callback: TransitionHookFn): js.Function = js.native
+
+  def onError(criteria: HookMatchCriteria, callback: TransitionHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onExit(criteria: HookMatchCriteria, callback: TransitionStateHookFn): js.Function = js.native
+
+  def onExit(criteria: HookMatchCriteria, callback: TransitionStateHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onFinish(criteria: HookMatchCriteria, callback: TransitionHookFn): js.Function = js.native
+
+  def onFinish(criteria: HookMatchCriteria, callback: TransitionHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onRetain(criteria: HookMatchCriteria, callback: TransitionStateHookFn): js.Function = js.native
+
+  def onRetain(criteria: HookMatchCriteria, callback: TransitionStateHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onStart(criteria: HookMatchCriteria, callback: TransitionHookFn): js.Function = js.native
+
+  def onStart(criteria: HookMatchCriteria, callback: TransitionHookFn, options: HookRegOptions): js.Function = js.native
+
+  def onSuccess(criteria: HookMatchCriteria, callback: TransitionHookFn): js.Function = js.native
+
+  def onSuccess(criteria: HookMatchCriteria, callback: TransitionHookFn, options: HookRegOptions): js.Function = js.native
+}
+
+object TransitionService {
+  import Transition._
+
+  // https://ui-router.github.io/ng1/docs/latest/interfaces/transition.transitionhookfn.html
+  type TransitionHookFn = js.Function1[Transition, HookResult]
+
+  // https://ui-router.github.io/ng1/docs/latest/interfaces/transition.transitioncreatehookfn.html
+  type TransitionCreateHookFn = js.Function1[Transition, Unit]
+
+  // https://ui-router.github.io/ng1/docs/latest/classes/transition.transitionservice.html#onenter
+  type TransitionStateHookFn = js.Function2[Transition, State, HookResult]
+}
+
+@js.native
+// https://ui-router.github.io/ng1/docs/latest/interfaces/transition.hookmatchcriteria.html
+trait HookMatchCriteria extends js.Object {
+  import Transition._
+
+  var entering: UndefOr[HookMatchCriterion] = js.native
+
+  var exiting: UndefOr[HookMatchCriterion] = js.native
+
+  var from: UndefOr[HookMatchCriterion] = js.native
+
+  var retained: UndefOr[HookMatchCriterion] = js.native
+
+  var to: UndefOr[HookMatchCriterion] = js.native
+}
+
+@js.native
+// https://ui-router.github.io/ng1/docs/latest/interfaces/transition.hookregoptions.html
+trait HookRegOptions extends js.Object {
+  var bind: js.Any = js.native
+
+  var priority: Int = js.native
+}
