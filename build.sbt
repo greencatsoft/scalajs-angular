@@ -5,13 +5,13 @@ lazy val scalaJsAngular = (project in file(".")).
     description := "AngularJS bindings for Scala.js.",
     organization := "com.greencatsoft",
     version := "0.8-SNAPSHOT",
-    scalaVersion := "2.11.8",
-    crossScalaVersions := Seq("2.11.8", "2.12.1"),
+    scalaVersion := "2.11.11",
+    crossScalaVersions := Seq("2.11.11", "2.12.1"),
     scalacOptions ++= Seq("-feature","-deprecation"),
     homepage := Some(url("http://github.com/greencatsoft/scalajs-angular")),
 
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.1",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.2",
       "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile"
     ),
