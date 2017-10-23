@@ -4,6 +4,7 @@ import com.greencatsoft.angularjs.core.HttpConfig
 import com.greencatsoft.angularjs.injectable
 
 import scala.scalajs.js
+import scala.scalajs.js.Dictionary
 
 /**
  * Wrapper for the angular-block-ui module.
@@ -20,11 +21,15 @@ trait BlockUI extends js.Object {
 
   def stop(): Unit = js.native
 
+  def reset(): Unit = js.native
+
   def message(): Unit = js.native
 
   def done(callback: js.Function0[Unit]): Unit = js.native
 
   def isBlocking(): Boolean = js.native
+
+  def instances: js.Dictionary[BlockUI] = js.native
 }
 
 @js.native
