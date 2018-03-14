@@ -18,6 +18,8 @@ import scala.scalajs.js.|
 trait FileUpload extends js.Object {
 
   def upload(config: FileUploadConfig): FileUploadPromise = js.native
+
+  def setDefaults(options: js.Dictionary[_]): Unit = js.native
 }
 
 @js.native
