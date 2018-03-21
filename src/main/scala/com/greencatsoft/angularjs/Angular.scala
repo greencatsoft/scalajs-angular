@@ -2,15 +2,13 @@ package com.greencatsoft.angularjs
 
 import com.greencatsoft.angularjs.core.Injector
 import com.greencatsoft.angularjs.internal.GlobalDefinitions.angular
-
 import org.scalajs.dom.Element
-
 import scala.language.experimental.macros
 import scala.language.implicitConversions
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.genTravConvertible2JSRichGenTrav
-import scala.scalajs.js.|
+import scala.scalajs.js.{ UndefOr, | }
 
 object Angular {
 
@@ -35,6 +33,8 @@ object Angular {
   def toJson(obj: Any, pretty: Boolean | Integer): String = angular.toJson(obj, pretty)
 
   def fromJson(json: String): Any = angular.fromJson(json)
+
+  def element(selector: String): UndefOr[AngularElement] = angular.element(selector)
 
   implicit def element(elem: Element): AngularElement = angular.element(elem)
 

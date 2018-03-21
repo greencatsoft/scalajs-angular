@@ -26,6 +26,8 @@ private[angularjs] trait Angular extends js.Object {
 
   def element(elem: Element): AngularElement = js.native
 
+  def element(selector: String): UndefOr[AngularElement] = js.native
+
   def extend(dst: js.Object, src: js.Object*): js.Object = js.native
 
   def merge(dst: js.Object, src: js.Object*): js.Object = js.native
