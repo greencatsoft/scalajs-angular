@@ -296,7 +296,7 @@ object Transition {
   type HookMatchCriterion = String | Boolean | js.Function1[State, Boolean]
 
   // https://ui-router.github.io/ng1/docs/latest/modules/transition.html#hookresult
-  type HookResult = Boolean | Unit
+  type HookResult = Boolean | Promise[Boolean] | Unit
 }
 
 @js.native
