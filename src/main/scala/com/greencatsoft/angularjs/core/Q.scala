@@ -18,6 +18,15 @@ trait Q extends js.Object {
 }
 
 @js.native
+@injectable("$qProvider")
+trait QProvider extends js.Object {
+
+  def errorOnUnhandledRejections(): Boolean = js.native
+
+  def errorOnUnhandledRejections(value: Boolean): QProvider = js.native
+}
+
+@js.native
 trait Defer[T] extends js.Object {
 
   def resolve(value: T): Unit = js.native
