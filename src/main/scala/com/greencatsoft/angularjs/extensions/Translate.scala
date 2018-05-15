@@ -70,27 +70,27 @@ trait Translate extends js.Object {
 
   def refresh(langKey: String): Promise[Unit] = js.native
 
-  def instant(translationId: String): Promise[String] = js.native
+  def instant(translationId: String): UndefOr[String] = js.native
 
-  def instant(translationId: js.Array[String]): Promise[Dictionary[String]] = js.native
+  def instant(translationId: js.Array[String]): Dictionary[String] = js.native
 
   def instant(
     translationId: String,
-    interpolateParams: Dictionary[Any]): Promise[String] = js.native
+    interpolateParams: Dictionary[Any]): UndefOr[String] = js.native
 
   def instant(
     translationId: js.Array[String],
-    interpolateParams: Dictionary[Any]): Promise[Dictionary[String]] = js.native
+    interpolateParams: Dictionary[Any]): Dictionary[String] = js.native
 
   def instant(
     translationId: String,
     interpolateParams: Dictionary[Any],
-    interpolationId: UndefOr[String]): Promise[String] = js.native
+    interpolationId: UndefOr[String]): UndefOr[String] = js.native
 
   def instant(
     translationId: js.Array[String],
     interpolateParams: Dictionary[Any],
-    interpolationId: UndefOr[String]): Promise[Dictionary[String]] = js.native
+    interpolationId: UndefOr[String]): Dictionary[String] = js.native
 
   def loaderCache(): String | Boolean | js.Object = js.native
 
