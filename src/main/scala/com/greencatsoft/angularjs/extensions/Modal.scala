@@ -1,6 +1,6 @@
 package com.greencatsoft.angularjs.extensions
 
-import com.greencatsoft.angularjs.core.Promise
+import com.greencatsoft.angularjs.core.{ Promise, Scope }
 import com.greencatsoft.angularjs.{ AngularElement, ServiceDefinition, injectable }
 
 import scala.scalajs.js
@@ -71,6 +71,8 @@ trait ModalInstance[T] extends js.Object {
 
   def opened: Promise[Boolean] = js.native
 
+  def closed: Promise[Unit] = js.native
+
   def rendered: Promise[Unit] = js.native
 }
 
@@ -87,4 +89,16 @@ trait ModalStack extends js.Object {
   def dismissAll(): Unit = js.native
 
   def dismissAll(reason: Any): Unit = js.native
+}
+
+@js.native
+trait ModalScope[T] extends Scope {
+
+  def $close(result: T): Unit = js.native
+
+  def $close(): Unit = js.native
+
+  def $dismiss(reason: Any): Unit = js.native
+
+  def $dismiss(): Unit = js.native
 }
