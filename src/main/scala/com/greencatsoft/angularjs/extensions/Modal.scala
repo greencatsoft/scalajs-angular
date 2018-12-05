@@ -71,6 +71,8 @@ trait ModalInstance[T] extends js.Object {
 
   def opened: Promise[Boolean] = js.native
 
+  def closed: Promise[Unit] = js.native
+
   def rendered: Promise[Unit] = js.native
 }
 
