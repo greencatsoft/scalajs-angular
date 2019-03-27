@@ -187,6 +187,8 @@ trait StateService extends js.Object {
 
   def is(stateOrName: String | State, params: Dictionary[_] | StateParams, options: IncludeOptions): Boolean = js.native
 
+  def reload(): Promise[State] = js.native
+
   def reload(state: js.Any): Promise[State] = js.native
 
   def transitionTo(to: String): Promise[State] = js.native
