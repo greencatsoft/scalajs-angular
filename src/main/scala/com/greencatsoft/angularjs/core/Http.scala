@@ -330,7 +330,8 @@ object HttpPromise {
 
     def onError(arg: Any): Unit = {
       val data = arg.asInstanceOf[HttpResult[String]]
-      p failure HttpException(data.status, data.statusText getOrElse s"Failed to process HTTP request: '${ data.data }'")
+      p failure HttpException(data.status, 
+        Some(data.data).filter(_.nonEmpty).orElse(data.statusText.toOption) getOrElse s"Failed to process HTTP request: '${data.status}'.")
     }
 
     promise.`then`(onSuccess _).`catch`(onError _)
